@@ -42,8 +42,8 @@ export default {
         border: '#E2E8F0',
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'sans-serif'],
+        sans: ['Outfit', 'Roboto', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        display: ['Outfit', 'Plus Jakarta Sans', 'Inter', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       boxShadow: {

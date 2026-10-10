@@ -21,6 +21,13 @@ export function Navbar() {
   const savedTenders = useBookmarkStore((state) => state.savedTenders);
   const { user, isAuthenticated, isPro, logout } = useAuthStore();
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    alert("Logging out...");
+    console.log("Logout clicked!");
+    logout();
+  };
+
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Browse Tenders', path: '/tenders' },
@@ -45,7 +52,7 @@ export function Navbar() {
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="text-base sm:text-lg font-display font-black tracking-tight text-dalBlue dark:text-white leading-none">
-                  Tender<span className="text-chinarRed">Hub</span>
+                  Bihar<span className="text-chinarRed">Tenders</span>
                 </span>
                 {(import.meta.env.VITE_TEST_MODE === 'true' || (typeof window !== 'undefined' && window.location.port === '5175')) && (
                   <span className="text-[9px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 px-1.5 py-0.2 rounded-full border border-purple-200 dark:border-purple-800 select-none">
@@ -166,7 +173,8 @@ export function Navbar() {
 
               {/* Compact Logout Icon Button */}
               <button
-                onClick={logout}
+                type="button"
+                onClick={handleLogout}
                 title="Sign Out"
                 className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-transparent hover:border-red-200 dark:hover:border-red-900/60 flex items-center justify-center text-slate-500 hover:text-chinarRed dark:hover:text-red-400 hover:bg-red-50/60 dark:hover:bg-red-950/20 transition-all cursor-pointer focus:outline-none"
                 aria-label="Sign Out"

@@ -1,7 +1,7 @@
 import { Worker } from 'bullmq';
 import pino from 'pino';
 import { env } from '../config/env.js';
-import { JKTenderDateAdapter } from '../services/adapters/JKTenderDateAdapter.js';
+import BiharTenderAdapter from '../services/adapters/BiharTenderAdapter.js';
 import SyncJob from '../models/SyncJob.js';
 import SystemLog from '../models/SystemLog.js';
 import { telegramService } from '../services/telegram.service.js';
@@ -21,7 +21,7 @@ export const tenderSyncWorker = new Worker('TenderQueue', async (job) => {
   const slotLabel = job.data?.slotLabel || '';
   logger.info(`Processing Tender Sync Job: ${job.name} (ID: ${job.id}, Slot: ${slotLabel || 'Ad-hoc'})`);
 
-  const adapter = new JKTenderDateAdapter();
+  const adapter = new BiharTenderAdapter();
   const triggeredBy = job.data?.triggeredBy || 'CRON_SCHEDULE';
 
   const syncRecord = await SyncJob.create({ 
@@ -142,4 +142,9 @@ export const tenderSyncWorker = new Worker('TenderQueue', async (job) => {
   connection, 
   lockDuration: 600000,   // 10 minutes lock duration
   maxStalledCount: 3 
+});
+
+tenderSyncWorker.on('error', (err) => {
+  if (err.message && (err.message.includes('ECONNREFUSED') || err.message.includes('ECONNRESET'))) return;
+  console.error(`[TenderWorker] Redis Error: ${err.message}`);
 });

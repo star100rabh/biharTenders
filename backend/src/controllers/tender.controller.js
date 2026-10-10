@@ -145,6 +145,11 @@ export const getTenders = async (req, res, next) => {
       }
     ];
 
+    const upcomingFilter = {
+      status: 'UPCOMING',
+      isDelisted: { $ne: true }
+    };
+
     const expiredFilterConditions = [
       {
         $or: [
@@ -161,9 +166,12 @@ export const getTenders = async (req, res, next) => {
       }
     ];
 
-    // Compute live counts for all 3 tabs (Active, Archived, Expired)
+    // Compute live counts for all 4 tabs (Active, Upcoming, Archived, Expired)
     const activeCount = await Tender.countDocuments(
       baseConditions.length > 0 ? { $and: [...baseConditions, activeFilter] } : activeFilter
+    );
+    const upcomingCount = await Tender.countDocuments(
+      baseConditions.length > 0 ? { $and: [...baseConditions, upcomingFilter] } : upcomingFilter
     );
     const archivedCount = await Tender.countDocuments(
       baseConditions.length > 0 
@@ -182,6 +190,9 @@ export const getTenders = async (req, res, next) => {
     if (status === 'archived') {
       // Archived tenders: download closed but bid submission in future, or bid opening in future
       queryConditions.push({ $or: archivedFilterConditions });
+    } else if (status === 'upcoming') {
+      // Upcoming tenders (e.g. from the #upcomingTenders tab)
+      queryConditions.push(upcomingFilter);
     } else if (status === 'expired') {
       // Expired tenders: bid submission deadline passed AND bid opening concluded
       queryConditions.push({ $or: expiredFilterConditions });
@@ -234,20 +245,33 @@ export const getTenders = async (req, res, next) => {
       sortConfig = { publishedDate: -1, createdAt: -1, _id: -1 };
     }
 
-    // 7. Enforce Authentication-Aware Limits & Data Minimization Projection
+    // 7. Enforce Authentication & Subscription-Aware Limits
     const isGuest = !req.user || !req.user.userId;
+    let isPro = false;
+    
+    if (!isGuest) {
+      const activeSub = await Subscription.findOne({
+        user: req.user.userId,
+        status: { $in: ['active', 'trialing'] }
+      });
+      if (activeSub && activeSub.currentPeriodEnd > new Date()) {
+        isPro = true;
+      }
+    }
+
     const safePage = Math.max(1, parseInt(page, 10) || 1);
 
-    // Hard ceiling for unauthenticated visitors: max 2 pages to prevent automated deep scraping
-    if (isGuest && safePage > 2) {
-      return res.status(401).json({
-        error: 'Guest preview limit reached. Sign in to browse the complete directory and access documents.',
-        code: 'GUEST_PAGE_LIMIT',
-        requireLogin: true,
+    // Hard ceiling for non-pro users: max 1 page (10 tenders) to prevent automated deep scraping & enforce paywall
+    if (!isPro && safePage > 1) {
+      return res.status(403).json({
+        error: 'Free tier limit reached. Please upgrade to Pro to view more tenders.',
+        code: 'PAYWALL_REACHED',
+        requireUpgrade: true,
       });
     }
 
-    const maxAllowedLimit = isGuest ? 15 : 50;
+    // Always keep 10 items per page to maintain clean UI, regardless of pro status
+    const maxAllowedLimit = 10;
     const safeLimit = Math.min(Math.max(1, parseInt(limit, 10) || 10), maxAllowedLimit);
 
     // Strictly project only public listing metadata. 
@@ -271,11 +295,14 @@ export const getTenders = async (req, res, next) => {
       'bidSubmissionEndDateStr',
       'bidSubmissionEndTime',
       'estimatedValue',
+      'emdAmount',
+      'tenderFee',
       'location',
       'pincode',
       'tenderCategory',
       'productCategory',
       'contractType',
+      'timeLeftStr',
       'status',
       'isMultiTender',
       'relatedTenderIds',
@@ -301,6 +328,7 @@ export const getTenders = async (req, res, next) => {
         page: safePage, 
         limit: safeLimit,
         activeCount,
+        upcomingCount,
         archivedCount,
         expiredCount
       }
@@ -433,7 +461,7 @@ export const getTenderById = async (req, res, next) => {
       relatedTenders = await Tender.find({
         sourceTenderId: { $in: tender.relatedTenderIds }
       })
-      .select('sourceTenderId title estimatedValue publishedDate publishedDateStr closingDate status')
+      .select('sourceTenderId title estimatedValue publishedDate publishedDateStr closingDate timeLeftStr status')
       .sort({ sourceTenderId: 1 })
       .lean();
     }

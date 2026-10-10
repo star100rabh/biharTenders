@@ -209,7 +209,7 @@ export class DiagnosticService {
         problem = 'Documents cannot be uploaded to R2 storage.';
         steps = [
           'Verify R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and R2_ACCOUNT_ID in backend/.env.',
-          'Ensure the bucket "tenderhub" exists in Cloudflare R2 dashboard.',
+          'Ensure the bucket "bihartenders" exists in Cloudflare R2 dashboard.',
           'Ensure CORS rules on the R2 bucket allow PUT/GET operations.'
         ];
         cmd = 'aws s3 ls --endpoint-url https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com';

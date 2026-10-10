@@ -8,14 +8,14 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateDeploymentPdf() {
-  console.log('🚀 Generating TenderHub Production Deployment & Operations Manual PDF...');
+  console.log('🚀 Generating BiharTenders Production Deployment & Operations Manual PDF...');
 
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TenderHub Production Deployment & Operations Manual</title>
+  <title>BiharTenders Production Deployment & Operations Manual</title>
   <style>
     @page {
       size: A4;
@@ -204,7 +204,7 @@ async function generateDeploymentPdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Deployment Manual</h1>
+        <h1>BiharTenders Deployment Manual</h1>
         <p>Production Cloud Architecture, Deployment Blueprint &amp; Operations Guide</p>
       </div>
       <div>
@@ -233,7 +233,7 @@ async function generateDeploymentPdf() {
 
     <h2>1. Production Topology &amp; Service Boundaries</h2>
     <p>
-      TenderHub is split into three decoupled components to ensure high availability, fast asset delivery, and operational security:
+      BiharTenders is split into three decoupled components to ensure high availability, fast asset delivery, and operational security:
     </p>
 
     <table>
@@ -248,28 +248,28 @@ async function generateDeploymentPdf() {
       </thead>
       <tbody>
         <tr>
-          <td><strong>tenderhub-api</strong></td>
+          <td><strong>bihartenders-api</strong></td>
           <td><span class="code-inline">backend/</span></td>
           <td>Node.js / Express Web Service</td>
           <td>Render / Railway / AWS EC2</td>
           <td>Port 8000</td>
         </tr>
         <tr>
-          <td><strong>tenderhub-web</strong></td>
+          <td><strong>bihartenders-web</strong></td>
           <td><span class="code-inline">frontend/</span></td>
           <td>React 19 / Vite Static Client</td>
           <td>Cloudflare Pages / Vercel / Render</td>
           <td>Port 5173 / CDN</td>
         </tr>
         <tr>
-          <td><strong>tenderhub-admin</strong></td>
+          <td><strong>bihartenders-admin</strong></td>
           <td><span class="code-inline">admin-panel/</span></td>
           <td>React 19 / Vite Admin Dashboard</td>
           <td>Private Subdomain / Cloudflare Access</td>
           <td>Port 5174 / CDN</td>
         </tr>
         <tr>
-          <td><strong>tenderhub-worker</strong></td>
+          <td><strong>bihartenders-worker</strong></td>
           <td><span class="code-inline">backend/src/workers/</span></td>
           <td>BullMQ Asynchronous Background Worker</td>
           <td>Background Worker / Daemon Process</td>
@@ -308,7 +308,7 @@ npm run manuals:all
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 1 of 2</span>
     </div>
   </div>
@@ -317,7 +317,7 @@ npm run manuals:all
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Deployment Manual</h1>
+        <h1>BiharTenders Deployment Manual</h1>
         <p>Environment Variables, Security Hardening &amp; Health Telemetry</p>
       </div>
       <div>
@@ -363,12 +363,12 @@ npm run manuals:all
         <tr>
           <td><span class="code-inline">R2_ACCOUNT_ID</span></td>
           <td>Backend</td>
-          <td>Primary Cloudflare Account ID (<span class="code-inline">tenderhub</span>)</td>
+          <td>Primary Cloudflare Account ID (<span class="code-inline">bihartenders</span>)</td>
         </tr>
         <tr>
           <td><span class="code-inline">BACKUP_R2_ACCOUNT_ID</span></td>
           <td>Backend</td>
-          <td>Secondary Cloudflare Account ID (<span class="code-inline">tenderhub-backup</span>)</td>
+          <td>Secondary Cloudflare Account ID (<span class="code-inline">bihartenders-backup</span>)</td>
         </tr>
         <tr>
           <td><span class="code-inline">ADMIN_SECRET_KEY</span></td>
@@ -378,7 +378,7 @@ npm run manuals:all
         <tr>
           <td><span class="code-inline">VITE_API_URL</span></td>
           <td>Frontend / Admin</td>
-          <td>Public Backend HTTPS URL (e.g. <span class="code-inline">https://api.tenderhub.in</span>)</td>
+          <td>Public Backend HTTPS URL (e.g. <span class="code-inline">https://api.bihartenders.in</span>)</td>
         </tr>
       </tbody>
     </table>
@@ -395,11 +395,11 @@ npm run manuals:all
     </div>
 
     <div class="alert-box alert-info">
-      <strong>Engineering Support:</strong> Both manual PDFs (<span class="code-inline">TenderHub_Disaster_Recovery_and_Backup_Manual.pdf</span> and <span class="code-inline">TenderHub_Production_Deployment_Manual.pdf</span>) are archived in the <span class="code-inline">docs/</span> folder of the repository.
+      <strong>Engineering Support:</strong> Both manual PDFs (<span class="code-inline">BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf</span> and <span class="code-inline">BiharTenders_Production_Deployment_Manual.pdf</span>) are archived in the <span class="code-inline">docs/</span> folder of the repository.
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 2 of 2</span>
     </div>
   </div>
@@ -422,8 +422,8 @@ npm run manuals:all
     fs.mkdirSync(backendBackupsDir, { recursive: true });
   }
 
-  const primaryPdfPath = path.join(rootDocsDir, 'TenderHub_Production_Deployment_Manual.pdf');
-  const backupCopyPdfPath = path.join(backendBackupsDir, 'TenderHub_Production_Deployment_Manual.pdf');
+  const primaryPdfPath = path.join(rootDocsDir, 'BiharTenders_Production_Deployment_Manual.pdf');
+  const backupCopyPdfPath = path.join(backendBackupsDir, 'BiharTenders_Production_Deployment_Manual.pdf');
 
   await page.pdf({
     path: primaryPdfPath,
@@ -441,7 +441,7 @@ npm run manuals:all
   await browser.close();
 
   const stats = fs.statSync(primaryPdfPath);
-  console.log('🎉 SUCCESS: TenderHub Production Deployment Manual PDF generated!');
+  console.log('🎉 SUCCESS: BiharTenders Production Deployment Manual PDF generated!');
   console.log(`📄 Primary Destination: ${primaryPdfPath} (${(stats.size / 1024).toFixed(1)} KB)`);
   console.log(`📁 Secondary Copy: ${backupCopyPdfPath}`);
 }

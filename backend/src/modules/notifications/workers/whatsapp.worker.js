@@ -67,3 +67,8 @@ export const whatsappWorker = new Worker(
 whatsappWorker.on('failed', (job, err) => {
   logger.error(`[WhatsAppWorker] ❌ Job ${job?.id} failed with error: ${err.message}`);
 });
+
+whatsappWorker.on('error', (err) => {
+  if (err.message && (err.message.includes('ECONNREFUSED') || err.message.includes('ECONNRESET'))) return;
+  logger.error(`[WhatsAppWorker] Redis Error: ${err.message}`);
+});

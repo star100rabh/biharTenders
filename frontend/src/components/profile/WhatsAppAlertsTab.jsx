@@ -39,8 +39,8 @@ const ALL_DEPARTMENTS = [
 ];
 
 const ALL_DISTRICTS = [
-  'Srinagar', 'Jammu', 'Baramulla', 'Anantnag', 'Pulwama',
-  'Budgam', 'Kupwara', 'Ganderbal', 'Bandipora', 'Kulgam',
+  'Gaya', 'Patna', 'Muzaffarpur', 'Darbhanga', 'Purnia',
+  'Budgam', 'Kupwara', 'Ganderbal', 'Bhagalpur', 'Kulgam',
   'Shopian', 'Udhampur', 'Kathua', 'Rajouri', 'Poonch',
   'Doda', 'Ramban', 'Reasi', 'Samba', 'Kishtwar'
 ];
@@ -188,7 +188,7 @@ export function WhatsAppAlertsTab() {
         <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 flex items-center gap-3">
           <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
           <div className="text-xs font-medium">
-            <span className="font-bold">TenderHub Pro Active:</span> Your personalized WhatsApp delivery pipeline is enabled with high-priority queue processing.
+            <span className="font-bold">BiharTenders Pro Active:</span> Your personalized WhatsApp delivery pipeline is enabled with high-priority queue processing.
           </div>
         </div>
       )}

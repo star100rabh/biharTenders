@@ -196,7 +196,7 @@ export default function Services() {
           key: order.keyId,
           amount: order.amount,
           currency: order.currency,
-          name: 'TenderHub AI Services',
+          name: 'BiharTenders AI Services',
           description: plan.name,
           order_id: order.orderId,
           handler: async (response) => {
@@ -229,7 +229,7 @@ export default function Services() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `TenderHub_BOQ_Materials_${inputTenderId || 'Schedule'}.csv`);
+    link.setAttribute('download', `BiharTenders_BOQ_Materials_${inputTenderId || 'Schedule'}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -906,7 +906,7 @@ export default function Services() {
               Ready to Analyze Any Government Tender
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto">
-              Paste a Tender ID above, or pick one of the active sample tenders from Jammu &amp; Kashmir, CPWD, or NHAI to see the full AI Dossier in action.
+              Paste a Tender ID above, or pick one of the active sample tenders from Bihar, CPWD, or NHAI to see the full AI Dossier in action.
             </p>
             <div className="flex flex-wrap justify-center gap-2 pt-2">
               {[

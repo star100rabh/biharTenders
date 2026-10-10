@@ -16,7 +16,7 @@ const logger = pino();
 export const PLANS = {
   pro_monthly: {
     id: 'pro_monthly',
-    name: 'TenderHub Pro Monthly',
+    name: 'BiharTenders Pro Monthly',
     price: 10, // INR (Temporarily set to 10 for testing)
     periodDays: 30,
     cycle: 'monthly',
@@ -32,7 +32,7 @@ export const PLANS = {
   },
   pro_quarterly: {
     id: 'pro_quarterly',
-    name: 'TenderHub Pro Quarterly',
+    name: 'BiharTenders Pro Quarterly',
     price: 999, // INR
     periodDays: 90,
     cycle: 'quarterly',
@@ -47,7 +47,7 @@ export const PLANS = {
   },
   pro_annual: {
     id: 'pro_annual',
-    name: 'TenderHub Pro Annual',
+    name: 'BiharTenders Pro Annual',
     price: 2999, // INR
     periodDays: 365,
     cycle: 'annual',

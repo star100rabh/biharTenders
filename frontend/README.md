@@ -1,4 +1,4 @@
-# TENDERHUB FRONTEND (React 19 + Vite 8 SPA)
+# BIHARTENDERS FRONTEND (React 19 + Vite 8 SPA)
 
 Client-Side Single Page Application for Tender Discovery, Analytics, and Contractor Workspaces.
 
@@ -70,7 +70,7 @@ VITE_RAZORPAY_KEY_ID=rzp_live_TjWTNQzT2o8NCV
 
 ### Production (`frontend/.env.production`)
 ```env
-VITE_API_URL=https://tenderhub-backend-jofq.onrender.com/api/v1
+VITE_API_URL=https://bihartenders-backend-jofq.onrender.com/api/v1
 VITE_RAZORPAY_KEY_ID=rzp_live_TjWTNQzT2o8NCV
 ```
 

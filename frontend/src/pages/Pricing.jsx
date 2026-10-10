@@ -110,7 +110,7 @@ export default function Pricing() {
         key: orderData.keyId,
         amount: orderData.amount, // in paise
         currency: orderData.currency || 'INR',
-        name: 'TenderHub J&K',
+        name: 'BiharTenders Bihar',
         description: `${selectedPlan.name} Subscription`,
         order_id: orderData.orderId,
         prefill: {
@@ -172,10 +172,10 @@ export default function Pricing() {
       period: 'forever',
       ratePerDay: 'Free forever',
       badge: 'Basic Access',
-      desc: 'Discover active tenders and evaluate public works across J&K.',
+      desc: 'Discover active tenders and evaluate public works across Bihar.',
       features: [
         'First 15 tender cards unlocked per day',
-        'Search across all 20 J&K districts',
+        'Search across all 20 Bihar districts',
         'Save up to 10 bookmarked tenders',
         'Standard portal search helpers',
       ],
@@ -250,7 +250,7 @@ export default function Pricing() {
             <Sparkles className="w-3.5 h-3.5" /> Transparent Contractor Pricing
           </div>
           <h1 className="text-3xl sm:text-5xl font-display font-black text-dalBlue dark:text-white tracking-tight">
-            Win More J&K Tenders with <span className="text-chinarRed">Pro Intelligence</span>
+            Win More Bihar Tenders with <span className="text-chinarRed">Pro Intelligence</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
             Never miss an important contract in your district. Instant WhatsApp alerts, unblurred access across all departments, and 1-click BOQ downloads.

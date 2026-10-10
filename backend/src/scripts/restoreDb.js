@@ -3,7 +3,7 @@ import { backupService } from '../services/backup.service.js';
 import { closeDB } from '../config/db.js';
 
 async function run() {
-  console.log('🔄 Starting TenderHub Database Restore (Disaster Recovery Relaunch)...');
+  console.log('🔄 Starting BiharTenders Database Restore (Disaster Recovery Relaunch)...');
   const targetPath = process.argv[2] || null;
   try {
     const result = await backupService.restoreDatabaseFromBackup(targetPath);

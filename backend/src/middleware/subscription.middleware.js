@@ -41,7 +41,7 @@ export const requireProSubscription = async (req, res, next) => {
     return res.status(403).json({
       success: false,
       error: 'SUBSCRIPTION_REQUIRED',
-      message: 'This feature requires an active TenderHub Pro subscription.',
+      message: 'This feature requires an active BiharTenders Pro subscription.',
       requireSubscription: true,
       pricingUrl: '/pricing',
     });

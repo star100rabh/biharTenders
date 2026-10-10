@@ -3,8 +3,25 @@ import ContractorAgentProfile from '../models/ContractorAgentProfile.js';
 import TenderAiDossier from '../models/TenderAiDossier.js';
 import Tender from '../models/Tender.js';
 import pino from 'pino';
+import { sendContactEmail } from '../services/emailService.js';
 
 const logger = pino();
+
+export const submitContactForm = async (req, res) => {
+  try {
+    const { name, email, phone, subject, message } = req.body;
+    
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+    
+    await sendContactEmail(name, email, phone, subject, message);
+    return res.status(200).json({ success: true, message: 'Inquiry sent' });
+  } catch (err) {
+    logger.error(err, '[SERVICES CONTROLLER] Contact Form Error');
+    return res.status(500).json({ success: false, message: 'Failed to send inquiry' });
+  }
+};
 
 export const AI_SERVICE_PLANS = [
   {

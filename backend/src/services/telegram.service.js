@@ -1,5 +1,5 @@
 /**
- * Telegram Notification Service for TenderHub
+ * Telegram Notification Service for BiharTenders
  * Sends real-time crawl updates, milestones, completion summaries, and alerts.
  * Uses native Node.js fetch (zero external dependencies).
  */
@@ -70,7 +70,7 @@ class TelegramService {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          sender: { name: 'TenderHub Alerts', email: toEmail },
+          sender: { name: 'BiharTenders Alerts', email: toEmail },
           to: [{ email: toEmail }],
           subject,
           textContent: textContent || htmlContent.replace(/<[^>]+>/g, ''),
@@ -91,10 +91,10 @@ class TelegramService {
    */
   async sendCrawlStarted({ mode = 'FULL', targetLimit = 'All', slotLabel = '', resumed = false, resumeDetails = null }) {
     const title = mode === 'FULL' 
-      ? '🚀 <b>TenderHub Full Crawl Started</b>' 
+      ? '🚀 <b>BiharTenders Full Crawl Started</b>' 
       : mode === 'RECOVERY'
-        ? '📑 <b>TenderHub Document Recovery Started</b>'
-        : '⚡ <b>TenderHub Ingestion Cycle Started</b>';
+        ? '📑 <b>BiharTenders Document Recovery Started</b>'
+        : '⚡ <b>BiharTenders Ingestion Cycle Started</b>';
     let msg = `${title}\n\n`;
     msg += `📍 <b>Portal:</b> J&K Tenders (jktenders.gov.in)\n`;
     if (slotLabel) {
@@ -113,7 +113,7 @@ class TelegramService {
 
     const tgSent = await this.sendMessage(msg);
     if (!tgSent) {
-      const emailSubject = `🚀 [TenderHub Alert] Ingestion Started (${slotLabel || mode})`;
+      const emailSubject = `🚀 [BiharTenders Alert] Ingestion Started (${slotLabel || mode})`;
       await this.sendEmailAlert(
         emailSubject,
         `<div style="font-family: sans-serif; padding: 18px; border: 1px solid #e2e8f0; border-radius: 8px;"><h3>${title}</h3><p>${msg.replace(/\n/g, '<br>')}</p></div>`,
@@ -151,7 +151,7 @@ class TelegramService {
     const secs = elapsedSeconds % 60;
     const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-    let msg = `📊 <b>TenderHub Crawl Progress Update</b>\n\n`;
+    let msg = `📊 <b>BiharTenders Crawl Progress Update</b>\n\n`;
     if (orgName) {
       msg += `🏛️ <b>Current Org (${orgIndex + 1}/${totalOrgs || '?'}):</b>\n<code>${orgName}</code>\n\n`;
     }
@@ -182,7 +182,7 @@ class TelegramService {
     const secs = Math.floor((durationMs % 60000) / 1000);
     const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-    let msg = `🎉 <b>TenderHub Ingestion Completed Successfully!</b>\n\n`;
+    let msg = `🎉 <b>BiharTenders Ingestion Completed Successfully!</b>\n\n`;
     msg += `📋 <b>Mode:</b> ${mode === 'FULL' ? 'Full Active Tenders Crawl' : 'Daily Incremental Sync'}\n`;
     if (slotLabel) {
       msg += `⏰ <b>Schedule Slot:</b> ${slotLabel}\n`;
@@ -200,10 +200,10 @@ class TelegramService {
 
     const tgSent = await this.sendMessage(msg);
     if (!tgSent) {
-      const emailSubject = `🎉 [TenderHub Alert] Ingestion Completed (${slotLabel || mode})`;
+      const emailSubject = `🎉 [BiharTenders Alert] Ingestion Completed (${slotLabel || mode})`;
       await this.sendEmailAlert(
         emailSubject,
-        `<div style="font-family: sans-serif; padding: 18px; border: 1px solid #e2e8f0; border-radius: 8px;"><h3>🎉 TenderHub Ingestion Completed</h3><p>${msg.replace(/\n/g, '<br>')}</p></div>`,
+        `<div style="font-family: sans-serif; padding: 18px; border: 1px solid #e2e8f0; border-radius: 8px;"><h3>🎉 BiharTenders Ingestion Completed</h3><p>${msg.replace(/\n/g, '<br>')}</p></div>`,
         msg
       );
     }
@@ -215,7 +215,7 @@ class TelegramService {
    * Crawl Error / Interruption Notification
    */
   async sendCrawlError({ mode = 'FULL', error = '', checkpointSaved = true, lastOrg = '' }) {
-    let msg = `🚨 <b>TenderHub Crawl Alert: Process Interrupted</b>\n\n`;
+    let msg = `🚨 <b>BiharTenders Crawl Alert: Process Interrupted</b>\n\n`;
     msg += `📋 <b>Mode:</b> ${mode}\n`;
     msg += `❌ <b>Error:</b> <code>${(error || 'Unknown error').slice(0, 200)}</code>\n`;
     if (lastOrg) {
@@ -230,10 +230,10 @@ class TelegramService {
     const tgResult = await this.sendMessage(msg);
 
     // 2. Dispatch urgent Email alert via Brevo so user is guaranteed to receive it
-    const emailSubject = `🚨 [TenderHub Alert] Crawl Interrupted (${mode})`;
+    const emailSubject = `🚨 [BiharTenders Alert] Crawl Interrupted (${mode})`;
     const emailHtml = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;">
-        <h2 style="color: #e11d48; margin-top: 0;">🚨 TenderHub Crawl Alert</h2>
+        <h2 style="color: #e11d48; margin-top: 0;">🚨 BiharTenders Crawl Alert</h2>
         <p>A crawl operation encountered an interruption and needs your attention:</p>
         <ul style="line-height: 1.8;">
           <li><b>Mode:</b> ${mode}</li>
@@ -242,7 +242,7 @@ class TelegramService {
           <li><b>Checkpoint:</b> ${checkpointSaved ? '✅ Saved to disk (.crawl_checkpoint.json). Resumption is ready.' : '❌ Not saved'}</li>
           <li><b>Timestamp:</b> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST</li>
         </ul>
-        <p style="color: #64748b; font-size: 12px; margin-top: 24px;">This is an automated alert from your TenderHub backend monitoring system.</p>
+        <p style="color: #64748b; font-size: 12px; margin-top: 24px;">This is an automated alert from your BiharTenders backend monitoring system.</p>
       </div>
     `;
     await this.sendEmailAlert(emailSubject, emailHtml, msg.replace(/<[^>]+>/g, ''));

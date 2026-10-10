@@ -13,7 +13,7 @@ export const verifyToken = async (req, res, next) => {
     req.user = {
       userId: '6abe2b7f4ec335668fdc702a', // valid ObjectId for testing
       role: 'admin',
-      email: 'test-browser@tenderhub.local',
+      email: 'test-browser@bihartenders.local',
     };
     req.organizationId = '6abe2b7f4ec335668fdc702b';
     return next();
@@ -117,7 +117,7 @@ export const optionalAuth = (req, res, next) => {
     req.user = {
       userId: '6abe2b7f4ec335668fdc702a',
       role: 'admin',
-      email: 'test-browser@tenderhub.local',
+      email: 'test-browser@bihartenders.local',
     };
     req.organizationId = '6abe2b7f4ec335668fdc702b';
     return next();

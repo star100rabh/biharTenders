@@ -36,6 +36,10 @@ export const whatsappQueue = new Queue('WhatsAppQueue', {
   },
 });
 
+whatsappQueue.on('error', (err) => {
+  if (err.message && (err.message.includes('ECONNREFUSED') || err.message.includes('ECONNRESET'))) return;
+});
+
 export class WhatsAppNotificationService {
   /**
    * Process a newly ingested tender: match against all active subscribers and enqueue WhatsApp alerts.
@@ -116,7 +120,7 @@ export class WhatsAppNotificationService {
    */
   async sendTestMessage(phone, user) {
     const provider = getWhatsAppProvider();
-    const message = `👋 Hello ${user?.name || 'Contractor'}!\n\nThis is a verification test from *TenderHub J&K*. Your WhatsApp tender alerts are active.\n\nYou will automatically receive instant updates whenever new tenders match your saved departments and districts!`;
+    const message = `👋 Hello ${user?.name || 'Contractor'}!\n\nThis is a verification test from *BiharTenders J&K*. Your WhatsApp tender alerts are active.\n\nYou will automatically receive instant updates whenever new tenders match your saved departments and districts!`;
     return await provider.sendTextMessage({ phone, message });
   }
 

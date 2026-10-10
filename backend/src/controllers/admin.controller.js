@@ -463,9 +463,9 @@ export const downloadBackupArchive = async (req, res) => {
 export const downloadDisasterRecoveryGuide = async (req, res) => {
   try {
     const candidates = [
-      path.resolve(process.cwd(), '../docs/TenderHub_Disaster_Recovery_and_Backup_Manual.pdf'),
-      path.resolve(process.cwd(), 'docs/TenderHub_Disaster_Recovery_and_Backup_Manual.pdf'),
-      path.resolve(process.cwd(), 'backups/TenderHub_Disaster_Recovery_and_Backup_Manual.pdf'),
+      path.resolve(process.cwd(), '../docs/BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf'),
+      path.resolve(process.cwd(), 'docs/BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf'),
+      path.resolve(process.cwd(), 'backups/BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf'),
     ];
 
     const targetPath = candidates.find(p => fs.existsSync(p));
@@ -475,7 +475,7 @@ export const downloadDisasterRecoveryGuide = async (req, res) => {
     }
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="TenderHub_Disaster_Recovery_and_Backup_Manual.pdf"');
+    res.setHeader('Content-Disposition', 'attachment; filename="BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf"');
 
     const stream = fs.createReadStream(targetPath);
     stream.pipe(res);
@@ -490,9 +490,9 @@ export const downloadDisasterRecoveryGuide = async (req, res) => {
 export const downloadDeploymentGuide = async (req, res) => {
   try {
     const candidates = [
-      path.resolve(process.cwd(), '../docs/TenderHub_Production_Deployment_Manual.pdf'),
-      path.resolve(process.cwd(), 'docs/TenderHub_Production_Deployment_Manual.pdf'),
-      path.resolve(process.cwd(), 'backups/TenderHub_Production_Deployment_Manual.pdf'),
+      path.resolve(process.cwd(), '../docs/BiharTenders_Production_Deployment_Manual.pdf'),
+      path.resolve(process.cwd(), 'docs/BiharTenders_Production_Deployment_Manual.pdf'),
+      path.resolve(process.cwd(), 'backups/BiharTenders_Production_Deployment_Manual.pdf'),
     ];
 
     const targetPath = candidates.find(p => fs.existsSync(p));
@@ -502,7 +502,7 @@ export const downloadDeploymentGuide = async (req, res) => {
     }
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="TenderHub_Production_Deployment_Manual.pdf"');
+    res.setHeader('Content-Disposition', 'attachment; filename="BiharTenders_Production_Deployment_Manual.pdf"');
 
     const stream = fs.createReadStream(targetPath);
     stream.pipe(res);
@@ -517,9 +517,9 @@ export const downloadDeploymentGuide = async (req, res) => {
 export const downloadFutureConfigGuide = async (req, res) => {
   try {
     const candidates = [
-      path.resolve(process.cwd(), '../docs/TenderHub_Future_Configurations_Render_and_Failover.pdf'),
-      path.resolve(process.cwd(), 'docs/TenderHub_Future_Configurations_Render_and_Failover.pdf'),
-      path.resolve(process.cwd(), 'backups/TenderHub_Future_Configurations_Render_and_Failover.pdf'),
+      path.resolve(process.cwd(), '../docs/BiharTenders_Future_Configurations_Render_and_Failover.pdf'),
+      path.resolve(process.cwd(), 'docs/BiharTenders_Future_Configurations_Render_and_Failover.pdf'),
+      path.resolve(process.cwd(), 'backups/BiharTenders_Future_Configurations_Render_and_Failover.pdf'),
     ];
 
     const targetPath = candidates.find(p => fs.existsSync(p));
@@ -529,7 +529,7 @@ export const downloadFutureConfigGuide = async (req, res) => {
     }
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="TenderHub_Future_Configurations_Render_and_Failover.pdf"');
+    res.setHeader('Content-Disposition', 'attachment; filename="BiharTenders_Future_Configurations_Render_and_Failover.pdf"');
 
     const stream = fs.createReadStream(targetPath);
     stream.pipe(res);

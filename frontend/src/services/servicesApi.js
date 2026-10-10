@@ -11,6 +11,12 @@ export const servicesApi = {
     return res.data?.plans || [];
   },
 
+  // Submit Contact Us form
+  submitContactForm: async (formData) => {
+    const res = await api.post('/services/contact', formData);
+    return res.data;
+  },
+
   // Get current contractor AI memory and profile
   getContractorProfile: async () => {
     const res = await api.get('/services/contractor-profile');

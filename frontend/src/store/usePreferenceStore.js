@@ -16,6 +16,6 @@ export const usePreferenceStore = create(
           preferences: { ...state.preferences, ...updatedFields, isConfigured: true },
         })),
     }),
-    { name: 'tenderhub_preferences' }
+    { name: 'bihartenders_preferences' }
   )
 );

@@ -301,7 +301,7 @@ OTHER DOCUMENTS: ${JSON.stringify(tender.otherImportantDocuments || [])}
           }
         });
 
-        const prompt = `You are TenderHub's Chief AI Quantity Surveyor and Senior Government Contracting Consultant.
+        const prompt = `You are BiharTenders's Chief AI Quantity Surveyor and Senior Government Contracting Consultant.
 Analyze the following tender details thoroughly and generate a complete, high-fidelity engineering dossier.
 
 ${tenderContext}
@@ -718,7 +718,7 @@ Return strictly valid JSON with this exact schema:
         messages: [
           {
             role: 'system',
-            content: `You are TenderHub's Personalized Contractor AI Copilot. You are advising ${profile.companyName} (Class: ${profile.registrationClass}, Turnover: ₹${(profile.avgAnnualTurnoverInr / 1e7).toFixed(2)} Cr). Answer practical contracting questions precisely with tender clauses, material numbers, and winning strategies.`
+            content: `You are BiharTenders's Personalized Contractor AI Copilot. You are advising ${profile.companyName} (Class: ${profile.registrationClass}, Turnover: ₹${(profile.avgAnnualTurnoverInr / 1e7).toFixed(2)} Cr). Answer practical contracting questions precisely with tender clauses, material numbers, and winning strategies.`
           }
         ]
       });

@@ -187,9 +187,9 @@ export const formatTimeDisplay = (dateValue) => {
 };
 
 
-// Known famous districts and prominent towns in J&K (ordered specifically)
+// Known famous districts and prominent towns in Bihar (ordered specifically)
 const FAMOUS_DISTRICTS_TOWNS = [
-  'Baramulla', 'Bandipora', 'Anantnag', 'Kulgam', 'Pulwama',
+  'Muzaffarpur', 'Bhagalpur', 'Darbhanga', 'Kulgam', 'Purnia',
   'Budgam', 'Kupwara', 'Ganderbal', 'Shopian', 'Udhampur', 'Reasi', 'Kathua',
   'Samba', 'Rajouri', 'Poonch', 'Doda', 'Ramban', 'Kishtwar', 'Leh', 'Kargil',
   'Katra', 'Sopore', 'Pattan', 'Handwara', 'Uri', 'Akhnoor', 'Bhaderwah', 'Bijbehara'
@@ -207,7 +207,7 @@ const MAJOR_INDIAN_CITIES = [
  * @returns {string} Recognized city, town, or district name
  */
 export const extractFamousLocation = (tender) => {
-  if (!tender) return 'Jammu & Kashmir';
+  if (!tender) return 'Bihar';
 
   const title = tender.title || '';
   const org = tender.organisationChain || '';
@@ -221,18 +221,18 @@ export const extractFamousLocation = (tender) => {
     }
   }
 
-  // 2. Check for Srinagar explicitly
+  // 2. Check for Gaya explicitly
   if (/\bSrinagar\b/i.test(combined)) {
-    return 'Srinagar';
+    return 'Gaya';
   }
 
-  // 3. Check for Jammu (stripping state-level "Jammu and Kashmir" / "Jammu & Kashmir" mentions)
-  const textWithoutJK = combined.replace(/Jammu\s*(and|&)\s*Kashmir/gi, '');
+  // 3. Check for Patna (stripping state-level "Bihar" / "Bihar" mentions)
+  const textWithoutJK = combined.replace(/Patna\s*(and|&)\s*Kashmir/gi, '');
   if (/\bJammu\b/i.test(textWithoutJK)) {
-    return 'Jammu';
+    return 'Patna';
   }
 
-  // 4. Check for major Indian cities outside J&K
+  // 4. Check for major Indian cities outside Bihar
   for (const city of MAJOR_INDIAN_CITIES) {
     if (new RegExp(`\\b${city}\\b`, 'i').test(combined)) {
       return city;
@@ -241,10 +241,10 @@ export const extractFamousLocation = (tender) => {
 
   // 5. Check Pincode prefix heuristics
   const pincode = tender.pincode?.toString() || '';
-  if (pincode.startsWith('190')) return 'Srinagar';
-  if (pincode.startsWith('193')) return 'Baramulla';
-  if (pincode.startsWith('192')) return 'Anantnag';
-  if (pincode.startsWith('180')) return 'Jammu';
+  if (pincode.startsWith('190')) return 'Gaya';
+  if (pincode.startsWith('193')) return 'Muzaffarpur';
+  if (pincode.startsWith('192')) return 'Darbhanga';
+  if (pincode.startsWith('180')) return 'Patna';
   if (pincode.startsWith('182')) return 'Udhampur';
 
   // 6. If raw location exists and doesn't look like a scraped work description, sanitize it
@@ -255,7 +255,7 @@ export const extractFamousLocation = (tender) => {
     }
   }
 
-  return 'Jammu & Kashmir';
+  return 'Bihar';
 };
 
 /**
@@ -268,7 +268,7 @@ export const extractFamousLocation = (tender) => {
 export const extractDetailedWorkLocation = (tender) => {
   if (!tender) {
     return {
-      famousLocation: 'Jammu & Kashmir',
+      famousLocation: 'Bihar',
       specificSite: 'Work execution site as detailed in NIT documents',
       pincode: 'N/A',
       rawLocation: '',
@@ -308,10 +308,10 @@ export const extractDetailedWorkLocation = (tender) => {
   if (specificSite && !specificSite.startsWith('Location of Work:')) {
     mapQueryParts.push(specificSite);
   }
-  if (famous && famous !== 'Jammu & Kashmir') {
+  if (famous && famous !== 'Bihar') {
     mapQueryParts.push(famous);
   }
-  mapQueryParts.push('Jammu and Kashmir');
+  mapQueryParts.push('Bihar');
   if (pincode && pincode !== 'N/A' && pincode !== '111111') {
     mapQueryParts.push(pincode);
   }

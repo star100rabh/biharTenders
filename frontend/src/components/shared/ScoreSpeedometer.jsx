@@ -5,7 +5,7 @@
  * - Continuous live scanning / moving meter state while calculating
  * - Count-up numeric roll-up
  * - Replay / recalibrate trigger
- * - Matched to TenderHub's Dal Lake Blue / slate theme
+ * - Matched to BiharTenders's Dal Lake Blue / slate theme
  */
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +16,7 @@ export function ScoreSpeedometer({
   maxScore = 100, 
   label = 'CHECK YOUR BID SCORE',
   probability = 'High',
-  subtext = 'J&K Tender Allocation Odds',
+  subtext = 'Bihar Tender Allocation Odds',
   isCalculating = false
 }) {
   const clampedScore = Math.min(Math.max(Number(score) || 0, 0), maxScore);
@@ -76,7 +76,7 @@ export function ScoreSpeedometer({
     if (isCalculating) {
       return { 
         bg: 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 animate-pulse', 
-        text: 'Analyzing J&K Procurement Data...' 
+        text: 'Analyzing Bihar Procurement Data...' 
       };
     }
     const p = String(prob).toLowerCase();

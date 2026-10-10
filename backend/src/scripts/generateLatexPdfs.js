@@ -266,7 +266,7 @@ function wrapInLatexHtml(title, subtitle, abstractText, bodyHtml) {
 <body>
   <div class="document-wrapper">
     <div class="latex-title-block">
-      <div class="latex-institution">TenderHub Engineering Publications &bull; Technical Report Series</div>
+      <div class="latex-institution">BiharTenders Engineering Publications &bull; Technical Report Series</div>
       <h1 class="latex-title">${title}</h1>
       <div class="latex-subtitle">${subtitle}</div>
       <div class="latex-meta">
@@ -305,7 +305,7 @@ async function renderHtmlToPdf(browser, htmlString, outputPath) {
     displayHeaderFooter: true,
     headerTemplate: `
       <div style="font-family: 'Times New Roman', serif; font-size: 8pt; width: 100%; text-align: right; padding-right: 18mm; color: #444444; border-bottom: 0.5pt solid #dddddd; padding-bottom: 2pt;">
-        <span>TenderHub Engineering Manual &bull; Confidential</span>
+        <span>BiharTenders Engineering Manual &bull; Confidential</span>
       </div>
     `,
     footerTemplate: `
@@ -319,7 +319,7 @@ async function renderHtmlToPdf(browser, htmlString, outputPath) {
 }
 
 async function main() {
-  console.log('🚀 Starting LaTeX PDF generation for TenderHub documentation...');
+  console.log('🚀 Starting LaTeX PDF generation for BiharTenders documentation...');
 
   const browser = await chromium.launch({ headless: true });
 
@@ -328,7 +328,7 @@ async function main() {
     const masterHtml = `
       <h1>1. Executive Summary & Monorepo Layout</h1>
       <p>
-        TenderHub is an enterprise-grade automated procurement intelligence platform designed to eliminate the operational friction of bidding on Indian government and public works procurement notices (with initial high-fidelity ingestion tailored for the ASP.NET NIC-GEP infrastructure, specifically <code>jktenders.gov.in</code>).
+        BiharTenders is an enterprise-grade automated procurement intelligence platform designed to eliminate the operational friction of bidding on Indian government and public works procurement notices (with initial high-fidelity ingestion tailored for the ASP.NET NIC-GEP infrastructure, specifically <code>jktenders.gov.in</code>).
       </p>
       <p>
         The software architecture is decoupled into three operational tiers:
@@ -482,7 +482,7 @@ async function main() {
                                           | Automated CAPTCHA bypass (CapSolver)
                                           v
 +-----------------------------------------------------------------------------------+
-|                          TENDERHUB INGESTION ENGINE                               |
+|                          BIHARTENDERS INGESTION ENGINE                               |
 |  - Table extraction, ViewState navigation, metadata normalization                |
 |  - NIT / BOQ PDF download & Ghostscript compression (-45% to -65%)                |
 +-----------------------------------------------------------------------------------+
@@ -567,7 +567,7 @@ async function main() {
 
       <h1>5. Server Hosting & Cloud Infrastructure Operating Costs</h1>
       <p>
-        The table below provides a full financial projection for running TenderHub in production across all cloud vendors:
+        The table below provides a full financial projection for running BiharTenders in production across all cloud vendors:
       </p>
 
       <table>
@@ -656,7 +656,7 @@ async function main() {
       </table>
 
       <p>
-        <em>Unit Economics:</em> With TenderHub Pro subscriptions priced at ₹999/month and ₹2,999/year, the platform operates at an exceptionally healthy gross contribution margin exceeding 90%.
+        <em>Unit Economics:</em> With BiharTenders Pro subscriptions priced at ₹999/month and ₹2,999/year, the platform operates at an exceptionally healthy gross contribution margin exceeding 90%.
       </p>
 
       <h1>6. Production Deployment & Security Runbook</h1>
@@ -668,9 +668,9 @@ SECONDARY_MONGO_URI=mongodb+srv://... (Failover DB)
 REDIS_URL=rediss://...
 JWT_ACCESS_SECRET=&lt;secure_random_64_chars&gt;
 JWT_REFRESH_SECRET=&lt;secure_random_64_chars&gt;
-BACKEND_URL=https://tenderhub-backend-jofq.onrender.com
-FRONTEND_URL=https://tenderhub.in
-CORS_ORIGIN=https://tenderhub.in
+BACKEND_URL=https://bihartenders-backend-jofq.onrender.com
+FRONTEND_URL=https://bihartenders.in
+CORS_ORIGIN=https://bihartenders.in
 RAZORPAY_KEY_ID=rzp_live_TjWTNQzT2o8NCV
 RAZORPAY_KEY_SECRET=ah5gHkdNmg2FAH0gbLJntR0J
 RAZORPAY_WEBHOOK_SECRET=thub_whsec_c8742b78a9e144a9_live
@@ -681,7 +681,7 @@ GEMINI_MODEL=gemini-1.5-flash
 R2_ACCOUNT_ID=2b0771a6f411ca5ab5e1c9bfd21b97ba
 R2_ACCESS_KEY_ID=071eec88c0548d0e680bd26a5f6c7130
 R2_SECRET_ACCESS_KEY=bb289b8599231e9d72a4653aa060cad69cf9b444a5d717a5cb0e0768a3b3a8c4
-R2_BUCKET_NAME=tenderhub
+R2_BUCKET_NAME=bihartenders
 SCRAPER_HEADLESS=true</pre>
 
       <h2>6.2 BotShield & Security Protections</h2>
@@ -696,13 +696,13 @@ SCRAPER_HEADLESS=true</pre>
     `;
 
     const masterDocHtml = wrapInLatexHtml(
-      'TenderHub Developer Handover Manual & Engineering Guide',
+      'BiharTenders Developer Handover Manual & Engineering Guide',
       'Architecture, Operations, Automated Crawling, Billing, and AI Intelligence',
       'This document serves as the comprehensive engineering handover specification for the incoming technical team. It details the operational setup, monorepo architecture, crawler automation pipeline, payment reconciliation guarantees, cloud infrastructure operating costs, and the technical roadmap for finalizing the contractor AI analysis subsystem.',
       masterHtml
     );
 
-    const masterPdfPath = path.join(docsDir, 'TenderHub_Developer_Handover_Manual.pdf');
+    const masterPdfPath = path.join(docsDir, 'BiharTenders_Developer_Handover_Manual.pdf');
     await renderHtmlToPdf(browser, masterDocHtml, masterPdfPath);
 
     // 2. AI AGENT ROADMAP & MODIFICATIONS PDF
@@ -760,7 +760,7 @@ async function extractTextFromTenderDocument(tender) {
   const docKey = tender.nitDocumentKey || tender.documents?.[0]?.s3Key;
   if (!docKey) return '';
   const command = new GetObjectCommand({
-    Bucket: process.env.R2_BUCKET_NAME || 'tenderhub',
+    Bucket: process.env.R2_BUCKET_NAME || 'bihartenders',
     Key: docKey,
   });
   const response = await s3Client.send(command);
@@ -786,20 +786,20 @@ async function extractTextFromTenderDocument(tender) {
     `;
 
     const aiDocHtml = wrapInLatexHtml(
-      'TenderHub AI Agent Subsystem: Specifications & Continuation Plan',
+      'BiharTenders AI Agent Subsystem: Specifications & Continuation Plan',
       'Technical Roadmap for Contractor Intelligence and Tender Dossier Engine',
       'Detailed implementation runbook for the incoming engineer continuing development of the Contractor AI Subsystem. Covers multi-tier fallback mechanics, Cloudflare R2 PDF text extraction, prompt structures, and token cost economics.',
       aiHtml
     );
 
-    const aiPdfPath = path.join(docsDir, 'TenderHub_AI_Agent_Roadmap.pdf');
+    const aiPdfPath = path.join(docsDir, 'BiharTenders_AI_Agent_Roadmap.pdf');
     await renderHtmlToPdf(browser, aiDocHtml, aiPdfPath);
 
     // 3. INFRASTRUCTURE COSTS AND PRICING PDF
     const costHtml = `
       <h1>1. Operating Cost Forecast Summary</h1>
       <p>
-        TenderHub is engineered for high operational leverage with flat-cost storage (Cloudflare R2) and serverless databases.
+        BiharTenders is engineered for high operational leverage with flat-cost storage (Cloudflare R2) and serverless databases.
       </p>
 
       <table>
@@ -913,13 +913,13 @@ async function extractTextFromTenderDocument(tender) {
     `;
 
     const costDocHtml = wrapInLatexHtml(
-      'TenderHub Cloud Infrastructure & Operating Costs',
+      'BiharTenders Cloud Infrastructure & Operating Costs',
       'Financial Breakdown, Vendor Pricing Models, and Capacity Forecasts',
-      'Line-by-line financial assessment and capacity planning for TenderHub production infrastructure, databases, third-party APIs, and scaling tiers.',
+      'Line-by-line financial assessment and capacity planning for BiharTenders production infrastructure, databases, third-party APIs, and scaling tiers.',
       costHtml
     );
 
-    const costPdfPath = path.join(docsDir, 'TenderHub_Infrastructure_Costs_and_Pricing.pdf');
+    const costPdfPath = path.join(docsDir, 'BiharTenders_Infrastructure_Costs_and_Pricing.pdf');
     await renderHtmlToPdf(browser, costDocHtml, costPdfPath);
 
     // 4. COMMANDS CHEAT SHEET PDF
@@ -962,20 +962,20 @@ curl -s "http://localhost:8000/api/v1/tenders?page=1&limit=5&status=ACTIVE"</pre
     `;
 
     const cmdDocHtml = wrapInLatexHtml(
-      'TenderHub CLI & Commands Reference Guide',
+      'BiharTenders CLI & Commands Reference Guide',
       'Complete Technical Runbook for Development, Crawlers, and Data Maintenance',
       'Rapid reference manual containing all command-line operations for backend server execution, automated portal crawling, database backup/restore, maintenance scripts, and frontend bundling.',
       cmdHtml
     );
 
-    const cmdPdfPath = path.join(docsDir, 'TenderHub_Commands_Cheat_Sheet.pdf');
+    const cmdPdfPath = path.join(docsDir, 'BiharTenders_Commands_Cheat_Sheet.pdf');
     await renderHtmlToPdf(browser, cmdDocHtml, cmdPdfPath);
 
     // 5. CLOUDFLARE ANTI-BOT & SCRAPING DEFENSE PLAN PDF
     const cfHtml = `
       <h1>1. Executive Summary & Threat Model</h1>
       <p>
-        As an intelligence aggregator of government procurement notices, TenderHub is vulnerable to automated competitor scraping, catalog harvesting, credential stuffing, and Cloudflare R2 document bandwidth leeching.
+        As an intelligence aggregator of government procurement notices, BiharTenders is vulnerable to automated competitor scraping, catalog harvesting, credential stuffing, and Cloudflare R2 document bandwidth leeching.
       </p>
       <p>
         While application-level middleware (<code>botShield.middleware.js</code>) intercepts known User-Agents, every bot request reaching Node.js consumes Render compute cycles, memory, and database connections. <strong>Cloudflare Edge Defense</strong> intercepts, challenges, and drops malicious requests at Cloudflare's global anycast points of presence before packets ever touch the Render origin server.
@@ -1005,7 +1005,7 @@ curl -s "http://localhost:8000/api/v1/tenders?page=1&limit=5&status=ACTIVE"</pre
       
       <h2>Phase 1: Cloudflare Proxy & Origin Hardening</h2>
       <ul>
-        <li><strong>DNS Orange-Cloud Proxying</strong>: Route <code>tenderhub.in</code> and <code>api.tenderhub.in</code> through Cloudflare proxy.</li>
+        <li><strong>DNS Orange-Cloud Proxying</strong>: Route <code>bihartenders.in</code> and <code>api.bihartenders.in</code> through Cloudflare proxy.</li>
         <li><strong>SSL/TLS Full (Strict)</strong>: Enforce Minimum TLS Version 1.2 with HTTP/3 QUIC.</li>
         <li><strong>Origin Pull Hardening</strong>: In <code>botShield.middleware.js</code>, verify incoming requests in production contain <code>cf-ray</code> and <code>cf-connecting-ip</code> headers to prevent direct IP bypass.</li>
       </ul>
@@ -1059,7 +1059,7 @@ curl -s "http://localhost:8000/api/v1/tenders?page=1&limit=5&status=ACTIVE"</pre
       <h2>Phase 5: Cloudflare R2 Document Hotlinking & Asset Security</h2>
       <ul>
         <li><strong>Ephemeral Presigned URLs</strong>: All tender document download links are generated with strict 15-minute expiration (<code>expiresIn: 900</code>).</li>
-        <li><strong>WAF Referer Header Enforcement</strong>: Block direct hotlinks to document assets unless the HTTP Referer originates from <code>tenderhub.in</code>.</li>
+        <li><strong>WAF Referer Header Enforcement</strong>: Block direct hotlinks to document assets unless the HTTP Referer originates from <code>bihartenders.in</code>.</li>
       </ul>
 
       <h2>Phase 6: Operational Monitoring & Analytics</h2>
@@ -1077,13 +1077,13 @@ VITE_TURNSTILE_SITE_KEY=0x4AAAAAA...your_turnstile_site_key...</pre>
     `;
 
     const cfDocHtml = wrapInLatexHtml(
-      'TenderHub Cloudflare Anti-Bot & Scraping Defense Plan',
+      'BiharTenders Cloudflare Anti-Bot & Scraping Defense Plan',
       'Edge Security Architecture, WAF Rulesets, Bot Fight Mode, and Turnstile Integration',
       'Comprehensive security plan and implementation runbook for deploying Cloudflare Edge Bot Management, WAF custom rulesets, Cloudflare Turnstile invisible CAPTCHAs, and Cloudflare R2 asset hotlinking protection.',
       cfHtml
     );
 
-    const cfPdfPath = path.join(docsDir, 'TenderHub_Cloudflare_Anti_Bot_Security_Plan.pdf');
+    const cfPdfPath = path.join(docsDir, 'BiharTenders_Cloudflare_Anti_Bot_Security_Plan.pdf');
     await renderHtmlToPdf(browser, cfDocHtml, cfPdfPath);
 
     console.log('✨ All LaTeX-styled PDFs generated successfully in docs/!');

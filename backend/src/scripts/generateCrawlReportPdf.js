@@ -9,14 +9,14 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateReportPdf() {
-  console.log('🚀 Generating TenderHub 22-Sep-2026 Executive Crawl Report PDF...');
+  console.log('🚀 Generating BiharTenders 22-Sep-2026 Executive Crawl Report PDF...');
 
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TenderHub Executive Ingestion Report - 22 September 2026</title>
+  <title>BiharTenders Executive Ingestion Report - 22 September 2026</title>
   <style>
     @page {
       size: A4;
@@ -190,7 +190,7 @@ async function generateReportPdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TENDERHUB EXECUTIVE REPORT</h1>
+        <h1>BIHARTENDERS EXECUTIVE REPORT</h1>
         <div class="subtitle">Distributed Ingestion & System Hardening • 22 September 2026 Run</div>
       </div>
       <div class="badge-group">
@@ -323,7 +323,7 @@ async function generateReportPdf() {
     </table>
 
     <div class="footer-band">
-      <span>TenderHub Internal Document • Confidential</span>
+      <span>BiharTenders Internal Document • Confidential</span>
       <span>Page 1 of 2</span>
     </div>
   </div>
@@ -332,7 +332,7 @@ async function generateReportPdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TENDERHUB SYSTEM HARDENING & ROADMAP</h1>
+        <h1>BIHARTENDERS SYSTEM HARDENING & ROADMAP</h1>
         <div class="subtitle">Architectural Fixes, Data Invariants & Frontend Features</div>
       </div>
       <div class="badge-group">
@@ -410,7 +410,7 @@ async function generateReportPdf() {
     </div>
 
     <div class="footer-band">
-      <span>TenderHub Internal Document • Confidential</span>
+      <span>BiharTenders Internal Document • Confidential</span>
       <span>Page 2 of 2</span>
     </div>
   </div>
@@ -436,8 +436,8 @@ async function generateReportPdf() {
     fs.mkdirSync(backendBackupsDir, { recursive: true });
   }
 
-  const primaryPdfPath = path.join(rootDocsDir, 'TenderHub_22Sep2026_Executive_Crawl_Report.pdf');
-  const backupPdfPath = path.join(backendBackupsDir, 'TenderHub_22Sep2026_Executive_Crawl_Report.pdf');
+  const primaryPdfPath = path.join(rootDocsDir, 'BiharTenders_22Sep2026_Executive_Crawl_Report.pdf');
+  const backupPdfPath = path.join(backendBackupsDir, 'BiharTenders_22Sep2026_Executive_Crawl_Report.pdf');
 
   await page.pdf({
     path: primaryPdfPath,
@@ -455,7 +455,7 @@ async function generateReportPdf() {
   await browser.close();
 
   const stats = fs.statSync(primaryPdfPath);
-  console.log('🎉 SUCCESS: TenderHub 22-Sep-2026 Executive Crawl Report PDF generated!');
+  console.log('🎉 SUCCESS: BiharTenders 22-Sep-2026 Executive Crawl Report PDF generated!');
   console.log(`📄 Primary Destination: ${primaryPdfPath} (${(stats.size / 1024).toFixed(1)} KB)`);
   console.log(`📁 Secondary Copy:        ${backupPdfPath}`);
 }

@@ -12,7 +12,7 @@ const isTestMode = import.meta.env.VITE_TEST_MODE === 'true' || (typeof window !
 const defaultTestUser = {
   id: '6abe2b7f4ec335668fdc702a',
   name: 'Test Reviewer (No Login)',
-  email: 'tester@tenderhub.local',
+  email: 'tester@bihartenders.local',
   role: 'admin',
   dailyViews: {
     viewsUsed: 0,
@@ -60,7 +60,7 @@ extractTokenFromUrl();
 const loadCachedUser = () => {
   if (isTestMode) return defaultTestUser;
   try {
-    const raw = localStorage.getItem('tenderhub_user');
+    const raw = localStorage.getItem('bihartenders_user');
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -116,7 +116,7 @@ export const useAuthStore = create((set, get) => ({
           const user = res.data.user;
           const isPro = isProUser(user);
           try {
-            localStorage.setItem('tenderhub_user', JSON.stringify(user));
+            localStorage.setItem('bihartenders_user', JSON.stringify(user));
           } catch {}
           lastCheckAuthTime = Date.now();
           set({
@@ -131,7 +131,7 @@ export const useAuthStore = create((set, get) => ({
           return user;
         } else {
           try {
-            localStorage.removeItem('tenderhub_user');
+            localStorage.removeItem('bihartenders_user');
           } catch {}
           set({ user: null, isAuthenticated: false, isPro: false, isLoading: false });
           return null;
@@ -140,7 +140,7 @@ export const useAuthStore = create((set, get) => ({
         // 401 is normal for unauthenticated guests, do not treat as fatal error
         if (err.response?.status === 401) {
           try {
-            localStorage.removeItem('tenderhub_user');
+            localStorage.removeItem('bihartenders_user');
           } catch {}
           set({ user: null, isAuthenticated: false, isPro: false, isLoading: false });
         }
@@ -205,7 +205,7 @@ export const useAuthStore = create((set, get) => ({
         const user = res.data.user;
         const isPro = isProUser(user);
         try {
-          localStorage.setItem('tenderhub_user', JSON.stringify(user));
+          localStorage.setItem('bihartenders_user', JSON.stringify(user));
         } catch {}
         lastCheckAuthTime = Date.now();
         set({
@@ -245,14 +245,14 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       localStorage.removeItem('token');
-      localStorage.removeItem('tenderhub_user');
+      localStorage.removeItem('bihartenders_user');
       lastCheckAuthTime = 0;
-      await api.post('/auth/logout');
+      await api.post('/auth/logout', {}, { timeout: 3000 });
     } catch (err) {
       console.warn('Logout request failed:', err);
     } finally {
       localStorage.removeItem('token');
-      localStorage.removeItem('tenderhub_user');
+      localStorage.removeItem('bihartenders_user');
       lastCheckAuthTime = 0;
       // Clear contractor-scoped bookmarks from local memory
       useBookmarkStore.getState().clearBookmarks();
@@ -263,6 +263,9 @@ export const useAuthStore = create((set, get) => ({
         isLoading: false,
         error: null,
       });
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
     }
   },
 

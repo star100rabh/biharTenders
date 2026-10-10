@@ -1,6 +1,6 @@
 /**
  * @file src/pages/Home.jsx
- * @description Classical, human-crafted public procurement portal for Jammu & Kashmir.
+ * @description Classical, human-crafted public procurement portal for Bihar.
  * Features real-time statistics, authentic public works search, continuous moving carousel
  * of active department & sectoral feeds, and recent tender announcements.
  */
@@ -34,10 +34,10 @@ const quickLocations = [
   { label: 'Jal Shakti / PHE', query: 'Jal Shakti' },
   { label: 'PMGSY Roads', query: 'Roads' },
   { label: 'Electrical Works', query: 'Electrical Works' },
-  { label: 'Baramulla', query: 'Baramulla' },
-  { label: 'Srinagar', query: 'Srinagar' },
-  { label: 'Bandipora', query: 'Bandipora' },
-  { label: 'Anantnag', query: 'Anantnag' },
+  { label: 'Muzaffarpur', query: 'Muzaffarpur' },
+  { label: 'Gaya', query: 'Gaya' },
+  { label: 'Bhagalpur', query: 'Bhagalpur' },
+  { label: 'Darbhanga', query: 'Darbhanga' },
 ];
 
 export default function Home() {
@@ -108,12 +108,12 @@ export default function Home() {
 
   // Fallback items based on real database records in case stats are still initialising
   const fallbackItems = [
-    { title: 'District Baramulla Agriculture', subtitle: 'Agriculture Dept', count: '5 Active Notices', value: '₹16.09 Lakh', query: { department: 'Department of Agriculture District Baramulla' } },
+    { title: 'District Muzaffarpur Agriculture', subtitle: 'Agriculture Dept', count: '5 Active Notices', value: '₹16.09 Lakh', query: { department: 'Department of Agriculture District Muzaffarpur' } },
     { title: 'Civil Works', subtitle: 'Civil Infrastructure', count: '14 Active Notices', value: '₹75.08 Lakh', query: { category: 'Civil Works' } },
-    { title: 'CIRCLE II-Srinagar', subtitle: 'Power Dept (PDD)', count: '2 Active Notices', value: '₹12.00 Lakh', query: { department: 'CIRCLE II-Srinagar' } },
+    { title: 'CIRCLE II-Gaya', subtitle: 'Power Dept (PDD)', count: '2 Active Notices', value: '₹12.00 Lakh', query: { department: 'CIRCLE II-Gaya' } },
     { title: 'Electrical Works', subtitle: 'Transmission & Grid', count: '7 Active Notices', value: '₹2.01 Cr', query: { category: 'Electrical Works' } },
-    { title: 'Soil Conservation Anantnag/Kulgam', subtitle: 'Agriculture Dept', count: '3 Active Notices', value: '₹43.19 Lakh', query: { department: 'Asstt Soil Conservation Officer Anantnag/Kulgam' } },
-    { title: 'STD-II Jammu', subtitle: 'Power Dept (PDD)', count: '2 Active Notices', value: '₹1.19 Cr', query: { department: 'STD-II Jammu' } },
+    { title: 'Soil Conservation Darbhanga/Kulgam', subtitle: 'Agriculture Dept', count: '3 Active Notices', value: '₹43.19 Lakh', query: { department: 'Asstt Soil Conservation Officer Darbhanga/Kulgam' } },
+    { title: 'STD-II Patna', subtitle: 'Power Dept (PDD)', count: '2 Active Notices', value: '₹1.19 Cr', query: { department: 'STD-II Patna' } },
     { title: 'Water Equipments & Boring', subtitle: 'PHE & Jal Shakti', count: '4 Active Notices', value: 'Refer BOQ', query: { category: 'Water Equipments/ Meter/ Drilling/ Boring' } },
     { title: 'HADP / JKCIP Directorate', subtitle: 'Agriculture Mission', count: '8 Active Notices', value: 'Refer BOQ / Rate Contract', query: { department: 'Mission Directorate HADP' } }
   ];
@@ -143,17 +143,17 @@ export default function Home() {
           {/* Official Badge */}
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] sm:text-xs font-semibold border border-slate-200 dark:border-slate-700 max-w-full truncate">
             <Landmark className="w-3.5 h-3.5 text-dalBlue dark:text-blue-400 shrink-0" />
-            <span className="truncate">Jammu &amp; Kashmir Public Works &amp; e-Procurement</span>
+            <span className="truncate">Bihar Public Works &amp; e-Procurement</span>
           </div>
 
           {/* Primary Headline */}
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-dalBlue dark:text-white tracking-tight leading-tight">
-            Explore Government Tenders Across Jammu &amp; Kashmir
+            Explore Government Tenders Across Bihar
           </h1>
 
           {/* Subtitle */}
           <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
-            Track published civil infrastructure, irrigation, road works, electrical supplies, and municipal contracts across all 20 districts with verified official tender documents.
+            Track published civil infrastructure, irrigation, road works, electrical supplies, and municipal contracts across all 38 districts with verified official tender documents.
           </p>
 
           {/* Search Console */}
@@ -225,7 +225,7 @@ export default function Home() {
 
             <div className="p-3 sm:p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
               <div className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold text-dalBlue dark:text-white">
-                20
+                38
               </div>
               <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium mt-1 truncate">
                 Districts Covered

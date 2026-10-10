@@ -9,14 +9,14 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateFutureConfigPdf() {
-  console.log('🚀 Generating TenderHub Future Configurations Manual PDF...');
+  console.log('🚀 Generating BiharTenders Future Configurations Manual PDF...');
 
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TenderHub Future Configurations: Secondary Server Failover & Render Upgrades</title>
+  <title>BiharTenders Future Configurations: Secondary Server Failover & Render Upgrades</title>
   <style>
     @page {
       size: A4;
@@ -204,7 +204,7 @@ async function generateFutureConfigPdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Future Configurations Manual</h1>
+        <h1>BiharTenders Future Configurations Manual</h1>
         <p>Secondary Server Automated Failover &amp; Render Paid Plan Upgrade Roadmap</p>
       </div>
       <div>
@@ -220,7 +220,7 @@ async function generateFutureConfigPdf() {
 
     <h2>1. Executive Summary &amp; Architecture Context</h2>
     <p>
-      TenderHub is engineered with an enterprise-grade disaster recovery and hot-standby architecture. While the platform contains complete code
+      BiharTenders is engineered with an enterprise-grade disaster recovery and hot-standby architecture. While the platform contains complete code
       and socket redirection logic for automated database failover, this functionality has been deferred until the hosting infrastructure on
       <strong>Render</strong> is upgraded to a dedicated paid plan.
     </p>
@@ -288,7 +288,7 @@ async function generateFutureConfigPdf() {
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 1 of 2</span>
     </div>
   </div>
@@ -297,7 +297,7 @@ async function generateFutureConfigPdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Future Configurations Manual</h1>
+        <h1>BiharTenders Future Configurations Manual</h1>
         <p>Implementation Blueprint &amp; Step-by-Step Enablement Runbook</p>
       </div>
       <div>
@@ -349,8 +349,8 @@ try {
       <li><strong>Set Environment Variables in Render Dashboard:</strong>
         <div class="code-block">
 # Render Dashboard -> Environment Variables
-MONGO_URI=mongodb+srv://primary_user:pass@cluster0.mongodb.net/tenderhub
-SECONDARY_MONGO_URI=mongodb+srv://backup_user:pass@cluster-secondary.mongodb.net/tenderhub
+MONGO_URI=mongodb+srv://primary_user:pass@cluster0.mongodb.net/bihartenders
+SECONDARY_MONGO_URI=mongodb+srv://backup_user:pass@cluster-secondary.mongodb.net/bihartenders
 ENABLE_AUTOMATED_DB_FAILOVER=true
         </div>
       </li>
@@ -401,12 +401,12 @@ ENABLE_AUTOMATED_DB_FAILOVER=true
     </table>
 
     <div class="alert-box alert-info" style="margin-top: 14px;">
-      <strong>Authoritative Sign-Off:</strong> This future configuration roadmap has been officially cataloged in the TenderHub architecture repository.
+      <strong>Authoritative Sign-Off:</strong> This future configuration roadmap has been officially cataloged in the BiharTenders architecture repository.
       All technical prerequisites and code changes are isolated, documented, and ready for immediate deployment upon instruction.
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 2 of 2</span>
     </div>
   </div>
@@ -429,8 +429,8 @@ ENABLE_AUTOMATED_DB_FAILOVER=true
     fs.mkdirSync(backendBackupsDir, { recursive: true });
   }
 
-  const primaryPdfPath = path.join(rootDocsDir, 'TenderHub_Future_Configurations_Render_and_Failover.pdf');
-  const backupCopyPdfPath = path.join(backendBackupsDir, 'TenderHub_Future_Configurations_Render_and_Failover.pdf');
+  const primaryPdfPath = path.join(rootDocsDir, 'BiharTenders_Future_Configurations_Render_and_Failover.pdf');
+  const backupCopyPdfPath = path.join(backendBackupsDir, 'BiharTenders_Future_Configurations_Render_and_Failover.pdf');
 
   await page.pdf({
     path: primaryPdfPath,

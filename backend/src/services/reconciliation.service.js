@@ -99,7 +99,7 @@ export class ReconciliationService {
         dbOrgMap.get(topOrg).push(t);
       });
 
-      logger.info(`[Reconciliation] 💾 TenderHub DB reports ${dbActiveTenders.length} active tenders across ${dbOrgMap.size} organisations.`);
+      logger.info(`[Reconciliation] 💾 BiharTenders DB reports ${dbActiveTenders.length} active tenders across ${dbOrgMap.size} organisations.`);
 
       // 3. Find departments where DB has more tenders than Portal
       const mismatchedDepts = [];

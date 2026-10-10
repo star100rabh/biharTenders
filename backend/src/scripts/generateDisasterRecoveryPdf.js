@@ -8,14 +8,14 @@ import fs from 'fs';
 import path from 'path';
 
 async function generatePdf() {
-  console.log('🚀 Generating TenderHub Disaster Recovery & Backup Manual PDF...');
+  console.log('🚀 Generating BiharTenders Disaster Recovery & Backup Manual PDF...');
 
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TenderHub Disaster Recovery & High-Availability Manual</title>
+  <title>BiharTenders Disaster Recovery & High-Availability Manual</title>
   <style>
     @page {
       size: A4;
@@ -228,7 +228,7 @@ async function generatePdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Disaster Recovery Manual</h1>
+        <h1>BiharTenders Disaster Recovery Manual</h1>
         <p>Comprehensive SOP for High-Availability Backups &amp; Secondary Failover Operations</p>
       </div>
       <div>
@@ -239,7 +239,7 @@ async function generatePdf() {
     <div class="meta-grid">
       <div class="meta-item">
         <strong>Platform Scope</strong>
-        <span>TenderHub (JK Tenders Intelligence Engine)</span>
+        <span>BiharTenders (JK Tenders Intelligence Engine)</span>
       </div>
       <div class="meta-item">
         <strong>Failover Capability</strong>
@@ -257,7 +257,7 @@ async function generatePdf() {
 
     <h2>1. Executive Architecture &amp; System Decoupling</h2>
     <p>
-      TenderHub utilizes a decoupled, multi-cloud data architecture specifically engineered so that an outage,
+      BiharTenders utilizes a decoupled, multi-cloud data architecture specifically engineered so that an outage,
       domain block, or server termination on one layer does <strong>NOT</strong> compromise the core database or asset storage.
     </p>
 
@@ -285,8 +285,8 @@ async function generatePdf() {
         </tr>
         <tr>
           <td><strong>Primary Object Storage</strong></td>
-          <td>Cloudflare R2 Account #1 (<span class="code-inline">tenderhub</span>)</td>
-          <td>Cloudflare R2 Account #2 (<span class="code-inline">tenderhub-backup</span>)</td>
+          <td>Cloudflare R2 Account #1 (<span class="code-inline">bihartenders</span>)</td>
+          <td>Cloudflare R2 Account #2 (<span class="code-inline">bihartenders-backup</span>)</td>
           <td>Two distinct Cloudflare accounts with isolated credentials, API keys, and billing accounts.</td>
         </tr>
         <tr>
@@ -299,7 +299,7 @@ async function generatePdf() {
     </table>
 
     <h2>2. The 3-2-1 Backup Topology in Action</h2>
-    <p>TenderHub rigorously enforces the enterprise 3-2-1 backup principle:</p>
+    <p>BiharTenders rigorously enforces the enterprise 3-2-1 backup principle:</p>
     <ul>
       <li><strong>3 Copies of All Data:</strong> 1) Primary MongoDB &amp; Cloudflare R2; 2) Secondary Cloudflare R2 mirror; 3) Local encrypted disk snapshots.</li>
       <li><strong>2 Separate Storage Media / Clouds:</strong> MongoDB Atlas Cloud Infrastructure + Cloudflare R2 Global Edge Storage.</li>
@@ -314,15 +314,15 @@ async function generatePdf() {
       <ol>
         <li>Dumps all active MongoDB collections into memory (users, contractors, organizations, tenders, bids, syncjobs, logs).</li>
         <li>Compresses the JSON dump using Node <span class="code-inline">zlib.gzipSync()</span> (achieving ~95% compression).</li>
-        <li>Writes local file: <span class="code-inline">backend/backups/tenderhub_db_YYYY-MM-DD.json.gz</span>.</li>
-        <li>Streams to Secondary Cloudflare R2 bucket (<span class="code-inline">tenderhub-backup</span>).</li>
-        <li>Updates the pointer <span class="code-inline">backups/tenderhub_db_latest.json.gz</span> for instant 1-click restore.</li>
+        <li>Writes local file: <span class="code-inline">backend/backups/bihartenders_db_YYYY-MM-DD.json.gz</span>.</li>
+        <li>Streams to Secondary Cloudflare R2 bucket (<span class="code-inline">bihartenders-backup</span>).</li>
+        <li>Updates the pointer <span class="code-inline">backups/bihartenders_db_latest.json.gz</span> for instant 1-click restore.</li>
         <li>Audits the event into the <span class="code-inline">SystemLog</span> collection for admin dashboard telemetry.</li>
       </ol>
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 1 of 4</span>
     </div>
   </div>
@@ -331,7 +331,7 @@ async function generatePdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Disaster Recovery Manual</h1>
+        <h1>BiharTenders Disaster Recovery Manual</h1>
         <p>Launching Platform from Secondary Cloudflare &amp; Secondary Database</p>
       </div>
       <div>
@@ -342,7 +342,7 @@ async function generatePdf() {
     <h2>4. Launching the Website Using Secondary Cloudflare Storage</h2>
     <p>
       All 42 PDFs, 42 XLS spreadsheets, and 107 <span class="code-inline">tender.json</span> packages are synchronized in
-      the secondary bucket (<span class="code-inline">tenderhub-backup</span>). If your primary Cloudflare account is suspended,
+      the secondary bucket (<span class="code-inline">bihartenders-backup</span>). If your primary Cloudflare account is suspended,
       compromised, or undergoing maintenance, switch your entire website to use the secondary storage in <strong>under 30 seconds</strong>:
     </p>
 
@@ -354,7 +354,7 @@ async function generatePdf() {
 R2_ACCOUNT_ID=602fea547c5284f8757ebae51a6b19df
 R2_ACCESS_KEY_ID=1a62c8db62c385b5e408f74ae26a7c47
 R2_SECRET_ACCESS_KEY=9758cd94b295a19ca68992b2f1bd4e7f64d5e9aed8088c2139dc0ae754476d91
-R2_BUCKET_NAME=tenderhub-backup
+R2_BUCKET_NAME=bihartenders-backup
       </div>
       <p><strong>Step 2: Restart the Backend Server</strong></p>
       <div class="code-block">npm start</div>
@@ -369,24 +369,24 @@ R2_BUCKET_NAME=tenderhub-backup
     <h3>Step A: Populate the Secondary Database (Takes ~45 Seconds)</h3>
     <p>Run the 1-click restore script pointing to your secondary cluster connection string:</p>
     <div class="code-block">
-MONGO_URI="mongodb+srv://user:pass@cluster-secondary.mongodb.net/tenderhub" npm run restore:db
+MONGO_URI="mongodb+srv://user:pass@cluster-secondary.mongodb.net/bihartenders" npm run restore:db
     </div>
     <p>
       <strong>What this does:</strong> Automatically connects to the secondary Cloudflare R2 mirror, pulls
-      <span class="code-inline">tenderhub_db_latest.json.gz</span>, unpacks all collections, and performs idempotent upsert operations.
+      <span class="code-inline">bihartenders_db_latest.json.gz</span>, unpacks all collections, and performs idempotent upsert operations.
       Zero duplicate key errors, 100% data fidelity.
     </p>
 
     <h3>Step B: Point Backend to Secondary Cluster</h3>
     <p>In <span class="code-inline">backend/.env</span>, update the primary connection string and restart:</p>
     <div class="code-block">
-MONGO_URI=mongodb+srv://user:pass@cluster-secondary.mongodb.net/tenderhub
+MONGO_URI=mongodb+srv://user:pass@cluster-secondary.mongodb.net/bihartenders
     </div>
 
     <h2>6. Automated Hot-Standby Database Failover</h2>
     <div class="card">
       <p>
-        TenderHub includes <strong>built-in automated database failover</strong> inside <span class="code-inline">backend/src/config/db.js</span>.
+        BiharTenders includes <strong>built-in automated database failover</strong> inside <span class="code-inline">backend/src/config/db.js</span>.
         If you define <span class="code-inline">SECONDARY_MONGO_URI</span> in your environment:
       </p>
       <div class="code-block">
@@ -401,7 +401,7 @@ SECONDARY_MONGO_URI=mongodb+srv://backup_user:pass@cluster-secondary.mongodb.net
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 2 of 4</span>
     </div>
   </div>
@@ -410,7 +410,7 @@ SECONDARY_MONGO_URI=mongodb+srv://backup_user:pass@cluster-secondary.mongodb.net
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Disaster Recovery Manual</h1>
+        <h1>BiharTenders Disaster Recovery Manual</h1>
         <p>Operational Runbooks &amp; Document Mirror Synchronization</p>
       </div>
       <div>
@@ -423,7 +423,7 @@ SECONDARY_MONGO_URI=mongodb+srv://backup_user:pass@cluster-secondary.mongodb.net
     <h3>Method 1: Via the Admin Panel Web Interface (Recommended)</h3>
     <ol>
       <li>Navigate to <span class="code-inline">http://localhost:5174</span> (or your production admin panel URL).</li>
-      <li>Log in with your administrative passkey: <span class="code-inline">tenderhub_admin_secret_2026</span>.</li>
+      <li>Log in with your administrative passkey: <span class="code-inline">bihartenders_admin_secret_2026</span>.</li>
       <li>Open the <strong>Backup &amp; Recovery</strong> tab in the navigation bar.</li>
       <li>Select your desired action:
         <ul>
@@ -501,7 +501,7 @@ npm run manuals:all
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 3 of 4</span>
     </div>
   </div>
@@ -510,7 +510,7 @@ npm run manuals:all
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Disaster Recovery Manual</h1>
+        <h1>BiharTenders Disaster Recovery Manual</h1>
         <p>Disaster Scenarios, DNS Rerouting &amp; Emergency Checklist</p>
       </div>
       <div>
@@ -535,14 +535,14 @@ npm run manuals:all
 
     <h3>Scenario C: Primary Cloudflare Storage Account Restricted (RTO &lt; 30 Seconds)</h3>
     <ol>
-      <li>In <span class="code-inline">.env</span>, replace <span class="code-inline">R2_BUCKET_NAME</span> with <span class="code-inline">tenderhub-backup</span> and paste secondary account credentials.</li>
+      <li>In <span class="code-inline">.env</span>, replace <span class="code-inline">R2_BUCKET_NAME</span> with <span class="code-inline">bihartenders-backup</span> and paste secondary account credentials.</li>
       <li>Restart backend. All documents are immediately served from the secondary Cloudflare bucket.</li>
     </ol>
 
     <h3>Scenario D: Primary Web Domain Blocked by ISP or Firewall (RTO &lt; 2 Minutes)</h3>
     <ol>
       <li>MongoDB Atlas and Cloudflare R2 are <strong>100% UNTOUCHED</strong>.</li>
-      <li>Acquire a mirror domain (e.g. <span class="code-inline">tenderhub-jk.in</span>).</li>
+      <li>Acquire a mirror domain (e.g. <span class="code-inline">bihartenders-jk.in</span>).</li>
       <li>In Cloudflare DNS, add a CNAME / A record pointing to your backend and frontend.</li>
       <li>Global DNS propagates via Cloudflare in ~60 seconds with full database state intact!</li>
     </ol>
@@ -560,7 +560,7 @@ npm run manuals:all
         <tr>
           <td><strong>Nightly Snapshot Integrity</strong></td>
           <td>Daily (Automated)</td>
-          <td>Verify <span class="code-inline">tenderhub_db_latest.json.gz</span> timestamp in secondary R2 bucket.</td>
+          <td>Verify <span class="code-inline">bihartenders_db_latest.json.gz</span> timestamp in secondary R2 bucket.</td>
         </tr>
         <tr>
           <td><strong>Document Mirror Completeness</strong></td>
@@ -603,12 +603,12 @@ npm run manuals:all
         <tr>
           <td><span class="code-inline">R2_BUCKET_NAME</span></td>
           <td>Primary Document Bucket</td>
-          <td><span class="code-inline">tenderhub</span> (Account 2b0771a6f...)</td>
+          <td><span class="code-inline">bihartenders</span> (Account 2b0771a6f...)</td>
         </tr>
         <tr>
           <td><span class="code-inline">BACKUP_R2_BUCKET_NAME</span></td>
           <td>Secondary Mirror Bucket</td>
-          <td><span class="code-inline">tenderhub-backup</span> (Account 602fea547...)</td>
+          <td><span class="code-inline">bihartenders-backup</span> (Account 602fea547...)</td>
         </tr>
         <tr>
           <td><span class="code-inline">ADMIN_SECRET_KEY</span></td>
@@ -619,11 +619,11 @@ npm run manuals:all
     </table>
 
     <div class="alert-box alert-info" style="margin-top: 14px;">
-      <strong>Authoritative Engineering Sign-off:</strong> This disaster recovery architecture has been implemented, tested, and verified in strict accordance with mission-critical web platform standards. For technical support, contact the TenderHub Core Engineering Team.
+      <strong>Authoritative Engineering Sign-off:</strong> This disaster recovery architecture has been implemented, tested, and verified in strict accordance with mission-critical web platform standards. For technical support, contact the BiharTenders Core Engineering Team.
     </div>
 
     <div class="doc-footer">
-      <span>TenderHub Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
       <span>Page 4 of 4</span>
     </div>
   </div>
@@ -646,8 +646,8 @@ npm run manuals:all
     fs.mkdirSync(backendBackupsDir, { recursive: true });
   }
 
-  const primaryPdfPath = path.join(rootDocsDir, 'TenderHub_Disaster_Recovery_and_Backup_Manual.pdf');
-  const backupCopyPdfPath = path.join(backendBackupsDir, 'TenderHub_Disaster_Recovery_and_Backup_Manual.pdf');
+  const primaryPdfPath = path.join(rootDocsDir, 'BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf');
+  const backupCopyPdfPath = path.join(backendBackupsDir, 'BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf');
 
   await page.pdf({
     path: primaryPdfPath,

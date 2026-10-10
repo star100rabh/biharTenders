@@ -3,7 +3,7 @@ import { backupService } from '../services/backup.service.js';
 import { closeDB } from '../config/db.js';
 
 async function run() {
-  console.log('🚀 Starting TenderHub Database Backup...');
+  console.log('🚀 Starting BiharTenders Database Backup...');
   try {
     const result = await backupService.createDatabaseBackup();
     console.log('✅ Backup successfully created!');

@@ -1,6 +1,6 @@
 /**
  * @file src/pages/TenderDetails.jsx
- * @description Comprehensive view of a single tender, directly mirroring the J&K eProcurement 
+ * @description Comprehensive view of a single tender, directly mirroring the Bihar eProcurement 
  * portal data structure with clean typography, high-contrast light mode, and official portal helper.
  */
 import { useState, useEffect } from 'react';
@@ -36,7 +36,8 @@ import {
   Sparkles,
   AlertTriangle,
   ShieldCheck,
-  Calculator
+  Calculator,
+  List
 } from 'lucide-react';
 import JSZip from 'jszip';
 
@@ -59,14 +60,24 @@ const parseDate = (dateField) => {
 };
 
 // Reusable Data Row for standardized tables
-const DataRow = ({ label, value }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 py-2 border-b border-slate-100 dark:border-slate-700/60 last:border-0 gap-1 sm:gap-3 text-xs">
-    <span className="font-semibold text-slate-500 dark:text-slate-400">{label}</span>
-    <span className="font-medium text-slate-800 dark:text-slate-200 break-words">
-      {value === 'NA' || !value ? 'N/A' : value}
-    </span>
-  </div>
-);
+const DataRow = ({ label, value }) => {
+  // Extract string value if it's a React node
+  let strValue = value;
+  if (value && value.props && value.props.children) {
+    strValue = value.props.children;
+  }
+  
+  if (!strValue || strValue === 'NA' || strValue === 'N/A' || strValue === 'null') return null;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 py-2 border-b border-slate-100 dark:border-slate-700/60 last:border-0 gap-1 sm:gap-3 text-xs">
+      <span className="font-semibold text-slate-500 dark:text-slate-400">{label}</span>
+      <span className="font-medium text-slate-800 dark:text-slate-200 break-words">
+        {value}
+      </span>
+    </div>
+  );
+};
 
 export default function TenderDetails() {
   const { id } = useParams();
@@ -398,7 +409,7 @@ export default function TenderDetails() {
 
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-6 shadow-xs relative">
             <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-              <div className="space-y-2 flex-1">
+              <div className="space-y-2 flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-mono text-xs font-bold text-dalBlue dark:text-blue-300 bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                     ID: {tender.sourceTenderId}
@@ -423,7 +434,7 @@ export default function TenderDetails() {
                   )}
                 </div>
                 
-                <h1 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white leading-snug">
+                <h1 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white leading-snug break-words whitespace-normal">
                   {tender.title?.replace(/[[\]]/g, '')}
                 </h1>
 
@@ -564,19 +575,12 @@ export default function TenderDetails() {
                   <DataRow label="Organisation Chain" value={tender.organisationChain?.replace(/\|\|/g, ' > ')} />
                   <DataRow label="Tender Reference Number" value={tender.tenderReferenceNumber} />
                   <DataRow label="Tender ID" value={tender.sourceTenderId} />
-                  <DataRow label="Withdrawal Allowed" value={tender.withdrawalAllowed} />
                   <DataRow label="Tender Type" value={tender.tenderType} />
-                  <DataRow label="Tender Category" value={tender.tenderCategory} />
-                  <DataRow label="Technical Evaluation" value={tender.generalTechnicalEvaluationAllowed} />
                 </div>
                 <div className="space-y-0.5">
+                  <DataRow label="Tender Category" value={tender.tenderCategory} />
                   <DataRow label="Payment Mode" value={tender.paymentMode} />
-                  <DataRow label="Form Of Contract" value={tender.formOfContract} />
                   <DataRow label="No. of Covers" value={tender.noOfCovers} />
-                  <DataRow label="ItemWise Tech Eval" value={tender.itemWiseTechnicalEvaluationAllowed} />
-                  <DataRow label="Multi Currency BOQ" value={tender.isMultiCurrencyAllowedForBOQ} />
-                  <DataRow label="Multi Currency Fee" value={tender.isMultiCurrencyAllowedForFee} />
-                  <DataRow label="Two Stage Bidding" value={tender.allowTwoStageBidding} />
                 </div>
               </div>
             </section>
@@ -626,7 +630,7 @@ export default function TenderDetails() {
                   <span className="text-[10px] font-semibold text-slate-400 uppercase block mb-0.5">District / City</span>
                   <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-chinarRed shrink-0" />
-                    {workLoc.famousLocation}, J&amp;K
+                    {workLoc.famousLocation}, Bihar
                   </span>
                 </div>
 
@@ -642,33 +646,6 @@ export default function TenderDetails() {
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 truncate block">
                     {workLoc.rawLocation || 'Refer to Notice'}
                   </span>
-                </div>
-              </div>
-
-              {/* Office Details */}
-              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/60 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
-                  <span className="block text-[10px] font-bold uppercase text-slate-400">Portal Location</span>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 mt-0.5 block truncate" title={tender.location}>
-                    {tender.location || 'As specified in NIT'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-xs border-t border-slate-100 dark:border-slate-700 pt-3">
-                <div>
-                  <span className="block text-[10px] font-bold uppercase text-slate-400">Bid Opening Office:</span>
-                  <p className="font-medium text-slate-800 dark:text-slate-200 mt-0.5">{tender.bidOpeningPlace && tender.bidOpeningPlace !== 'NA' ? tender.bidOpeningPlace : 'N/A'}</p>
-                </div>
-                <div>
-                  <span className="block text-[10px] font-bold uppercase text-slate-400">Pre-Bid Meeting:</span>
-                  <p className="font-medium text-slate-800 dark:text-slate-200 mt-0.5">
-                    {tender.preBidMeetingAddress && tender.preBidMeetingAddress !== 'NA' 
-                      ? tender.preBidMeetingAddress 
-                      : (tender.preBidMeetingPlace && tender.preBidMeetingPlace !== 'NA' 
-                          ? tender.preBidMeetingPlace 
-                          : 'No Pre-Bid Meeting Scheduled')}
-                  </p>
                 </div>
               </div>
             </section>
@@ -794,14 +771,14 @@ export default function TenderDetails() {
               <div className="space-y-3 mb-4">
                 <div className="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-lg border border-slate-200 dark:border-slate-700">
                   <span className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Title</span>
-                  <p className="text-xs sm:text-sm text-slate-900 dark:text-slate-100 font-semibold leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-900 dark:text-slate-100 font-semibold leading-relaxed break-words whitespace-normal">
                     {tender.title}
                   </p>
                 </div>
                 {tender.workDescription && tender.workDescription !== tender.title && (
                   <div className="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-lg border border-slate-200 dark:border-slate-700">
                     <span className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Work Description</span>
-                    <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed break-words whitespace-normal">
                       {tender.workDescription}
                     </p>
                   </div>
@@ -820,30 +797,9 @@ export default function TenderDetails() {
                     } 
                   />
                   <DataRow label="Product Category" value={tender.productCategory} />
-                  <DataRow label="Sub category" value={tender.subCategory} />
-                  <DataRow label="Contract Type" value={tender.contractType} />
-                  <DataRow label="Location" value={tender.location || 'As specified in NIT'} />
-                  <DataRow label="Pincode" value={<span className="font-mono">{tender.pincode || 'N/A'}</span>} />
-                  <DataRow label="Tenderer Class" value={tender.tendererClass} />
-                  <DataRow label="NDA/Pre Qualification" value={tender.ndaPreQualification} />
-                  <DataRow label="Independent External Monitor/Remarks" value={tender.independentExternalMonitorRemarks} />
                 </div>
                 <div className="space-y-0.5">
-                  <DataRow label="Bid Validity(Days)" value={<span className="font-mono">{tender.bidValidityDays ? `${tender.bidValidityDays}` : 'N/A'}</span>} />
-                  <DataRow label="Period Of Work(Days)" value={<span className="font-mono">{tender.periodOfWorkDays ? `${tender.periodOfWorkDays} Days` : 'N/A'}</span>} />
-                  <DataRow 
-                    label="Pre Bid Meeting Date" 
-                    value={
-                      tender.preBidMeetingPlace === 'NA' || !tender.preBidMeetingDate
-                        ? 'NA' 
-                        : <span className="font-mono">{formatDateTimeDisplay(parseDate(tender.preBidMeetingDate))}</span>
-                    } 
-                  />
-                  <DataRow label="Pre Bid Meeting Place" value={tender.preBidMeetingPlace} />
-                  <DataRow label="Pre Bid Meeting Address" value={tender.preBidMeetingAddress} />
-                  <DataRow label="Bid Opening Place" value={tender.bidOpeningPlace} />
-                  <DataRow label="Should Allow NDA Tender" value={tender.shouldAllowNDATender} />
-                  <DataRow label="Allow Preferential Bidder" value={tender.allowPreferentialBidder} />
+                  <DataRow label="Contract Type" value={tender.contractType} />
                 </div>
               </div>
             </section>
@@ -873,6 +829,35 @@ export default function TenderDetails() {
               </div>
             </section>
 
+            {/* Extended Details Section (Dynamic Fields) */}
+            {tender.dynamicFields && Object.keys(tender.dynamicFields).length > 0 && (
+              <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
+                <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-700/60">
+                  <div className="flex items-center gap-2">
+                    <List className="w-5 h-5 text-indigo-500" />
+                    <h3 className="text-sm font-display font-bold text-slate-800 dark:text-white uppercase tracking-wider">Extended Information</h3>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                  {Object.entries(tender.dynamicFields).map(([key, val], idx) => {
+                    if (val == null || val === '') return null;
+                    const displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+                    if (displayVal.trim() === '' || displayVal === '{}' || displayVal === '[]') return null;
+                    return (
+                      <div key={idx} className="flex flex-col border-b border-slate-50 dark:border-slate-700/30 pb-2">
+                        <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-0.5">
+                          {key}
+                        </span>
+                        <span className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium break-words">
+                          {displayVal}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
           </div>
 
           {/* Right Column: Financials, Dates & Documents */}
@@ -888,23 +873,13 @@ export default function TenderDetails() {
                 <div>
                   <span className="block text-[10px] font-bold uppercase text-slate-400">Tender Fee</span>
                   <span className="text-xl font-bold font-mono text-slate-900 dark:text-white">{formatCurrencyINR(tender.tenderFee)}</span>
-                  <div className="mt-1 text-xs text-slate-500 dark:text-slate-400 space-y-0.5">
-                    <p>Payable To: <strong className="text-slate-700 dark:text-slate-300">{tender.feePayableTo || 'N/A'}</strong></p>
-                    <p>Payable At: <strong className="text-slate-700 dark:text-slate-300">{tender.feePayableAt || 'N/A'}</strong></p>
-                    <p>Fee Exemption: <strong className={tender.tenderFeeExemptionAllowed === 'Yes' ? 'text-emerald-600' : 'text-slate-700 dark:text-slate-300'}>{tender.tenderFeeExemptionAllowed || 'No'}</strong></p>
-                  </div>
                 </div>
                 
                 <div className="pt-3 border-t border-slate-100 dark:border-slate-700">
                   <span className="block text-[10px] font-bold uppercase text-slate-400">EMD Deposit</span>
                   <div className="flex items-center gap-2">
                     <span className="text-xl font-bold font-mono text-chinarRed">{formatCurrencyINR(tender.emdAmount)}</span>
-                    <span className="text-xs text-slate-500">({tender.emdFeeType || 'Fixed'})</span>
-                  </div>
-                  <div className="mt-1 text-xs text-slate-500 dark:text-slate-400 space-y-0.5">
-                    <p>Payable To: <strong className="text-slate-700 dark:text-slate-300">{tender.emdPayableTo || 'N/A'}</strong></p>
-                    <p>Payable At: <strong className="text-slate-700 dark:text-slate-300">{tender.emdPayableAt || 'N/A'}</strong></p>
-                    <p>Exemption: <strong className={tender.emdExemptionAllowed === 'Yes' ? 'text-emerald-600' : 'text-slate-700 dark:text-slate-300'}>{tender.emdExemptionAllowed || 'No'}</strong></p>
+                    <span className="text-xs text-slate-500">(Fixed)</span>
                   </div>
                 </div>
               </div>
@@ -916,18 +891,24 @@ export default function TenderDetails() {
                 <Calendar className="w-4 h-4 text-chinarRed" /> Critical Dates
               </h3>
               <div className="space-y-2 font-mono text-xs">
-                <div className="flex justify-between py-1">
-                  <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Published</span>
-                  <span className="text-slate-800 dark:text-slate-200 font-semibold">{formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate)}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Download Start</span>
-                  <span className="text-slate-800 dark:text-slate-200">{formatDateTimeDisplay(tender.documentDownloadStartDateStr || tender.documentDownloadStartDate)}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Download End</span>
-                  <span className="text-slate-800 dark:text-slate-200">{formatDateTimeDisplay(tender.documentDownloadEndDateStr || tender.documentDownloadEndDate)}</span>
-                </div>
+                {(tender.publishedDateStr || tender.publishedDate) && tender.publishedDateStr !== 'NA' && tender.publishedDate !== 'NA' && (
+                  <div className="flex justify-between py-1">
+                    <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Published</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-semibold">{formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate)}</span>
+                  </div>
+                )}
+                {(tender.documentDownloadStartDateStr || tender.documentDownloadStartDate) && tender.documentDownloadStartDateStr !== 'NA' && tender.documentDownloadStartDate !== 'NA' && (
+                  <div className="flex justify-between py-1">
+                    <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Download Start</span>
+                    <span className="text-slate-800 dark:text-slate-200">{formatDateTimeDisplay(tender.documentDownloadStartDateStr || tender.documentDownloadStartDate)}</span>
+                  </div>
+                )}
+                {(tender.documentDownloadEndDateStr || tender.documentDownloadEndDate) && tender.documentDownloadEndDateStr !== 'NA' && tender.documentDownloadEndDate !== 'NA' && (
+                  <div className="flex justify-between py-1">
+                    <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Download End</span>
+                    <span className="text-slate-800 dark:text-slate-200">{formatDateTimeDisplay(tender.documentDownloadEndDateStr || tender.documentDownloadEndDate)}</span>
+                  </div>
+                )}
                 {(tender.clarificationStartDateStr || tender.clarificationStartDate) && tender.clarificationStartDate !== 'NA' && (
                   <div className="flex justify-between py-1">
                     <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Clarification Start</span>
@@ -940,20 +921,28 @@ export default function TenderDetails() {
                     <span className="text-slate-800 dark:text-slate-200">{formatDateTimeDisplay(tender.clarificationEndDateStr || tender.clarificationEndDate)}</span>
                   </div>
                 )}
-                <div className="flex justify-between py-1 bg-emerald-50 dark:bg-emerald-950/30 px-2 rounded">
-                  <span className="font-sans text-[10px] font-semibold uppercase text-emerald-800 dark:text-emerald-300">Bid Start</span>
-                  <span className="text-emerald-800 dark:text-emerald-300 font-bold">{formatDateTimeDisplay(tender.bidSubmissionStartDateStr || tender.bidSubmissionStartDate)}</span>
-                </div>
-                <div className="flex justify-between py-1 bg-red-50 dark:bg-red-950/30 px-2 rounded">
-                  <span className="font-sans text-[10px] font-semibold uppercase text-red-800 dark:text-red-300">Bid End</span>
-                  <span className="text-red-800 dark:text-red-300 font-bold">{formatDateTimeDisplay(tender.bidSubmissionEndDateStr || tender.bidSubmissionEndDate)}</span>
-                </div>
-                <div className="flex justify-between py-1 pt-2 border-t border-slate-100 dark:border-slate-700">
-                  <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Bid Opening</span>
-                  <span className="text-dalBlue dark:text-blue-400 font-bold">{formatDateTimeDisplay(tender.bidOpeningDateStr || tender.bidOpeningDate)}</span>
-                </div>
+                {(tender.bidSubmissionStartDateStr || tender.bidSubmissionStartDate) && tender.bidSubmissionStartDateStr !== 'NA' && tender.bidSubmissionStartDate !== 'NA' && (
+                  <div className="flex justify-between py-1 bg-emerald-50 dark:bg-emerald-950/30 px-2 rounded">
+                    <span className="font-sans text-[10px] font-semibold uppercase text-emerald-800 dark:text-emerald-300">Bid Start</span>
+                    <span className="text-emerald-800 dark:text-emerald-300 font-bold">{formatDateTimeDisplay(tender.bidSubmissionStartDateStr || tender.bidSubmissionStartDate)}</span>
+                  </div>
+                )}
+                {(tender.bidSubmissionEndDateStr || tender.bidSubmissionEndDate) && tender.bidSubmissionEndDateStr !== 'NA' && tender.bidSubmissionEndDate !== 'NA' && (
+                  <div className="flex justify-between py-1 bg-red-50 dark:bg-red-950/30 px-2 rounded">
+                    <span className="font-sans text-[10px] font-semibold uppercase text-red-800 dark:text-red-300">Bid End</span>
+                    <span className="text-red-800 dark:text-red-300 font-bold">{formatDateTimeDisplay(tender.bidSubmissionEndDateStr || tender.bidSubmissionEndDate)}</span>
+                  </div>
+                )}
+                {(tender.bidOpeningDateStr || tender.bidOpeningDate) && tender.bidOpeningDateStr !== 'NA' && tender.bidOpeningDate !== 'NA' && (
+                  <div className="flex justify-between py-1 pt-2 border-t border-slate-100 dark:border-slate-700">
+                    <span className="font-sans text-[10px] font-semibold uppercase text-slate-500">Bid Opening</span>
+                    <span className="text-dalBlue dark:text-blue-400 font-bold">{formatDateTimeDisplay(tender.bidOpeningDateStr || tender.bidOpeningDate)}</span>
+                  </div>
+                )}
               </div>
             </section>
+
+
 
             {/* Official Documents & Attachments Section */}
             <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
@@ -1438,10 +1427,10 @@ export default function TenderDetails() {
               <ExternalLink className="w-3.5 h-3.5" /> Official Government Portal
             </div>
             <DialogTitle className="text-base sm:text-lg font-bold text-white">
-              Access Notice on JK eProcurement
+              Access Notice on Bihar eProcurement
             </DialogTitle>
             <DialogDescription className="text-white/80 text-xs mt-0.5">
-              jktenders.gov.in (Government of Jammu and Kashmir)
+              eproc2.bihar.gov.in (Government of Bihar)
             </DialogDescription>
           </div>
 
@@ -1499,7 +1488,7 @@ export default function TenderDetails() {
             {/* Actions */}
             <div className="space-y-2 pt-1">
               <a
-                href="https://jktenders.gov.in/nicgep/app?page=FrontEndAdvancedSearch&service=page"
+                href="https://eproc2.bihar.gov.in/EPSV2Web/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block"
@@ -1511,12 +1500,12 @@ export default function TenderDetails() {
 
               <div className="text-center">
                 <a
-                  href="https://jktenders.gov.in"
+                  href="https://eproc2.bihar.gov.in/EPSV2Web/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-slate-500 hover:text-dalBlue text-xs underline"
                 >
-                  Visit JK Tenders Homepage
+                  Visit Bihar eProcurement Homepage
                 </a>
               </div>
             </div>

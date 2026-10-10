@@ -1,6 +1,6 @@
 /**
  * @file frontend/src/pages/CheckScore.jsx
- * @description Bid Allocation Probability & Capacity Scoring Engine for Jammu & Kashmir Tenders.
+ * @description Bid Allocation Probability & Capacity Scoring Engine for Bihar Tenders.
  * Enforces authentication, captures contractor metrics on-demand, stores them in MongoDB,
  * and provides historical reference tracking.
  */
@@ -166,7 +166,7 @@ export default function CheckScore() {
     if (!isAuthenticated) return;
 
     if (!selectedTender) {
-      setErrorMessage('Please select or search for a target Jammu & Kashmir tender first.');
+      setErrorMessage('Please select or search for a target Bihar tender first.');
       return;
     }
 
@@ -255,14 +255,14 @@ export default function CheckScore() {
               Bid Allocation Probability &amp; Capacity Check
             </h1>
             <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              To calculate CPWD / J&amp;K PWD Assessed Bid Capacity, Two-Cover statutory eligibility, and contract allocation odds, please log in with your verified Contractor Account.
+              To calculate CPWD / Bihar PWD Assessed Bid Capacity, Two-Cover statutory eligibility, and contract allocation odds, please log in with your verified Contractor Account.
             </p>
           </div>
 
           <div className="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-5 border border-slate-200 dark:border-slate-700/60 max-w-lg mx-auto text-left space-y-3">
             <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>J&amp;K PWD Formula: Assessed Capacity = (A &times; N &times; 2) &minus; B</span>
+              <span>Bihar PWD Formula: Assessed Capacity = (A &times; N &times; 2) &minus; B</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -307,13 +307,13 @@ export default function CheckScore() {
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-chinarRed font-mono uppercase tracking-wider">
             <Calculator className="w-4 h-4" />
-            <span>J&amp;K e-Procurement Engine</span>
+            <span>Bihar e-Procurement Engine</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-display font-black text-slate-900 dark:text-white mt-1">
             Bid Allocation Probability &amp; Score
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
-            Evaluate your assessed bid capacity, mandatory Two-Cover qualifications, and L1 winning probabilities for Jammu &amp; Kashmir tenders.
+            Evaluate your assessed bid capacity, mandatory Two-Cover qualifications, and L1 winning probabilities for Bihar tenders.
           </p>
         </div>
 
@@ -392,7 +392,7 @@ export default function CheckScore() {
                     <div>
                       <span className="block text-[10px] uppercase font-semibold text-slate-400">Dept</span>
                       <span className="font-medium text-slate-700 dark:text-slate-200 truncate block">
-                        {selectedTender.departmentName || selectedTender.organisationChain || 'J&K PWD'}
+                        {selectedTender.departmentName || selectedTender.organisationChain || 'Bihar PWD'}
                       </span>
                     </div>
                     <div>
@@ -408,7 +408,7 @@ export default function CheckScore() {
                   {/* Quick Select from Recent Tenders */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                      Pick from Active J&amp;K Tenders:
+                      Pick from Active Bihar Tenders:
                     </label>
                     <select
                       onChange={(e) => {
@@ -474,7 +474,7 @@ export default function CheckScore() {
               {/* Registration Class */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Contractor Registration Class (J&amp;K PWD / CPWD):
+                  Contractor Registration Class (Bihar PWD / CPWD):
                 </label>
                 <select
                   value={registrationClass}
@@ -578,7 +578,7 @@ export default function CheckScore() {
                   required
                 />
                 <div className="text-[10px] text-slate-500 space-y-0.5">
-                  <p>• <strong>-5% to -14.9%:</strong> Standard winning band in J&amp;K.</p>
+                  <p>• <strong>-5% to -14.9%:</strong> Standard winning band in Bihar.</p>
                   <p>• <strong>Below -15%:</strong> Triggers mandatory Additional Performance Security (APS).</p>
                 </div>
               </div>
@@ -668,7 +668,7 @@ export default function CheckScore() {
                   maxScore={100}
                   label="EVALUATING BID ALLOCATION ODDS..."
                   probability="Analyzing"
-                  subtext={`Analyzing tender ${selectedTender?.sourceTenderId || ''} against J&K PWD formula`}
+                  subtext={`Analyzing tender ${selectedTender?.sourceTenderId || ''} against Bihar PWD formula`}
                   isCalculating={true}
                 />
                 <div className="p-4 rounded-2xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/60 flex items-center justify-center gap-2.5 text-xs font-semibold text-blue-700 dark:text-blue-300">
@@ -700,7 +700,7 @@ export default function CheckScore() {
                         {evaluationResult.tender.title?.replace(/[[\]]/g, '')}
                       </h4>
                       <p className="text-[11px] text-slate-500">
-                        {evaluationResult.tender.departmentName || 'J&K PWD'} • Class {evaluationResult.inputs?.registrationClass}
+                        {evaluationResult.tender.departmentName || 'Bihar PWD'} • Class {evaluationResult.inputs?.registrationClass}
                       </p>
                     </div>
 
@@ -820,7 +820,7 @@ export default function CheckScore() {
                     {/* Pillar 4 */}
                     <div>
                       <div className="flex justify-between text-xs font-semibold mb-1">
-                        <span className="text-slate-700 dark:text-slate-200">4. Statutory J&amp;K Compliance (CDR, GST, Card)</span>
+                        <span className="text-slate-700 dark:text-slate-200">4. Statutory Bihar Compliance (CDR, GST, Card)</span>
                         <span className="font-mono text-dalBlue dark:text-blue-300 font-bold">
                           {evaluationResult.results.categoryScores.statutoryComplianceScore} / 20
                         </span>
@@ -865,12 +865,12 @@ export default function CheckScore() {
                   </div>
                 )}
 
-                {/* J&K Submission Checklist */}
+                {/* Bihar Submission Checklist */}
                 {evaluationResult.results.jkSpecificGuidelines && evaluationResult.results.jkSpecificGuidelines.length > 0 && (
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 space-y-2">
                     <div className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300">
                       <ShieldCheck className="w-4 h-4 text-dalBlue dark:text-blue-400" />
-                      <span>J&amp;K e-Procurement Portal Compliance Checklist</span>
+                      <span>Bihar e-Procurement Portal Compliance Checklist</span>
                     </div>
                     <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 pl-6 list-disc">
                       {evaluationResult.results.jkSpecificGuidelines.map((g, idx) => (
@@ -903,7 +903,7 @@ export default function CheckScore() {
                     No Score Evaluated Yet
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Select a target Jammu &amp; Kashmir tender, enter your baseline turnover and quote rate, then click <strong>Calculate Bid Score</strong> to view your detailed probability breakdown.
+                    Select a target Bihar tender, enter your baseline turnover and quote rate, then click <strong>Calculate Bid Score</strong> to view your detailed probability breakdown.
                   </p>
                 </div>
               </div>

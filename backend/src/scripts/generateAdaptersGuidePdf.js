@@ -1,7 +1,7 @@
 /**
  * @file backend/src/scripts/generateAdaptersGuidePdf.js
  * @description Generates a publication-grade, executive architectural PDF guide
- * documenting all tender fetching adapters present in the TenderHub project,
+ * documenting all tender fetching adapters present in the BiharTenders project,
  * their technical specifications, execution commands, lifecycle, and operational rules.
  */
 
@@ -10,14 +10,14 @@ import fs from 'fs';
 import path from 'path';
 
 async function generateAdaptersGuidePdf() {
-  console.log('🚀 Generating TenderHub Ingestion Adapters Architecture Guide PDF...');
+  console.log('🚀 Generating BiharTenders Ingestion Adapters Architecture Guide PDF...');
 
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TenderHub - Ingestion Adapters Architecture & Operations Guide</title>
+  <title>BiharTenders - Ingestion Adapters Architecture & Operations Guide</title>
   <style>
     @page {
       size: A4;
@@ -241,7 +241,7 @@ async function generateAdaptersGuidePdf() {
   <div class="page">
     <div class="header-band">
       <div class="title-group">
-        <h1>TenderHub Ingestion Adapters Guide</h1>
+        <h1>BiharTenders Ingestion Adapters Guide</h1>
         <div class="subtitle">Architecture, Specifications, Capabilities & Operations Manual</div>
       </div>
       <div class="badge-group">
@@ -271,7 +271,7 @@ async function generateAdaptersGuidePdf() {
 
     <h2>1. Executive Architecture & Ingestion Philosophy</h2>
     <p>
-      TenderHub implements a decoupled <strong>Adapter Architecture</strong> to communicate with the Jammu & Kashmir e-Procurement Portal (<code>jktenders.gov.in</code>). Crawling state-level government infrastructure requires handling multi-department hierarchies, nested NIT work packages (sibling tenders), variable captcha formats, asynchronous document opening windows, and large tender dossiers (>5MB).
+      BiharTenders implements a decoupled <strong>Adapter Architecture</strong> to communicate with the Jammu & Kashmir e-Procurement Portal (<code>jktenders.gov.in</code>). Crawling state-level government infrastructure requires handling multi-department hierarchies, nested NIT work packages (sibling tenders), variable captcha formats, asynchronous document opening windows, and large tender dossiers (>5MB).
     </p>
     <p>
       To maximize reliability, throughput, and minimize server overhead, the ingestion engine enforces a <strong>strict separation of roles</strong>:
@@ -358,7 +358,7 @@ async function generateAdaptersGuidePdf() {
     </div>
 
     <div class="page-footer">
-      <span>TenderHub Technical Documentation Series &bull; Confidential & Proprietary</span>
+      <span>BiharTenders Technical Documentation Series &bull; Confidential & Proprietary</span>
       <span>Page <strong>1</strong> of <strong>4</strong></span>
     </div>
   </div>
@@ -408,7 +408,7 @@ async function generateAdaptersGuidePdf() {
     <h2>2. <code>JKTenderDateAdapter</code> &mdash; Targeted Date & Recovery Engine</h2>
     <p>
       <strong>File:</strong> <span class="code-inline">backend/src/services/adapters/JKTenderDateAdapter.js</span> (~86 KB)<br>
-      <strong>Role:</strong> The daily workhorse of TenderHub. Designed for pinpoint date-based ingestion, scheduled cron jobs, and post-opening document recovery.
+      <strong>Role:</strong> The daily workhorse of BiharTenders. Designed for pinpoint date-based ingestion, scheduled cron jobs, and post-opening document recovery.
     </p>
 
     <h3>Key Capabilities & Hardening</h3>
@@ -435,7 +435,7 @@ async function generateAdaptersGuidePdf() {
     </div>
 
     <div class="page-footer">
-      <span>TenderHub Technical Documentation Series &bull; Confidential & Proprietary</span>
+      <span>BiharTenders Technical Documentation Series &bull; Confidential & Proprietary</span>
       <span>Page <strong>2</strong> of <strong>4</strong></span>
     </div>
   </div>
@@ -535,14 +535,14 @@ async function generateAdaptersGuidePdf() {
         </tr>
         <tr>
           <td><code>normalize(rawTenderData)</code></td>
-          <td>Transforms portal-specific DOM keys into standardized TenderHub Mongoose schema.</td>
+          <td>Transforms portal-specific DOM keys into standardized BiharTenders Mongoose schema.</td>
           <td><code>Object</code> (Schema Compliant)</td>
         </tr>
       </tbody>
     </table>
 
     <div class="page-footer">
-      <span>TenderHub Technical Documentation Series &bull; Confidential & Proprietary</span>
+      <span>BiharTenders Technical Documentation Series &bull; Confidential & Proprietary</span>
       <span>Page <strong>3</strong> of <strong>4</strong></span>
     </div>
   </div>
@@ -663,7 +663,7 @@ async function generateAdaptersGuidePdf() {
         <tr>
           <td><code>R2_BUCKET_NAME</code></td>
           <td>All Adapters</td>
-          <td>Target R2 bucket name (e.g. <code>tenderhub-production</code>).</td>
+          <td>Target R2 bucket name (e.g. <code>bihartenders-production</code>).</td>
         </tr>
         <tr>
           <td><code>GEMINI_API_KEY</code> / <code>GEMINI_MODEL</code></td>
@@ -688,7 +688,7 @@ async function generateAdaptersGuidePdf() {
     </div>
 
     <div class="page-footer">
-      <span>TenderHub Technical Documentation Series &bull; Confidential & Proprietary</span>
+      <span>BiharTenders Technical Documentation Series &bull; Confidential & Proprietary</span>
       <span>Page <strong>4</strong> of <strong>4</strong></span>
     </div>
   </div>
@@ -714,8 +714,8 @@ async function generateAdaptersGuidePdf() {
     fs.mkdirSync(backendBackupsDir, { recursive: true });
   }
 
-  const primaryPdfPath = path.join(rootDocsDir, 'TenderHub_Adapters_Architecture_Guide.pdf');
-  const backupPdfPath = path.join(backendBackupsDir, 'TenderHub_Adapters_Architecture_Guide.pdf');
+  const primaryPdfPath = path.join(rootDocsDir, 'BiharTenders_Adapters_Architecture_Guide.pdf');
+  const backupPdfPath = path.join(backendBackupsDir, 'BiharTenders_Adapters_Architecture_Guide.pdf');
 
   await page.pdf({
     path: primaryPdfPath,
@@ -733,7 +733,7 @@ async function generateAdaptersGuidePdf() {
   await browser.close();
 
   const stats = fs.statSync(primaryPdfPath);
-  console.log('🎉 SUCCESS: TenderHub Ingestion Adapters Architecture Guide PDF generated!');
+  console.log('🎉 SUCCESS: BiharTenders Ingestion Adapters Architecture Guide PDF generated!');
   console.log(`📄 Primary Destination: ${primaryPdfPath} (${(stats.size / 1024).toFixed(1)} KB)`);
   console.log(`📁 Secondary Copy:        ${backupPdfPath}`);
 }

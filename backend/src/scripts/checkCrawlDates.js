@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function checkCrawlDates() {
-  await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/tenderhub');
+  await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/bihartenders');
   const Tender = mongoose.model('Tender', new mongoose.Schema({}, { strict: false }));
 
   const all = await Tender.find({ publishedDate: { $ne: null }, createdAt: { $ne: null } })

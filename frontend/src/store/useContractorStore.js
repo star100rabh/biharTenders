@@ -7,9 +7,9 @@ export const useContractorStore = create(
       profile: {
         name: 'Ravi Shankar',
         contractorId: 'NIT-S-2026',
-        jurisdiction: 'Jammu & Kashmir / North Zone',
-        affiliation: 'NIT Srinagar, J&K',
-        divisionBadge: 'J&K Public Works Division',
+        jurisdiction: 'Bihar / North Zone',
+        affiliation: 'NIT Gaya, Bihar',
+        divisionBadge: 'Bihar Public Works Division',
         accountAuth: 'Google Verified',
         registrationClass: 'Class A Works',
         portalVerification: 'Active • L1 Compliant',
@@ -20,6 +20,6 @@ export const useContractorStore = create(
           profile: { ...state.profile, ...updatedFields },
         })),
     }),
-    { name: 'tenderhub_contractor_profile' }
+    { name: 'bihartenders_contractor_profile' }
   )
 );

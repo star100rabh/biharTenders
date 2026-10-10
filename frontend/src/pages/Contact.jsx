@@ -3,16 +3,41 @@
  * @description Operational support and inquiry desk with humanized classical layout and full light/dark harmony.
  */
 import { useState } from 'react';
-import { Mail, MapPin, Send, CheckCircle2, Clock, HelpCircle, Landmark } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, Clock, HelpCircle, Landmark, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { servicesApi } from '@/services/servicesApi';
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: 'Tender Notification & Email Alerts',
+    message: ''
+  });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      await servicesApi.submitContactForm(formData);
+      setSubmitted(true);
+      setFormData({
+        name: '', email: '', phone: '', subject: 'Tender Notification & Email Alerts', message: ''
+      });
+    } catch (error) {
+      console.error('Failed to send inquiry', error);
+      alert('Failed to send inquiry. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,7 +72,7 @@ export default function Contact() {
               <Mail className="w-5 h-5 text-dalBlue dark:text-blue-400 shrink-0 mt-0.5" />
               <div>
                 <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Email Inquiries</span>
-                <span className="text-xs font-mono font-semibold">support@tenderhub.in</span>
+                <span className="text-xs font-mono font-semibold">support@bihartenders.in</span>
               </div>
             </div>
 
@@ -101,8 +126,11 @@ export default function Contact() {
                   Full Name / Organization <span className="text-chinarRed">*</span>
                 </label>
                 <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   required
-                  placeholder="e.g. Ravi Shankar (Contractor)"
+                  placeholder="e.g. Saurabh Patel (Contractor)"
                   className="bg-white dark:bg-slate-800"
                 />
               </div>
@@ -113,6 +141,9 @@ export default function Contact() {
                     Email Address <span className="text-chinarRed">*</span>
                   </label>
                   <Input
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     type="email"
                     required
                     placeholder="contact@domain.com"
@@ -124,6 +155,9 @@ export default function Contact() {
                     Contact Phone (Optional)
                   </label>
                   <Input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                     type="tel"
                     placeholder="+91 98765 43210"
                     className="bg-white dark:bg-slate-800"
@@ -135,7 +169,12 @@ export default function Contact() {
                 <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Subject / Topic
                 </label>
-                <select className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-dalBlue">
+                <select 
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-dalBlue"
+                >
                   <option>Tender Notification &amp; Email Alerts</option>
                   <option>PDF Ingestion &amp; Archive Sync</option>
                   <option>Regional District Coverage Request</option>
@@ -149,6 +188,9 @@ export default function Contact() {
                   Message Details <span className="text-chinarRed">*</span>
                 </label>
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   required
                   rows={4}
                   placeholder="Please describe your inquiry, including relevant tender reference numbers..."
@@ -158,9 +200,10 @@ export default function Contact() {
 
               <Button
                 type="submit"
+                disabled={loading}
                 className="w-full gap-2 mt-2 bg-dalBlue hover:bg-dalBlue-700 text-white font-bold py-2.5 text-xs shadow-xs"
               >
-                Send Inquiry <Send className="w-3.5 h-3.5" />
+                {loading ? 'Sending...' : 'Send Inquiry'} {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
               </Button>
             </form>
           )}

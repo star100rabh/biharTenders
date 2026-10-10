@@ -43,13 +43,13 @@ export class AiSensyWhatsAppAdapter extends IWhatsAppProvider {
     const portalUrl = `${env.FRONTEND_URL}/tenders/${tender._id || tender.tenderId}`;
 
     const textSummary = 
-      `🚨 *NEW TENDER ALERT — TenderHub J&K*\n\n` +
+      `🚨 *NEW TENDER ALERT — BiharTenders J&K*\n\n` +
       `📋 *Title:* ${tenderTitle.slice(0, 140)}...\n` +
       `🏛️ *Department:* ${dept}\n` +
       `💰 *Estimated Value:* ${valueStr}\n` +
       `📅 *Bid Submission Deadline:* ${closingDate}\n\n` +
       `👉 *View Full Details & BOQ:* ${portalUrl}\n\n` +
-      `_TenderHub J&K • Real-Time Contractor Intelligence_`;
+      `_BiharTenders J&K • Real-Time Contractor Intelligence_`;
 
     if (this.isMockMode) {
       logger.info(`\n[AISENSY MOCK TENDER ALERT to ${formattedPhone}]:\n${textSummary}\n`);
@@ -72,7 +72,7 @@ export class AiSensyWhatsAppAdapter extends IWhatsAppProvider {
             closingDate,
             portalUrl
           ],
-          source: 'tenderhub-alert-engine'
+          source: 'bihartenders-alert-engine'
         }),
       });
 
@@ -102,7 +102,7 @@ export class AiSensyWhatsAppAdapter extends IWhatsAppProvider {
     });
 
     const receiptMessage = 
-      `🎉 *PAYMENT SUCCESSFUL! Welcome to TenderHub Pro*\n\n` +
+      `🎉 *PAYMENT SUCCESSFUL! Welcome to BiharTenders Pro*\n\n` +
       `Dear ${user?.name || 'Contractor'},\n` +
       `Thank you for subscribing. Your account has been upgraded to *${plan.name}*.\n\n` +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
@@ -139,7 +139,7 @@ export class AiSensyWhatsAppAdapter extends IWhatsAppProvider {
             validUntil,
             `${env.FRONTEND_URL}/profile`
           ],
-          source: 'tenderhub-billing'
+          source: 'bihartenders-billing'
         }),
       });
 

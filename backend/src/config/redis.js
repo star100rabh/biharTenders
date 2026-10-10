@@ -18,6 +18,10 @@ export const redis = new Redis({
   keepAlive: 30000,
   maxRetriesPerRequest: null, // Critical requirement for BullMQ
   retryStrategy(times) {
+    // If local, slow down retries significantly to prevent CPU/terminal spam
+    if (redisUrl.hostname === 'localhost' || redisUrl.hostname === '127.0.0.1') {
+      return Math.min(times * 2000, 30000); 
+    }
     const delay = Math.min(times * 50, 2000);
     return delay;
   }
@@ -25,7 +29,7 @@ export const redis = new Redis({
 
 redis.on('connect', () => logger.info('Redis Connected Successfully'));
 redis.on('error', (err) => {
-  if (!err.message.includes('ECONNRESET')) {
+  if (!err.message.includes('ECONNRESET') && !err.message.includes('ECONNREFUSED')) {
     logger.error(`Redis Error: ${err.message}`);
   }
 });

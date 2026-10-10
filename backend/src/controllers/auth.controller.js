@@ -367,12 +367,12 @@ const resolveFrontendUrl = (req) => {
   if (configured) {
     // If backend is on production, never redirect to localhost even if configured is localhost
     if (isProduction && (configured.includes('localhost') || configured.includes('127.0.0.1'))) {
-      return 'https://tenderhub-frontend-ur7t.onrender.com';
+      return 'https://bihartenders-frontend-ur7t.onrender.com';
     }
     return configured;
   }
 
-  return isProduction ? 'https://tenderhub-frontend-ur7t.onrender.com' : 'http://localhost:5173';
+  return isProduction ? 'https://bihartenders-frontend-ur7t.onrender.com' : 'http://localhost:5173';
 };
 
 /**
@@ -806,7 +806,8 @@ export const logout = async (req, res, next) => {
     if (refreshToken) {
       try {
         const decoded = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET);
-        await redis.del(`refreshToken:${decoded.userId}`);
+        // Fire-and-forget redis del to prevent hanging if Redis is down
+        redis.del(`refreshToken:${decoded.userId}`).catch(() => {});
       } catch (err) {
         // Ignore token verification errors on logout
       }

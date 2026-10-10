@@ -11,7 +11,7 @@ async function run() {
   if (specificPath) {
     console.log(`📍 Archive Target: ${specificPath}`);
   } else {
-    console.log('📍 Archive Target: Latest available backup (tenderhub_full_latest.zip)');
+    console.log('📍 Archive Target: Latest available backup (bihartenders_full_latest.zip)');
   }
   console.log('======================================================\n');
 

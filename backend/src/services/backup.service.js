@@ -72,7 +72,7 @@ export class BackupService {
       const jsonString = JSON.stringify(backupData);
       const compressedBuffer = zlib.gzipSync(jsonString);
 
-      const fileName = `tenderhub_db_${dateStamp}.json.gz`;
+      const fileName = `bihartenders_db_${dateStamp}.json.gz`;
       const localFilePath = path.join(this.localBackupDir, fileName);
 
       fs.writeFileSync(localFilePath, compressedBuffer);
@@ -146,7 +146,7 @@ export class BackupService {
         logger.warn(`[BackupService] Cloudflare R2 download failed or unconfigured: ${err.message}. Checking local backup folder...`);
         // Fall back to most recent local backup file
         const files = fs.readdirSync(this.localBackupDir)
-          .filter(f => f.endsWith('.json.gz') && f.startsWith('tenderhub_db_'))
+          .filter(f => f.endsWith('.json.gz') && f.startsWith('bihartenders_db_'))
           .sort()
           .reverse();
 
@@ -249,7 +249,7 @@ export class BackupService {
 
     const dbJson = JSON.stringify(backupData);
     const dbGz = zlib.gzipSync(dbJson);
-    fs.writeFileSync(path.join(dbDir, 'tenderhub_db.json.gz'), dbGz);
+    fs.writeFileSync(path.join(dbDir, 'bihartenders_db.json.gz'), dbGz);
     logger.info(`[FullBackup] ✅ Database exported: ${totalDocuments} documents across ${Object.keys(backupData.collections).length} collections.`);
 
     // Step 2: Download all documents from Cloudflare R2
@@ -311,7 +311,7 @@ export class BackupService {
     fs.writeFileSync(path.join(stagingDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
 
     // Step 4: Compress into a self-contained .zip archive
-    const zipFileName = `tenderhub_full_backup_${dateStamp}.zip`;
+    const zipFileName = `bihartenders_full_backup_${dateStamp}.zip`;
     const zipFilePath = path.join(this.localBackupDir, zipFileName);
     logger.info(`[FullBackup] 📦 Packaging entire system snapshot into: ${zipFileName}...`);
 
@@ -320,7 +320,7 @@ export class BackupService {
     zip.writeZip(zipFilePath);
 
     // Update latest pointer for 1-click restore
-    const latestZipPath = path.join(this.localBackupDir, 'tenderhub_full_latest.zip');
+    const latestZipPath = path.join(this.localBackupDir, 'bihartenders_full_latest.zip');
     fs.copyFileSync(zipFilePath, latestZipPath);
 
     // Clean up temporary staging folder
@@ -344,7 +344,7 @@ export class BackupService {
         }));
         await backupClient.send(new PutObjectCommand({
           Bucket: backupBucket,
-          Key: 'backups/tenderhub_full_latest.zip',
+          Key: 'backups/bihartenders_full_latest.zip',
           Body: fileBuffer,
           ContentType: 'application/zip',
         }));
@@ -404,12 +404,12 @@ export class BackupService {
 
     let zipPath = specificZipPath;
     if (!zipPath) {
-      const latestPath = path.join(this.localBackupDir, 'tenderhub_full_latest.zip');
+      const latestPath = path.join(this.localBackupDir, 'bihartenders_full_latest.zip');
       if (fs.existsSync(latestPath)) {
         zipPath = latestPath;
       } else {
         const zips = fs.readdirSync(this.localBackupDir)
-          .filter(f => f.startsWith('tenderhub_full_backup_') && f.endsWith('.zip'))
+          .filter(f => f.startsWith('bihartenders_full_backup_') && f.endsWith('.zip'))
           .sort()
           .reverse();
         if (zips.length === 0) {
@@ -429,9 +429,9 @@ export class BackupService {
     logger.info(`[FullRestore] Loaded manifest created at: ${manifest?.createdAt || 'Unknown'}`);
 
     // 1. Restore MongoDB Database
-    const dbGzPath = path.join(extractDir, 'database', 'tenderhub_db.json.gz');
+    const dbGzPath = path.join(extractDir, 'database', 'bihartenders_db.json.gz');
     if (!fs.existsSync(dbGzPath)) {
-      throw new Error('Database archive tenderhub_db.json.gz missing in backup archive.');
+      throw new Error('Database archive bihartenders_db.json.gz missing in backup archive.');
     }
     const dbResult = await this.restoreDatabaseFromBackup(dbGzPath);
 
@@ -590,7 +590,7 @@ export class BackupService {
       },
       secondaryR2: {
         configured: secondaryR2Configured,
-        bucket: process.env.BACKUP_R2_BUCKET_NAME || 'tenderhub-backup',
+        bucket: process.env.BACKUP_R2_BUCKET_NAME || 'bihartenders-backup',
         status: secondaryR2Configured ? 'CONNECTED' : 'UNCONFIGURED',
       },
       backups,

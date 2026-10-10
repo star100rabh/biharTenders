@@ -11,7 +11,7 @@ const ThemeProviderContext = createContext({
   isDark: false,
 });
 
-export function ThemeProvider({ children, defaultTheme = "light", storageKey = "tenderhub-theme" }) {
+export function ThemeProvider({ children, defaultTheme = "light", storageKey = "bihartenders-theme" }) {
   const [theme, setThemeState] = useState(() => {
     const stored = localStorage.getItem(storageKey);
     if (stored === "dark" || stored === "light") return stored;

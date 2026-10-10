@@ -47,9 +47,9 @@ const PREF_SECTOR_OPTIONS = [
 ];
 
 const PREF_DISTRICT_OPTIONS = [
-  'All 20 Districts',
-  'Baramulla', 'Bandipora', 'Srinagar', 'Jammu', 'Pulwama',
-  'Anantnag', 'Kulgam', 'Budgam', 'Kupwara', 'Ganderbal',
+  'All 38 districts',
+  'Muzaffarpur', 'Bhagalpur', 'Gaya', 'Patna', 'Purnia',
+  'Darbhanga', 'Kulgam', 'Budgam', 'Kupwara', 'Ganderbal',
   'Shopian', 'Udhampur', 'Reasi', 'Kathua', 'Samba',
   'Rajouri', 'Poonch', 'Doda', 'Ramban', 'Kishtwar'
 ];
@@ -257,7 +257,7 @@ export default function Profile() {
                   ID: {profile.contractorId || 'NIT-S-2026'}
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-chinarRed" /> {profile.divisionBadge || 'J&K Public Works Division'}
+                  <MapPin className="w-3.5 h-3.5 text-chinarRed" /> {profile.divisionBadge || 'Bihar Public Works Division'}
                 </span>
               </div>
             </div>
@@ -461,7 +461,7 @@ export default function Profile() {
                       type="text"
                       value={profileForm.jurisdiction}
                       onChange={(e) => setProfileForm({ ...profileForm, jurisdiction: e.target.value })}
-                      placeholder="e.g. Jammu & Kashmir / North Zone"
+                      placeholder="e.g. Bihar / North Zone"
                       className="text-xs"
                     />
                   </div>
@@ -475,7 +475,7 @@ export default function Profile() {
                       type="text"
                       value={profileForm.affiliation}
                       onChange={(e) => setProfileForm({ ...profileForm, affiliation: e.target.value })}
-                      placeholder="e.g. NIT Srinagar, J&K"
+                      placeholder="e.g. NIT Gaya, Bihar"
                       className="text-xs"
                     />
                   </div>
@@ -503,7 +503,7 @@ export default function Profile() {
                       type="text"
                       value={profileForm.divisionBadge}
                       onChange={(e) => setProfileForm({ ...profileForm, divisionBadge: e.target.value })}
-                      placeholder="e.g. J&K Public Works Division"
+                      placeholder="e.g. Bihar Public Works Division"
                       className="text-xs"
                     />
                   </div>
@@ -635,7 +635,7 @@ export default function Profile() {
                     <div className="font-semibold text-slate-800 dark:text-slate-200 text-xs sm:text-sm">
                       {preferences.preferredLocations?.length > 0
                         ? preferences.preferredLocations.join(', ')
-                        : 'All 20 Districts'}
+                        : 'All 38 districts'}
                     </div>
                   </div>
 
@@ -713,12 +713,12 @@ export default function Profile() {
                     Preferred Location / District
                   </label>
                   <select
-                    value={prefForm.preferredLocations?.[0] || 'All 20 Districts'}
+                    value={prefForm.preferredLocations?.[0] || 'All 38 districts'}
                     onChange={(e) => {
                       const val = e.target.value;
                       setPrefForm({
                         ...prefForm,
-                        preferredLocations: val === 'All 20 Districts' ? [] : [val]
+                        preferredLocations: val === 'All 38 districts' ? [] : [val]
                       });
                     }}
                     className="flex h-10 w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-dalBlue/30 cursor-pointer"
@@ -826,7 +826,7 @@ export default function Profile() {
                   <span>Bid Capacity &amp; Evaluated Scores</span>
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  Contract-specific bid allocation scores evaluated using J&amp;K PWD formulas.
+                  Contract-specific bid allocation scores evaluated using Bihar PWD formulas.
                 </p>
               </div>
 

@@ -90,7 +90,7 @@ export const useBookmarkStore = create(
       },
     }),
     { 
-      name: 'tenderhub_bookmarks',
+      name: 'bihartenders_bookmarks',
       partialize: (state) => ({ savedTenders: state.savedTenders }),
     }
   )

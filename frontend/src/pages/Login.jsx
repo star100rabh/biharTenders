@@ -39,9 +39,9 @@ const REGISTRATION_CLASSES = [
 ];
 
 const PREF_DISTRICT_OPTIONS = [
-  'All 20 Districts',
-  'Baramulla', 'Bandipora', 'Srinagar', 'Jammu', 'Pulwama',
-  'Anantnag', 'Kulgam', 'Budgam', 'Kupwara', 'Ganderbal',
+  'All 38 districts',
+  'Muzaffarpur', 'Bhagalpur', 'Gaya', 'Patna', 'Purnia',
+  'Darbhanga', 'Kulgam', 'Budgam', 'Kupwara', 'Ganderbal',
   'Shopian', 'Udhampur', 'Reasi', 'Kathua', 'Samba',
   'Rajouri', 'Poonch', 'Doda', 'Ramban', 'Kishtwar'
 ];
@@ -90,9 +90,9 @@ export default function Login({ defaultMode }) {
     affiliation: '',
     contractorId: '',
     registrationClass: 'Class A Works',
-    jurisdiction: 'Jammu & Kashmir / North Zone',
+    jurisdiction: 'Bihar / North Zone',
     preferences: {
-      preferredLocations: ['All 20 Districts'],
+      preferredLocations: ['All 38 districts'],
       targetSectors: ['Civil Works'],
       minTenderValue: 0,
       preferEmdExemption: false,
@@ -267,10 +267,10 @@ export default function Login({ defaultMode }) {
               <Landmark className="w-5 h-5 text-white" />
             </div>
             <span className="text-2xl font-display font-black tracking-tight text-dalBlue dark:text-white leading-none">
-              Tender<span className="text-chinarRed">Hub</span>
+              Bihar<span className="text-chinarRed">Tenders</span>
             </span>
             <span className="text-[10px] font-semibold tracking-wide bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-              J&amp;K
+              Bihar
             </span>
           </Link>
           <h2 className="text-xl font-bold font-display text-slate-900 dark:text-white pt-2">
@@ -284,8 +284,8 @@ export default function Login({ defaultMode }) {
             {step === 'otp'
               ? `We sent a 6-digit verification code to ${email}`
               : mode === 'signup'
-                ? 'Register your profile to track civil works, set alert radars, and bookmark tenders across J&K.'
-                : 'Access your saved tenders, alerts, and verified J&K public works procurement.'}
+                ? 'Register your profile to track civil works, set alert radars, and bookmark tenders across Bihar.'
+                : 'Access your saved tenders, alerts, and verified Bihar public works procurement.'}
           </p>
         </div>
 
@@ -463,7 +463,7 @@ export default function Login({ defaultMode }) {
                             type="text"
                             value={profileDetails.affiliation}
                             onChange={(e) => setProfileDetails({ ...profileDetails, affiliation: e.target.value })}
-                            placeholder="e.g. M/S Valley Infratech / NIT Srinagar"
+                            placeholder="e.g. M/S Valley Infratech / NIT Gaya"
                             className="text-xs h-9"
                           />
                         </div>
@@ -507,7 +507,7 @@ export default function Login({ defaultMode }) {
                               Primary District
                             </label>
                             <select
-                              value={profileDetails.preferences.preferredLocations[0] || 'All 20 Districts'}
+                              value={profileDetails.preferences.preferredLocations[0] || 'All 38 districts'}
                               onChange={(e) => setProfileDetails({
                                 ...profileDetails,
                                 preferences: {
@@ -584,7 +584,7 @@ export default function Login({ defaultMode }) {
                   </span>
                 ) : (
                   <span>
-                    New to TenderHub?{' '}
+                    New to BiharTenders?{' '}
                     <button
                       type="button"
                       onClick={() => switchMode('signup')}
@@ -689,7 +689,7 @@ export default function Login({ defaultMode }) {
         <div className="text-center space-y-1">
           <div className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
             <BadgeCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Official TenderHub Jammu &amp; Kashmir Portal Identity</span>
+            <span>Official BiharTenders Bihar Portal Identity</span>
           </div>
           <p className="text-[10px] text-slate-400 dark:text-slate-500">
             Protected by HttpOnly cookies, session encryption, and rate-limited abuse prevention.

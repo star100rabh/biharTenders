@@ -19,3 +19,9 @@ export const tenderQueue = new Queue('TenderQueue', { connection });
 export const aiQueue = new Queue('AIQueue', { connection });
 export const documentQueue = new Queue('DocumentQueue', { connection });
 export const notificationQueue = new Queue('NotificationQueue', { connection });
+
+[tenderQueue, aiQueue, documentQueue, notificationQueue].forEach(q => {
+  q.on('error', (err) => {
+    if (err.message && (err.message.includes('ECONNREFUSED') || err.message.includes('ECONNRESET'))) return;
+  });
+});

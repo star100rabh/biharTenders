@@ -7,6 +7,7 @@ import {
   getTenderDossier,
   postCopilotChat,
   getMyDossiers,
+  submitContactForm,
 } from '../controllers/services.controller.js';
 import { verifyToken } from '../middleware/auth.middleware.js';
 
@@ -14,6 +15,7 @@ const router = express.Router();
 
 // Public routes (pricing and plan comparison)
 router.get('/plans', getAiPlans);
+router.post('/contact', submitContactForm);
 
 // Authenticated / Test-bypass contractor routes
 router.use(verifyToken);

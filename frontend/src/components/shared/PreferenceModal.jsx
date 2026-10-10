@@ -13,7 +13,7 @@ export function PreferenceModal() {
   const { preferences, updatePreferences } = usePreferenceStore();
 
   const [sectors, setSectors] = useState(['Civil Works']);
-  const [location, setLocation] = useState('Baramulla');
+  const [location, setLocation] = useState('Muzaffarpur');
   const [minVal, setMinVal] = useState('200000');
   const [preferEmd, setPreferEmd] = useState(false);
 
@@ -80,7 +80,7 @@ export function PreferenceModal() {
             </label>
             <Input 
               value={location} onChange={(e) => setLocation(e.target.value)} 
-              placeholder="e.g. Srinagar, Baramulla, Jammu" 
+              placeholder="e.g. Gaya, Muzaffarpur, Patna" 
             />
           </div>
 

@@ -35,3 +35,8 @@ export const aiSummaryWorker = new Worker('AIQueue', async (job) => {
     throw error;
   }
 }, { connection });
+
+aiSummaryWorker.on('error', (err) => {
+  if (err.message && (err.message.includes('ECONNREFUSED') || err.message.includes('ECONNRESET'))) return;
+  logger.error(`[AIWorker] Redis Error: ${err.message}`);
+});

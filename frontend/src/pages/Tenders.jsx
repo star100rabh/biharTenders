@@ -1,6 +1,6 @@
 /**
  * @file src/pages/Tenders.jsx
- * @description Official public procurement directory for Jammu & Kashmir.
+ * @description Official public procurement directory for Bihar.
  * Features structured dropdown filters (Districts, Categories, Authorities, Divisions),
  * prominent interactive focus and selection states, and live notice analytics.
  */
@@ -17,6 +17,7 @@ import {
   Clock, 
   Archive, 
   CalendarX,
+  CalendarClock,
   ArrowUpDown,
   MapPin,
   Layers,
@@ -44,28 +45,28 @@ import { Button } from '@/components/ui/Button';
 // Comprehensive Filter Datasets Verified Against MongoDB Aggregation
 // =============================================================================
 
-// 1. All 20 Verified Administrative Districts of Jammu & Kashmir
+// 1. All 20 Verified Administrative Districts of Bihar
 const DISTRICT_OPTIONS = [
   { label: 'All Districts & Regions', value: '' },
-  { label: 'Anantnag', value: 'Anantnag' },
-  { label: 'Bandipora', value: 'Bandipora' },
-  { label: 'Baramulla', value: 'Baramulla' },
+  { label: 'Darbhanga', value: 'Darbhanga' },
+  { label: 'Bhagalpur', value: 'Bhagalpur' },
+  { label: 'Muzaffarpur', value: 'Muzaffarpur' },
   { label: 'Budgam', value: 'Budgam' },
   { label: 'Doda', value: 'Doda' },
   { label: 'Ganderbal', value: 'Ganderbal' },
-  { label: 'Jammu', value: 'Jammu' },
+  { label: 'Patna', value: 'Patna' },
   { label: 'Kathua', value: 'Kathua' },
   { label: 'Kishtwar', value: 'Kishtwar' },
   { label: 'Kulgam', value: 'Kulgam' },
   { label: 'Kupwara', value: 'Kupwara' },
   { label: 'Poonch', value: 'Poonch' },
-  { label: 'Pulwama', value: 'Pulwama' },
+  { label: 'Purnia', value: 'Purnia' },
   { label: 'Rajouri', value: 'Rajouri' },
   { label: 'Ramban', value: 'Ramban' },
   { label: 'Reasi', value: 'Reasi' },
   { label: 'Samba', value: 'Samba' },
   { label: 'Shopian', value: 'Shopian' },
-  { label: 'Srinagar', value: 'Srinagar' },
+  { label: 'Gaya', value: 'Gaya' },
   { label: 'Udhampur', value: 'Udhampur' },
 ];
 
@@ -142,21 +143,21 @@ const AUTHORITY_OPTIONS = [
   { label: 'Shri Mata Vaishno Devi Shrine Board (SMVDSB)', value: 'SHRI MATA VAISHNO DEVI' },
   { label: 'SKUAST Agriculture University', value: 'SKUAST' },
   { label: 'Universities & Higher Education', value: 'University Department' },
-  { label: 'J&K Sports Council', value: 'Sports Council' },
+  { label: 'Bihar Sports Council', value: 'Sports Council' },
   { label: 'Tourism Department', value: 'Tourism' },
   { label: 'SKIMS (Medical Institute Soura)', value: 'SKIMS' },
   { label: 'Horticulture Production Dept', value: 'Horticulture' },
   { label: 'Small Scale Industries Development Corp (SICOP)', value: 'SICOP' },
-  { label: 'Jammu Smart City Limited', value: 'Jammu Smart City' },
-  { label: 'J&K AGRO Industries', value: 'J and K AGRO' },
+  { label: 'Patna Smart City Limited', value: 'Patna Smart City' },
+  { label: 'Bihar AGRO Industries', value: 'Bihar AGRO' },
   { label: 'Shri Mata Vaishno Devi University (SMVDU)', value: 'SMVDU' },
   { label: 'State Industrial Development Corp (SIDCO)', value: 'SIDCO' },
   { label: 'Floriculture Department', value: 'Floriculture' },
-  { label: 'J&K Services Selection Board (JKSSB)', value: 'Selection Board' },
-  { label: 'DG Prisons J&K', value: 'DG-PRISONS' },
+  { label: 'Bihar Services Selection Board (JKSSB)', value: 'Selection Board' },
+  { label: 'DG Prisons Bihar', value: 'DG-PRISONS' },
   { label: 'Higher Education Department', value: 'HIGHER EDUCATION' },
-  { label: 'Srinagar Smart City Limited', value: 'Srinagar Smart City' },
-  { label: 'J&K State Cable Car Corp', value: 'CABLE CAR' },
+  { label: 'Gaya Smart City Limited', value: 'Gaya Smart City' },
+  { label: 'Bihar State Cable Car Corp', value: 'CABLE CAR' },
   { label: 'Animal & Sheep Husbandry (ASH)', value: 'ASH' },
   { label: 'State Procurement & Supplies Agency (SPSA)', value: 'State Procurement' },
 ];
@@ -164,30 +165,30 @@ const AUTHORITY_OPTIONS = [
 // 5. Verified Engineering & Administrative Divisions from MongoDB
 const DIVISION_OPTIONS = [
   { label: 'All Divisions & Wings', value: '' },
-  { label: 'XEN REW Baramulla', value: 'REW Baramulla' },
+  { label: 'XEN REW Muzaffarpur', value: 'REW Muzaffarpur' },
   { label: 'XEN REW Budgam', value: 'REW Budgam' },
   { label: 'XEN REW Poonch', value: 'REW POONCH' },
-  { label: 'XEN REW Anantnag', value: 'REW Anantnag' },
-  { label: 'XEN REW Jammu', value: 'REW JAMMU' },
-  { label: 'XEN REW Pulwama', value: 'REW Pulwama' },
+  { label: 'XEN REW Darbhanga', value: 'REW Darbhanga' },
+  { label: 'XEN REW Patna', value: 'REW Patna' },
+  { label: 'XEN REW Purnia', value: 'REW Purnia' },
   { label: 'XEN REW Doda', value: 'REW DODA' },
   { label: 'XEN REW Kishtwar', value: 'REW KISHTWAR' },
   { label: 'XEN REW Reasi', value: 'REW REASI' },
   { label: 'XEN REW Udhampur', value: 'REW UDHAMPUR' },
   { label: 'XEN REW Samba', value: 'REW SAMBA' },
-  { label: 'XEN REW Bandipora', value: 'REW Bandipora' },
+  { label: 'XEN REW Bhagalpur', value: 'REW Bhagalpur' },
   { label: 'XEN REW Ramban', value: 'REW RAMBAN' },
   { label: 'XEN REW Kathua', value: 'REW KATHUA' },
   { label: 'XEN REW Kupwara', value: 'REW Kupwara' },
   { label: 'XEN REW Kulgam', value: 'REW Kulgam' },
-  { label: 'XEN REW Srinagar', value: 'REW Srinagar' },
+  { label: 'XEN REW Gaya', value: 'REW Gaya' },
   { label: 'JK Medical Supplies Corp (JKMSCL)', value: 'JK MEDICAL SUPPLIES' },
-  { label: 'City Roads Division Srinagar', value: 'City Roads Division' },
-  { label: 'Srinagar Municipal Corporation (SMC)', value: 'SMC' },
-  { label: 'Jammu Municipal Corporation (JMC)', value: 'Jammu Municipal' },
+  { label: 'City Roads Division Gaya', value: 'City Roads Division' },
+  { label: 'Gaya Municipal Corporation (SMC)', value: 'SMC' },
+  { label: 'Patna Municipal Corporation (JMC)', value: 'Patna Municipal' },
   { label: 'Ground Water Division (GWD)', value: 'Ground Water' },
-  { label: 'Mechanical GWD Division Jammu', value: 'Mech GWD' },
-  { label: 'EE R&B Provincial Division 3rd Srinagar', value: 'PD 3rd' },
+  { label: 'Mechanical GWD Division Patna', value: 'Mech GWD' },
+  { label: 'EE R&B Provincial Division 3rd Gaya', value: 'PD 3rd' },
   { label: 'SE R&B Circle Poonch', value: 'SE RandB Poonch' },
   { label: 'EE R&B Ramban', value: 'RandB Ramban' },
   { label: 'EE R&B Satwari', value: 'RandB Satwari' },
@@ -196,33 +197,33 @@ const DIVISION_OPTIONS = [
   { label: 'EE R&B Doda', value: 'RandB Doda' },
   { label: 'EE R&B Bhaderwah', value: 'RandB Bhaderwah' },
   { label: 'PWD R&B Rajouri Division', value: 'Rajouri Division' },
-  { label: 'PWD R&B Anantnag Division', value: 'Anantnag Division' },
+  { label: 'PWD R&B Darbhanga Division', value: 'Darbhanga Division' },
   { label: 'PWD R&B Budgam Division', value: 'Budgam Division' },
-  { label: 'PWD R&B Pulwama Division', value: 'Pulwama Division' },
+  { label: 'PWD R&B Purnia Division', value: 'Purnia Division' },
   { label: 'PWD R&B Kulgam Division', value: 'Kulgam Division' },
-  { label: 'PWD R&B Baramulla Division', value: 'Baramulla Division' },
+  { label: 'PWD R&B Muzaffarpur Division', value: 'Muzaffarpur Division' },
   { label: 'PWD R&B Dooru Division', value: 'Dooru Division' },
   { label: 'PWD R&B Lolab Division', value: 'Lolab Division' },
   { label: 'PWD R&B Gurez Division', value: 'Gurez Division' },
   { label: 'PWD R&B Pahalgam Division', value: 'Pahalgam Division' },
   { label: 'R&B Electric Division Kashmir', value: 'Electric Division Kashmir' },
-  { label: 'PW R&B Electric Division Jammu', value: 'Electric Div Jammu' },
+  { label: 'PW R&B Electric Division Patna', value: 'Electric Div Patna' },
   { label: 'DSCO Poonch (Soil Conservation)', value: 'DSCO Poonch' },
   { label: 'DSCO Kathua (Soil Conservation)', value: 'DSCO Kathua' },
-  { label: 'DSCO Jammu (Soil Conservation)', value: 'DSCO Jammu' },
+  { label: 'DSCO Patna (Soil Conservation)', value: 'DSCO Patna' },
   { label: 'Director Soil & Water Conservation', value: 'Director soil and water' },
-  { label: 'Irrigation Division 1 Jammu', value: 'ID-1 Jammu' },
-  { label: 'Irrigation Division 2 Jammu', value: 'ID-2 Jammu' },
+  { label: 'Irrigation Division 1 Patna', value: 'ID-1 Patna' },
+  { label: 'Irrigation Division 2 Patna', value: 'ID-2 Patna' },
   { label: 'Irrigation Division Kulgam', value: 'Irrigation Divn Kulgam' },
-  { label: 'Tube Well Irrigation Div (T.W.I.D) Jammu', value: 'T.W.I.D Jammu' },
+  { label: 'Tube Well Irrigation Div (T.W.I.D) Patna', value: 'T.W.I.D Patna' },
   { label: 'Irrigation Kangan Division', value: 'Kangan Division' },
   { label: 'Electric Division (ED) Kupwara', value: 'ED Kupwara' },
   { label: 'CE-M & RE Wing Kashmir (PDD)', value: 'CE-M and RE Wing Kashmir' },
   { label: 'Lidder Forest Division (DFO Lidder)', value: 'DFO Lidder' },
   { label: 'Rajouri Forest Division', value: 'Rajouri Forest' },
-  { label: 'Jammu Hospital & Central Heating Div', value: 'Jammu Hospital and Central Heating' },
-  { label: 'Directorate Urban Local Bodies Jammu', value: 'Urban Local Bodies Jammu' },
-  { label: 'Rural Division Jammu', value: 'Rural Division Jammu' },
+  { label: 'Patna Hospital & Central Heating Div', value: 'Patna Hospital and Central Heating' },
+  { label: 'Directorate Urban Local Bodies Patna', value: 'Urban Local Bodies Patna' },
+  { label: 'Rural Division Patna', value: 'Rural Division Patna' },
 ];
 
 // 6. Contract Agreement Types
@@ -309,8 +310,8 @@ export default function Tenders() {
     Boolean(closingDate),
   ].filter(Boolean).length;
 
-  // Unauthenticated guests get up to 25 items on page 1 so 15 are visible and remaining are blurred
-  const queryLimit = isAuthenticated ? 10 : 25;
+  // Always fetch 10 items per page to keep the UI clean and structured
+  const queryLimit = 10;
 
   // 2. Construct API Query
   const queryFilters = {
@@ -333,9 +334,10 @@ export default function Tenders() {
   const tenders = data?.data || [];
   const totalCount = data?.meta?.total || 0;
   const activeCount = data?.meta?.activeCount ?? 0;
+  const upcomingCount = data?.meta?.upcomingCount ?? 0;
   const archivedCount = data?.meta?.archivedCount ?? 0;
   const expiredCount = data?.meta?.expiredCount ?? 0;
-  const totalPages = Math.ceil(totalCount / (isAuthenticated ? 10 : 25)) || 1;
+  const totalPages = Math.ceil(totalCount / queryLimit) || 1;
 
   // 3. Handlers
   const handleReset = () => {
@@ -357,7 +359,15 @@ export default function Tenders() {
     if (!isAuthenticated && newPage > 1) {
       handleRequestAuth({
         title: 'Sign In to View More Tenders',
-        subtitle: 'Guests are limited to previewing the 15 latest tender notices. Sign in to browse all pages and view details.',
+        subtitle: 'Guests are limited to previewing the 10 latest tender notices. Sign in and upgrade to Pro to browse all pages.',
+        redirectUrl: '/tenders'
+      });
+      return;
+    }
+    if (isAuthenticated && !isPro && newPage > 1) {
+      handleRequestAuth({
+        title: 'Upgrade to Pro to Unlock Full Access',
+        subtitle: 'Free accounts are limited to the first 10 tenders. Upgrade to a Pro subscription to unlock unlimited browsing, deep search, and direct PDF downloads.',
         redirectUrl: '/tenders'
       });
       return;
@@ -401,7 +411,7 @@ export default function Tenders() {
               )}
             </div>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-              Official public works, civil contracts, and procurement notices published across J&amp;K.
+              Official public works, civil contracts, and procurement notices published across Bihar.
             </p>
           </div>
           <Button 
@@ -463,7 +473,7 @@ export default function Tenders() {
             </div>
 
             {/* Scrollable Filters Body with Dedicated Vertical Scrollbar */}
-            <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-4 filter-scrollbar overscroll-contain">
+            <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-4 filter-scrollbar">
               {/* Keyword Search Input */}
               <div>
                 <label className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
@@ -721,6 +731,30 @@ export default function Tenders() {
                 <button
                   type="button"
                   onClick={() => {
+                    setStatus('upcoming');
+                    setCurrentPage(1);
+                  }}
+                  className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed ${
+                    status === 'upcoming'
+                      ? 'bg-emerald-600 text-white shadow-sm font-bold border border-emerald-600 dark:bg-emerald-600 dark:border-emerald-500 ring-2 ring-emerald-600/20 dark:ring-emerald-400/30'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800 font-medium'
+                  }`}
+                  title="Upcoming tenders where bidding has not yet started"
+                >
+                  <CalendarClock className={`w-3.5 h-3.5 shrink-0 ${status === 'upcoming' ? 'text-white' : 'text-emerald-600 dark:text-emerald-400'}`} />
+                  <span className="truncate">Upcoming</span>
+                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded font-bold shrink-0 ${
+                    status === 'upcoming' 
+                      ? 'bg-white/20 text-white' 
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                  }`}>
+                    {upcomingCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
                     setStatus('archived');
                     setCurrentPage(1);
                   }}
@@ -929,12 +963,12 @@ export default function Tenders() {
                                   <span>Viewing 15 of {totalCount} Active Notices</span>
                                 </div>
                                 <h3 className="text-base sm:text-lg font-display font-bold">
-                                  {isAuthenticated ? 'Upgrade to TenderHub Pro (₹399/mo)' : 'Unlock All Tender Notices & Technical Details'}
+                                  {isAuthenticated ? 'Upgrade to BiharTenders Pro (₹399/mo)' : 'Unlock All Tender Notices & Technical Details'}
                                 </h3>
                                 <p className="text-xs text-blue-100/80 mt-1 max-w-xl leading-relaxed">
                                   {isAuthenticated 
-                                    ? 'Get unlimited tender views, 1-click BOQ Excel downloads, and automated WhatsApp alerts for your preferred J&K departments & districts.'
-                                    : 'Cards below are blurred for preview. Log in or create a free contractor account to unlock all active tenders, search across 20 districts, and download BOQs.'}
+                                    ? 'Get unlimited tender views, 1-click BOQ Excel downloads, and automated WhatsApp alerts for your preferred Bihar departments & districts.'
+                                    : 'Cards below are blurred for preview. Log in or create a free contractor account to unlock all active tenders, search across 38 districts, and download BOQs.'}
                                 </p>
                               </div>
                             </div>
@@ -1030,13 +1064,15 @@ export default function Tenders() {
               <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-12 text-center space-y-3 shadow-xs">
                 <FileText className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
                 <h4 className="text-base font-bold text-slate-800 dark:text-white">
-                  {status === 'archived' ? 'No Archived Notices Found' : status === 'expired' ? 'No Expired Notices Found' : 'No Matching Tender Notices'}
+                  {status === 'archived' ? 'No Archived Notices Found' : status === 'expired' ? 'No Expired Notices Found' : status === 'upcoming' ? 'No Upcoming Notices Found' : 'No Matching Tender Notices'}
                 </h4>
                 <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
                   {status === 'archived'
                     ? 'No notices currently awaiting bid opening or with download concluded match your filters.'
                     : status === 'expired'
                     ? 'No expired notices match your current filters.'
+                    : status === 'upcoming'
+                    ? 'There are no upcoming tenders scheduled at this moment.'
                     : 'Try clearing specific department, category, or district filters to broaden your search results.'}
                 </p>
                 <div className="pt-2">

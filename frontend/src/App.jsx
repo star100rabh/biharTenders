@@ -21,6 +21,9 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import CheckScore from './pages/CheckScore';
 import Services from './pages/Services';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import RefundPolicy from './pages/RefundPolicy';
 import { useAuthStore } from './store/useAuthStore';
 
 import { ErrorBoundary } from './components/shared/ErrorBoundary';
@@ -55,6 +58,9 @@ export default function App() {
             <Route path="/login" element={<Login defaultMode="login" />} />
             <Route path="/signup" element={<Login defaultMode="signup" />} />
             <Route path="/tenders/:id" element={<TenderDetails />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
           </Routes>
         </ErrorBoundary>
       </main>

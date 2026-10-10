@@ -445,7 +445,7 @@ export const uploadBackupToR2 = async (filePath, fileName) => {
     // 2. Also update pointer to latest backup
     await backupClient.send(new PutObjectCommand({
       Bucket: bucketName,
-      Key: 'backups/tenderhub_db_latest.json.gz',
+      Key: 'backups/bihartenders_db_latest.json.gz',
       Body: fileBuffer,
       ContentType: 'application/gzip',
     }));
@@ -469,10 +469,10 @@ export const downloadLatestBackupFromR2 = async (destFilePath) => {
     throw new Error('Secondary Cloudflare R2 credentials are not configured in environment variables.');
   }
 
-  logger.info('[Backup R2] Fetching backups/tenderhub_db_latest.json.gz from secondary Cloudflare account...');
+  logger.info('[Backup R2] Fetching backups/bihartenders_db_latest.json.gz from secondary Cloudflare account...');
   const response = await backupClient.send(new GetObjectCommand({
     Bucket: bucketName,
-    Key: 'backups/tenderhub_db_latest.json.gz',
+    Key: 'backups/bihartenders_db_latest.json.gz',
   }));
 
   const streamToBuffer = async (stream) => {

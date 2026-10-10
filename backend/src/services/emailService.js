@@ -24,11 +24,11 @@ export const sendOtpEmail = async (to, otp) => {
   const htmlBody = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; color: #1e293b;">
       <div style="margin-bottom: 24px;">
-        <span style="font-size: 20px; font-weight: 800; color: #0E3A5D; letter-spacing: -0.5px;">Tender<span style="color: #D34528;">Hub</span></span>
-        <span style="font-size: 11px; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; margin-left: 6px; color: #64748b; font-weight: 600;">J&amp;K</span>
+        <span style="font-size: 20px; font-weight: 800; color: #0E3A5D; letter-spacing: -0.5px;">Bihar<span style="color: #D34528;">Tenders</span></span>
+        <span style="font-size: 11px; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; margin-left: 6px; color: #64748b; font-weight: 600;">BIHAR</span>
       </div>
       <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin-top: 0; margin-bottom: 8px;">Your verification code</h2>
-      <p style="font-size: 13px; color: #64748b; margin-top: 0; margin-bottom: 24px;">Use the verification code below to sign in to your TenderHub account:</p>
+      <p style="font-size: 13px; color: #64748b; margin-top: 0; margin-bottom: 24px;">Use the verification code below to sign in to your BiharTenders account:</p>
       
       <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 18px 24px; text-align: center; margin-bottom: 24px;">
         <span style="font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; letter-spacing: 8px; color: #0E3A5D; display: inline-block;">${otp}</span>
@@ -40,7 +40,7 @@ export const sendOtpEmail = async (to, otp) => {
       </p>
 
       <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 24px 0;" />
-      <p style="font-size: 11px; color: #94a3b8; margin: 0;">TenderHub — Official J&amp;K Public Works &amp; Procurement Radar</p>
+      <p style="font-size: 11px; color: #94a3b8; margin: 0;">BiharTenders — Official Bihar Public Works &amp; Procurement Radar</p>
     </div>
   `;
 
@@ -85,7 +85,7 @@ export const sendOtpEmail = async (to, otp) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          sender: { name: 'TenderHub', email: env.EMAIL_FROM.replace(/.*<(.+)>/, '$1').trim() },
+          sender: { name: 'BiharTenders', email: env.EMAIL_FROM.replace(/.*<(.+)>/, '$1').trim() },
           to: [{ email: to }],
           subject: subject,
           textContent: textBody,
@@ -111,5 +111,60 @@ export const sendOtpEmail = async (to, otp) => {
       logger.info(`[EMAIL SERVICE] (Dev Fallback) To: ${to} | OTP: [${otp}]`);
     }
     throw error;
+  }
+};
+
+/**
+ * Send a contact form submission email to support.
+ */
+export const sendContactEmail = async (name, email, phone, subject, message) => {
+  const to = 'starsaurabhpatel143@gmail.com';
+  const mailSubject = `[Contact Form] ${subject}`;
+  const textBody = `Name: ${name}\nEmail: ${email}\nPhone: ${phone || 'N/A'}\nSubject: ${subject}\n\nMessage:\n${message}`;
+
+  const htmlBody = `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2>New Contact Inquiry - BiharTenders</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+      <p><strong>Topic:</strong> ${subject}</p>
+      <hr />
+      <p><strong>Message:</strong></p>
+      <p style="white-space: pre-wrap;">${message}</p>
+    </div>
+  `;
+
+  if (!env.EMAIL_API_KEY || env.EMAIL_PROVIDER === 'console') {
+    logger.info(`[EMAIL SERVICE] Contact form submitted by ${email}`);
+    return { success: true };
+  }
+
+  try {
+    if (env.EMAIL_PROVIDER === 'brevo') {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': env.EMAIL_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sender: { name: 'BiharTenders Contact', email: env.EMAIL_FROM.replace(/.*<(.+)>/, '$1').trim() },
+          to: [{ email: to }],
+          replyTo: { email: email, name: name },
+          subject: mailSubject,
+          textContent: textBody,
+          htmlContent: htmlBody,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send contact email via Brevo');
+      }
+      return { success: true };
+    }
+  } catch (error) {
+    logger.error(error, '[EMAIL SERVICE] Failed to send contact email');
+    return { success: false };
   }
 };

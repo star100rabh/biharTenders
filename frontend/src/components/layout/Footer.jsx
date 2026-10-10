@@ -19,11 +19,11 @@ export function Footer() {
                 <Landmark className="w-4 h-4 text-white" />
               </div>
               <span className="text-lg font-display font-bold tracking-tight text-white">
-                Tender<span className="text-chinarRed">Hub</span>
+                Bihar<span className="text-chinarRed">Tenders</span>
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed font-normal">
-              Public procurement information system for Jammu &amp; Kashmir. Synchronizing published tender notices, technical documents, and BOQ schedules across state engineering divisions.
+              Public procurement information system for Bihar. Synchronizing published tender notices, technical documents, and BOQ schedules across state engineering divisions.
             </p>
           </div>
 
@@ -35,12 +35,12 @@ export function Footer() {
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
                 <a 
-                  href="https://jktenders.gov.in" 
+                  href="https://eproc2.bihar.gov.in" 
                   target="_blank" 
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
                 >
-                  <span>JK eProcurement Portal</span>
+                  <span>Bihar eProcurement Portal</span>
                   <ExternalLink className="w-3 h-3 text-slate-500" />
                 </a>
               </li>
@@ -114,17 +114,19 @@ export function Footer() {
             </div>
             <div className="flex items-center gap-2 text-xs text-slate-400">
               <Mail className="w-4 h-4 text-slate-500 shrink-0" />
-              <span>support@tenderhub.in</span>
+              <span>support@bihartenders.in</span>
             </div>
           </div>
         </div>
 
         {/* Bottom Legal Bar */}
         <div className="mt-10 pt-5 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3 text-center sm:text-left">
-          <p>© {new Date().getFullYear()} TenderHub. Official tender notices remain the copyright of their respective issuing government authorities.</p>
-          <div className="flex gap-4">
-            <Link to="/about" className="hover:text-slate-300 transition-colors">Privacy</Link>
-            <Link to="/contact" className="hover:text-slate-300 transition-colors">Contact</Link>
+          <p>© {new Date().getFullYear()} BiharTenders. Official tender notices remain the copyright of their respective issuing government authorities.</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/privacy-policy" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</Link>
+            <Link to="/refund-policy" className="hover:text-slate-300 transition-colors">Refund & Cancellation Policy</Link>
+            <Link to="/contact" className="hover:text-slate-300 transition-colors">Contact Us</Link>
             <span className="text-slate-600 font-mono">v1.2.0</span>
           </div>
         </div>

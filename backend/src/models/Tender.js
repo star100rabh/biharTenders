@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const tenderSchema = new mongoose.Schema({
   // --- Core Identification ---
   sourcePortal: { type: String, required: true, default: 'JK_TENDERS' },
-  sourceTenderId: { type: String, required: true, index: true }, // e.g. 2026_APD_321986_1
+  sourceTenderId: { type: String, required: true, index: true }, // e.g. 2026_APD_321986_1, or Bihar System Tender No.
   isMultiTender: { type: Boolean, default: false, index: true },
   baseTenderId: { type: String, index: true }, // e.g. 2026_RDPR_325394
   relatedTenderIds: [{ type: String }],       // Sibling sourceTenderIds under same NIT
@@ -25,6 +25,20 @@ const tenderSchema = new mongoose.Schema({
   isMultiCurrencyAllowedForBOQ: { type: String },
   isMultiCurrencyAllowedForFee: { type: String },
   allowTwoStageBidding: { type: String },
+  
+  // --- Bihar Specific & New Fields ---
+  templateGroup: { type: String },
+  bidParts: { type: Number },
+  category: { type: String },
+  procurementCategory: { type: String },
+  biddingCurrency: { type: String },
+  estimatedValueVisibilityFlag: { type: String },
+  minimumNumberOfBids: { type: Number },
+  rankingSequence: { type: String },
+  preBidDiscussionType: { type: String },
+  preBidMeetingEndDate: { type: Date },
+  venueDetails: { type: String },
+  remarks: { type: String },
 
   // --- Payment Instruments (Offline Instruments) ---
   offlineInstruments: [{
@@ -47,6 +61,31 @@ const tenderSchema = new mongoose.Schema({
     subCategory: { type: String },
     description: { type: String },
     format: { type: String }
+  }],
+
+  // --- General Particulars (Bihar) ---
+  generalParticulars: [{
+    description: { type: String }
+  }],
+
+  // --- Required Attachments from Bidder (Bihar) ---
+  requiredAttachments: [{
+    supportingDocument: { type: String },
+    mandatory: { type: String },
+    allowExemption: { type: String },
+    attachmentGroup: { type: String },
+    evaluationType: { type: String }
+  }],
+
+  // --- BOQ Items Detailed (Bihar) ---
+  boqItems: [{
+    itemCode: { type: String },
+    itemName: { type: String },
+    uom: { type: String },
+    quantity: { type: Number },
+    estimatedCost: { type: Number },
+    boqAttachment: { type: String },
+    mandatoryItem: { type: String }
   }],
 
   // --- Fee & EMD Details ---
@@ -110,6 +149,7 @@ const tenderSchema = new mongoose.Schema({
   closingDate: { type: Date, index: true },
   closingDateStr: { type: String },
   closingTime: { type: String },
+  physicalDocSubmissionEndDate: { type: Date }, // Added from Bihar PDFs
 
   // --- Documents & Storage (Cloudflare R2 mapped) ---
   isDocumentAvailable: { type: Boolean, default: true },
@@ -156,8 +196,18 @@ const tenderSchema = new mongoose.Schema({
   isDelisted: { type: Boolean, default: false, index: true },
   cancelledAt: { type: Date, index: true },
   delistReason: { type: String },
-  archivedAt: { type: Date, index: true }
-}, { timestamps: true });
+  archivedAt: { type: Date, index: true },
+
+  // --- FLUID DATA CATCH-ALL (Flexible Schema for new unmapped fields) ---
+  dynamicFields: { 
+    type: mongoose.Schema.Types.Mixed, 
+    default: {} 
+  }
+
+}, { 
+  timestamps: true,
+  strict: false // VERY IMPORTANT: Allows MongoDB to save any new fields found in future Bihar PDFs without crashing
+});
 
 // Indexes for fast filtering, deduplication, and retention management
 tenderSchema.index({ sourcePortal: 1, sourceTenderId: 1 }, { unique: true });

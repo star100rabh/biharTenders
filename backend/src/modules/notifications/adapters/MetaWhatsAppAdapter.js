@@ -43,13 +43,13 @@ export class MetaWhatsAppAdapter extends IWhatsAppProvider {
     const portalUrl = `${env.FRONTEND_URL}/tenders/${tender._id || tender.tenderId}`;
 
     const textBody = 
-      `🚨 *NEW TENDER ALERT — TenderHub J&K*\n\n` +
+      `🚨 *NEW TENDER ALERT — BiharTenders J&K*\n\n` +
       `📋 *Title:* ${tenderTitle.slice(0, 140)}...\n` +
       `🏛️ *Department:* ${dept}\n` +
       `💰 *Estimated Value:* ${valueStr}\n` +
       `📅 *Bid Submission Deadline:* ${closingDate}\n\n` +
       `👉 *View Full Tender & BOQ:* ${portalUrl}\n\n` +
-      `_You are receiving this because it matches your preferred departments/districts. Update preferences anytime on tenderhub.in_`;
+      `_You are receiving this because it matches your preferred departments/districts. Update preferences anytime on bihartenders.in_`;
 
     if (this.isMockMode) {
       logger.info(`\n[WHATSAPP MOCK DISPATCH to ${formattedPhone}]:\n${textBody}\n`);
@@ -101,7 +101,7 @@ export class MetaWhatsAppAdapter extends IWhatsAppProvider {
     }).join('\n\n');
 
     const textBody = 
-      `🌅 *GOOD MORNING! TenderHub Daily Digest*\n\n` +
+      `🌅 *GOOD MORNING! BiharTenders Daily Digest*\n\n` +
       `We found *${tenders.length} new tenders* published today matching your saved criteria:\n\n` +
       `${summaryLines}\n\n` +
       `👉 View all matches: ${env.FRONTEND_URL}/tenders?tab=matched`;
