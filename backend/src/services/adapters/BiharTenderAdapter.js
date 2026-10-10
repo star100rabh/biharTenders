@@ -155,6 +155,8 @@ export default class BiharTenderAdapter {
     console.log(`[BiharAdapter] Found ${viewButtons.length} total tenders to scrape for status: ${targetStatus}`);
     
     let processedCount = 0;
+    const startTime = Date.now();
+    
     for (const button of viewButtons) {
       if (processedCount >= limit) break;
       try {
@@ -185,10 +187,8 @@ export default class BiharTenderAdapter {
           }
         }
 
-        // Random delay between 2 to 5 seconds to prevent IP Blocking (mimic human behavior)
-        const delayMs = Math.floor(Math.random() * (5000 - 2000 + 1) + 2000);
-        console.log(`[BiharAdapter] Waiting for ${delayMs}ms to mimic human behavior...`);
-        await page.waitForTimeout(delayMs);
+        // Small delay to prevent complete blockage but keep it fast
+        await page.waitForTimeout(200);
 
         await button.click();
         await page.waitForSelector('#myModalprev', { state: 'visible' });
@@ -225,6 +225,10 @@ export default class BiharTenderAdapter {
         summary.totalPdfsSecured += documents.length;
         if (documents.length > 0) summary.totalWithDocuments++;
         else summary.totalWithoutDocuments++;
+
+        const elapsedMinutes = (Date.now() - startTime) / 60000;
+        const ratePerMinute = elapsedMinutes > 0 ? (summary.totalIngested / elapsedMinutes).toFixed(1) : 0;
+        console.log(`[BiharAdapter] 🚀 PROGRESS: Fetched ${summary.totalIngested} tenders | Rate: ${ratePerMinute} tenders/minute`);
 
       } catch (err) {
         console.error(`[BiharAdapter] Error processing a tender row:`, err.message);
@@ -392,15 +396,16 @@ export default class BiharTenderAdapter {
    * Returns array of document objects for nitDocuments
    */
   async downloadAndUploadAttachments(page, tenderId) {
-    const downloadIcons = await page.$$('span[ng-click^="downloadFile"]');
+    const downloadIcons = await page.$$('span[ng-click^="downloadFile"]:visible');
     let documents = [];
     let sno = 1;
 
     for (const icon of downloadIcons) {
       try {
-        // Setup Playwright to intercept the file download (max 15 seconds)
+        await page.waitForTimeout(300); // Tiny delay to prevent click drops
+        // Setup Playwright to intercept the file download (max 30 seconds)
         const [download] = await Promise.all([
-          page.waitForEvent('download', { timeout: 15000 }),
+          page.waitForEvent('download', { timeout: 30000 }),
           icon.click()
         ]);
         
