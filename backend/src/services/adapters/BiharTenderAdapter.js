@@ -471,18 +471,17 @@ export default class BiharTenderAdapter {
         }
       } catch (downloadErr) {
         console.log(`[BiharAdapter] Failed to download or upload an attachment: ${downloadErr.message}`);
-      } finally {
-        // Guarantee cleanup of local temp file
-        try {
-          if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
-        } catch (cleanupErr) {}
-      }
         // If the portal redirected us to an error page instead of downloading, go back!
         if (page.url().includes('downloadattachment.action') || page.url().includes('Error')) {
           console.log('[BiharAdapter] Stuck on error page! Navigating back...');
           await page.goBack({ waitUntil: 'networkidle' }).catch(() => {});
           await page.waitForTimeout(2000); // Give it a moment to render the modal again
         }
+      } finally {
+        // Guarantee cleanup of local temp file
+        try {
+          if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+        } catch (cleanupErr) {}
       }
     }
     return documents;
