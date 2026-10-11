@@ -168,42 +168,64 @@ export default class BiharTenderAdapter {
       console.log(`[BiharAdapter] No tenders found or page took too long to load in ${tabPaneId}.`);
     }
 
-    const viewButtons = await page.$$(viewButtonsSelector); 
-    console.log(`[BiharAdapter] Found ${viewButtons.length} total tenders to scrape for status: ${targetStatus}`);
-    
+    // Fast-Forward Optimization: Check all already completed tenders in ONE batch
+    const completedTenders = await Tender.find(
+      { pdfFetchStatus: 'COMPLETED' }, 
+      { sourceTenderId: 1, status: 1 }
+    ).lean();
+    const completedMap = new Map(completedTenders.map(t => [t.sourceTenderId, t.status]));
+
+    // Extract all rows in ONE single browser evaluate call (takes <50ms)
+    const tableRowsData = await page.$$eval(viewButtonsSelector, (buttons) => {
+      return buttons.map((btn, btnIndex) => {
+        const tr = btn.closest('tr');
+        if (!tr) return null;
+        const tds = tr.querySelectorAll('td');
+        return {
+          btnIndex,
+          sourceTenderId: tds.length >= 2 ? tds[1].innerText.trim() : '',
+          rowEndDate: tds.length >= 6 ? tds[5].innerText.trim() : '',
+          timeLeftStr: tds.length >= 7 ? tds[6].innerText.trim() : ''
+        };
+      }).filter(Boolean);
+    });
+
+    // Filter down to ONLY the tenders that need to be scraped
+    const pendingRows = [];
+    for (const row of tableRowsData) {
+      if (!row.sourceTenderId) continue;
+      const existingStatus = completedMap.get(row.sourceTenderId);
+      if (existingStatus) {
+        if (existingStatus === 'UPCOMING' && targetStatus === 'ACTIVE') {
+          // Upgraded from UPCOMING to ACTIVE - needs re-scraping
+          pendingRows.push(row);
+        } else {
+          summary.totalSkipped++;
+        }
+      } else {
+        pendingRows.push(row);
+      }
+    }
+
+    console.log(`[BiharAdapter] ⚡ Fast-forward: Skipped ${summary.totalSkipped} already fetched tenders in <50ms!`);
+    console.log(`[BiharAdapter] 🎯 Only ${pendingRows.length} tenders actually need scraping for status: ${targetStatus}`);
+
+    if (pendingRows.length === 0) {
+      console.log(`[BiharAdapter] ✅ All ${targetStatus} tenders are already up to date!`);
+      return summary;
+    }
+
+    const viewButtons = await page.$$(viewButtonsSelector);
     let processedCount = 0;
     const startTime = Date.now();
-    
-    for (const button of viewButtons) {
+
+    for (const item of pendingRows) {
       if (processedCount >= limit) break;
+      const button = viewButtons[item.btnIndex];
+      if (!button) continue;
+
+      const { sourceTenderId, rowEndDate, timeLeftStr } = item;
       try {
-        // Extract Tender ID (2nd col), Closing Date (6th col) and Time Left (7th col) from main table
-        const { sourceTenderId, rowEndDate, timeLeftStr } = await button.evaluate(btn => {
-          const tr = btn.closest('tr');
-          if (!tr) return { sourceTenderId: '', rowEndDate: '', timeLeftStr: '' };
-          const tds = tr.querySelectorAll('td');
-          return {
-            sourceTenderId: tds.length >= 2 ? tds[1].innerText.trim() : '',
-            rowEndDate: tds.length >= 6 ? tds[5].innerText.trim() : '',
-            timeLeftStr: tds.length >= 7 ? tds[6].innerText.trim() : ''
-          };
-        });
-
-        if (sourceTenderId) {
-          const existingTender = await Tender.findOne({ sourceTenderId });
-          // If we already have it and all PDFs are fetched, skip clicking completely to save massive time
-          if (existingTender && existingTender.pdfFetchStatus === 'COMPLETED') {
-            if (existingTender.status === 'UPCOMING' && targetStatus === 'ACTIVE') {
-              console.log(`[BiharAdapter] 🚀 Tender ${sourceTenderId} upgraded from UPCOMING to ACTIVE. Re-scraping for new docs.`);
-            } else {
-              console.log(`[BiharAdapter] ⚡ Fast-forward: Tender ${sourceTenderId} already fully fetched. Skipping modal click.`);
-              summary.totalSkipped++;
-              processedCount++;
-              continue;
-            }
-          }
-        }
-
         // Small delay to prevent complete blockage but keep it fast
         await page.waitForTimeout(200);
 
