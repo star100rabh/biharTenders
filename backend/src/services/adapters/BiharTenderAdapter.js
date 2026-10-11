@@ -117,6 +117,21 @@ export default class BiharTenderAdapter {
       }, 500);
     });
 
+    // Ensure Angular tab switch is triggered properly if switching tabs
+    if (targetStatus === 'UPCOMING' || url.includes('#upcomingTenders')) {
+      const upcomingTab = await page.$('a[href="#upcomingTenders"]');
+      if (upcomingTab) {
+        await upcomingTab.click();
+        await page.waitForTimeout(1500);
+      }
+    } else if (targetStatus === 'ACTIVE' || url.includes('#latestTenders')) {
+      const latestTab = await page.$('a[href="#latestTenders"]');
+      if (latestTab) {
+        await latestTab.click();
+        await page.waitForTimeout(1000);
+      }
+    }
+
     let summary = {
       totalIngested: 0,
       totalWithDocuments: 0,
@@ -125,30 +140,32 @@ export default class BiharTenderAdapter {
       totalSkipped: 0
     };
 
-    const viewButtonsSelector = 'button[ng-click^="previewTender"]';
+    const tabPaneId = targetStatus === 'UPCOMING' ? '#upcomingTenders' : '#latestTenders';
+    const viewButtonsSelector = `${tabPaneId} button[ng-click^="previewTender"]`;
+    const moreLinkSelector = `${tabPaneId} a[ng-click="clickForMoreTender()"]`;
     
     // Wait for the Angular table to fully render
     try {
       await page.waitForSelector(viewButtonsSelector, { state: 'visible', timeout: 30000 });
       
       // Load ALL tenders by clicking "More..." until it disappears
-      console.log("[BiharAdapter] Loading all pages by clicking 'More...' link...");
+      console.log(`[BiharAdapter] Loading all pages by clicking 'More...' link in ${tabPaneId}...`);
       let moreClicks = 0;
       while (true) {
         if (moreClicks >= 50) break; // Hard limit to avoid infinite loop
-        const moreLink = await page.$('a[ng-click="clickForMoreTender()"]');
+        const moreLink = await page.$(moreLinkSelector);
         if (!moreLink) break;
         
         const isVisible = await moreLink.isVisible();
         if (!isVisible) break;
         
         await moreLink.click();
-        await page.waitForTimeout(1000); // Wait for rows to render
+        await page.waitForTimeout(500); // Wait for rows to render
         moreClicks++;
       }
-      console.log(`[BiharAdapter] Expanded table with ${moreClicks} 'More...' clicks.`);
+      console.log(`[BiharAdapter] Expanded ${tabPaneId} table with ${moreClicks} 'More...' clicks.`);
     } catch (e) {
-      console.log('[BiharAdapter] No tenders found or page took too long to load.');
+      console.log(`[BiharAdapter] No tenders found or page took too long to load in ${tabPaneId}.`);
     }
 
     const viewButtons = await page.$$(viewButtonsSelector); 
