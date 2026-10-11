@@ -24,3 +24,11 @@ yarn-error.log*
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Temp Scraper Downloads & Local Backups
+temp/
+**/temp/
+backups/
+**/backups/
+*.json.gz
+*.gz
