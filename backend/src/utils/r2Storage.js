@@ -6,12 +6,19 @@ import {
   GetObjectCommand 
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { NodeHttpHandler } from "@smithy/node-http-handler";
 import fs from "fs";
 import path from "path";
 import pino from 'pino';
 
 const logger = pino();
 import { parseISTDate } from './dateUtils.js';
+
+// HTTP Handler with strict connection and request timeouts (prevents hanging indefinitely on stalled uploads)
+const r2RequestHandler = new NodeHttpHandler({
+  connectionTimeout: 15000, // 15 seconds
+  requestTimeout: 45000,    // 45 seconds max per request/upload
+});
 
 // 1. Primary Cloudflare R2 Client (Tender Documents)
 export const r2 = new S3Client({
@@ -21,6 +28,7 @@ export const r2 = new S3Client({
     accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
   },
+  requestHandler: r2RequestHandler,
 });
 
 // 2. Secondary Cloudflare R2 Client (Isolated Database Backups)
@@ -40,6 +48,7 @@ export const getBackupR2Client = () => {
       accessKeyId,
       secretAccessKey,
     },
+    requestHandler: r2RequestHandler,
   });
 };
 

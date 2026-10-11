@@ -443,10 +443,10 @@ export default class BiharTenderAdapter {
         const stats = fs.statSync(tempPath);
         const fileSizeKb = Math.round(stats.size / 1024);
 
-        // Upload to Cloudflare R2
+        // Upload to Cloudflare R2 with 50s timeout safeguard
         console.log(`[BiharAdapter] Uploading to R2: ${originalFileName}`);
         
-        const r2Url = await uploadFileToR2({
+        const uploadPromise = uploadFileToR2({
           filePath: tempPath,
           fileName: originalFileName,
           tenderId: tenderId,
@@ -454,6 +454,11 @@ export default class BiharTenderAdapter {
           deptCode: 'BIHAR',
           contentType: originalFileName.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'application/octet-stream'
         });
+        const uploadTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('R2 upload timed out after 50 seconds')), 50000)
+        );
+
+        const r2Url = await Promise.race([uploadPromise, uploadTimeout]);
 
         if (r2Url) {
           documents.push({
@@ -464,11 +469,14 @@ export default class BiharTenderAdapter {
             fileUrl: r2Url
           });
         }
-
-        // Cleanup local temp file
-        fs.unlinkSync(tempPath);
       } catch (downloadErr) {
         console.log(`[BiharAdapter] Failed to download or upload an attachment: ${downloadErr.message}`);
+      } finally {
+        // Guarantee cleanup of local temp file
+        try {
+          if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+        } catch (cleanupErr) {}
+      }
         // If the portal redirected us to an error page instead of downloading, go back!
         if (page.url().includes('downloadattachment.action') || page.url().includes('Error')) {
           console.log('[BiharAdapter] Stuck on error page! Navigating back...');
