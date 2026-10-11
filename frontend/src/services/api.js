@@ -3,20 +3,38 @@ import axios from 'axios';
 const PRODUCTION_RENDER_URL = 'https://bihartenders-backend-jofq.onrender.com/api/v1';
 const LOCAL_DEV_URL = 'http://localhost:8000/api/v1';
 
-const isProductionDomain = typeof window !== 'undefined' && 
-  window.location.hostname !== 'localhost' && 
-  window.location.hostname !== '127.0.0.1';
+const isTunnelOrDev = typeof window !== 'undefined' && (
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1' ||
+  window.location.hostname.endsWith('.devtunnels.ms') ||
+  window.location.hostname.endsWith('.localtunnel.me') ||
+  window.location.hostname.endsWith('.ngrok-free.app') ||
+  window.location.hostname.endsWith('.ngrok.io') ||
+  /^192\.168\./.test(window.location.hostname) ||
+  /^10\./.test(window.location.hostname)
+);
 
+const envUrl = import.meta.env.VITE_API_URL;
 let rawUrl;
-if (isProductionDomain) {
-  const envUrl = import.meta.env.VITE_API_URL;
+
+if (typeof window !== 'undefined' && window.location.hostname.endsWith('.devtunnels.ms')) {
+  // If running via VS Code Dev Tunnels, connect to forwarded port 8000 or explicit VITE_API_URL
+  if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+    rawUrl = envUrl;
+  } else if (window.location.hostname.includes('-5173.')) {
+    rawUrl = `https://${window.location.hostname.replace('-5173.', '-8000.')}/api/v1`;
+  } else {
+    rawUrl = LOCAL_DEV_URL;
+  }
+} else if (isTunnelOrDev) {
+  rawUrl = envUrl || LOCAL_DEV_URL;
+} else {
+  // Production domains (e.g. bihartenders.in, *.onrender.com)
   if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
     rawUrl = envUrl;
   } else {
     rawUrl = PRODUCTION_RENDER_URL;
   }
-} else {
-  rawUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? PRODUCTION_RENDER_URL : LOCAL_DEV_URL);
 }
 
 rawUrl = rawUrl.trim().replace(/\/+$/, '');

@@ -38,11 +38,16 @@ app.use(helmet({
 }));
 
 const configuredOrigins = env.CORS_ORIGIN 
-  ? env.CORS_ORIGIN.split(',').map((o) => o.trim()) 
+  ? env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean) 
   : [];
 
-if (env.FRONTEND_URL && !configuredOrigins.includes(env.FRONTEND_URL)) {
-  configuredOrigins.push(env.FRONTEND_URL.trim());
+if (env.FRONTEND_URL) {
+  env.FRONTEND_URL.split(',').forEach((u) => {
+    const trimmed = u.trim();
+    if (trimmed && !configuredOrigins.includes(trimmed)) {
+      configuredOrigins.push(trimmed);
+    }
+  });
 }
 
 const defaultDevOrigins = [
@@ -52,6 +57,10 @@ const defaultDevOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174',
+  '*.devtunnels.ms',
+  '*.localtunnel.me',
+  '*.ngrok-free.app',
+  '*.ngrok.io',
 ];
 
 const allowedOrigins = [
