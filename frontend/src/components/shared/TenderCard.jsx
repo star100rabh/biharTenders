@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, MapPin, Heart, ArrowRight, FileSpreadsheet, Building2, Calendar, FileText, Layers } from 'lucide-react';
 
-import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay, extractFamousLocation } from '@/utils/formatters';
+import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay, extractFamousLocation, cleanTenderTitle } from '@/utils/formatters';
 import { useBookmarkStore } from '@/store/useBookmarkStore';
 
 import { useAuthStore } from '@/store/useAuthStore';
@@ -117,9 +117,10 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
         {/* Title */}
         <h3 
           onClick={handleCardClick}
-          className="text-sm sm:text-base lg:text-lg font-display font-bold text-slate-900 dark:text-white group-hover:text-dalBlue dark:group-hover:text-blue-300 hover:underline decoration-dalBlue/30 underline-offset-2 transition-colors leading-snug line-clamp-2 cursor-pointer mb-1.5"
+          title={cleanTenderTitle(tender.title)}
+          className="text-sm sm:text-base lg:text-lg font-display font-bold text-slate-900 dark:text-white group-hover:text-dalBlue dark:group-hover:text-blue-300 hover:underline decoration-dalBlue/30 underline-offset-2 transition-colors leading-snug break-words cursor-pointer mb-2"
         >
-          {tender.title?.replace(/[[\]]/g, '') || 'Tender Notice'}
+          {cleanTenderTitle(tender.title)}
         </h3>
 
         {/* Sub-header: Division & Published Time */}

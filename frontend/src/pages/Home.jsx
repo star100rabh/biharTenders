@@ -26,7 +26,7 @@ import { AuthPromptModal } from '@/components/shared/AuthPromptModal';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/Button';
 import { useTenderStats } from '@/hooks/useTenders';
-import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay } from '@/utils/formatters';
+import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay, cleanTenderTitle } from '@/utils/formatters';
 
 // Common regional sectors and districts for quick access
 const quickLocations = [
@@ -348,7 +348,7 @@ export default function Home() {
             {stats.latestTenders.map((tender) => {
               const orgParts = (tender.organisationChain || '').split('||').map((p) => p.trim());
               const primaryDept = orgParts[orgParts.length - 1] || orgParts[0] || 'Govt Authority';
-              const cleanTitle = tender.title?.replace(/[[\]]/g, '') || 'Tender Notice';
+              const cleanTitle = cleanTenderTitle(tender.title);
 
               return (
                 <div
@@ -366,7 +366,10 @@ export default function Home() {
                       </span>
                     </div>
 
-                    <h3 className="text-sm sm:text-base font-display font-bold text-slate-900 dark:text-white hover:text-dalBlue dark:hover:text-blue-400 transition-colors line-clamp-2 leading-snug">
+                    <h3 
+                      title={cleanTitle}
+                      className="text-sm sm:text-base font-display font-bold text-slate-900 dark:text-white hover:text-dalBlue dark:hover:text-blue-400 transition-colors line-clamp-3 break-words leading-snug"
+                    >
                       {cleanTitle}
                     </h3>
 

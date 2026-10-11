@@ -310,8 +310,8 @@ export default class BiharTenderAdapter {
     // Find all table rows inside the modal
     const rows = await page.$$('#myModalprev tr');
     for (const row of rows) {
-      // Get all cells (th and td) in the current row
-      const cells = await row.$$eval('th, td', elements => elements.map(el => el.innerText.trim()));
+      // Get all cells (th and td) in the current row, replacing non-breaking spaces
+      const cells = await row.$$eval('th, td', elements => elements.map(el => el.innerText.replace(/\u00a0/g, ' ').trim()));
       
       // If the row has 2 columns (e.g. [Key, Value])
       if (cells.length === 2 && cells[0] !== '') {

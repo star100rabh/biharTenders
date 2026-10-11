@@ -45,7 +45,7 @@ import { useTender } from '@/hooks/useTenders';
 import { useBookmarkStore } from '@/store/useBookmarkStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { DailyAccessMeter } from '@/components/shared/DailyAccessMeter';
-import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay, extractDetailedWorkLocation } from '@/utils/formatters';
+import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay, extractDetailedWorkLocation, cleanTenderTitle } from '@/utils/formatters';
 import { Button } from '@/components/ui/Button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/Modal';
 import { api } from '@/services/api';
@@ -435,7 +435,7 @@ export default function TenderDetails() {
                 </div>
                 
                 <h1 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white leading-snug break-words whitespace-normal">
-                  {tender.title?.replace(/[[\]]/g, '')}
+                  {cleanTenderTitle(tender.title)}
                 </h1>
 
                 <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
@@ -772,14 +772,14 @@ export default function TenderDetails() {
                 <div className="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-lg border border-slate-200 dark:border-slate-700">
                   <span className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Title</span>
                   <p className="text-xs sm:text-sm text-slate-900 dark:text-slate-100 font-semibold leading-relaxed break-words whitespace-normal">
-                    {tender.title}
+                    {cleanTenderTitle(tender.title)}
                   </p>
                 </div>
-                {tender.workDescription && tender.workDescription !== tender.title && (
+                {tender.workDescription && cleanTenderTitle(tender.workDescription) !== cleanTenderTitle(tender.title) && (
                   <div className="p-3.5 bg-slate-50 dark:bg-slate-900/60 rounded-lg border border-slate-200 dark:border-slate-700">
                     <span className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Work Description</span>
                     <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed break-words whitespace-normal">
-                      {tender.workDescription}
+                      {cleanTenderTitle(tender.workDescription)}
                     </p>
                   </div>
                 )}

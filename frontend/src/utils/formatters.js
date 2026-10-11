@@ -330,4 +330,20 @@ export const extractDetailedWorkLocation = (tender) => {
     mapSearchUrl
   };
 };
+
+/**
+ * Sanitizes tender titles by replacing non-breaking spaces (\u00a0),
+ * removing square brackets, and normalizing whitespace for clean word wrapping.
+ * 
+ * @param {string} title 
+ * @returns {string} Cleaned human-readable title
+ */
+export const cleanTenderTitle = (title) => {
+  if (!title) return 'Tender Notice';
+  return String(title)
+    .replace(/\u00a0/g, ' ')
+    .replace(/[[\]]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
 
