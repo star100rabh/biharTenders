@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PRODUCTION_RENDER_URL = 'https://bihartenders-backend-jofq.onrender.com/api/v1';
+const PRODUCTION_RENDER_URL = 'https://bihartenders-backend.onrender.com/api/v1';
 const LOCAL_DEV_URL = 'http://localhost:8000/api/v1';
 
 const isTunnelOrDev = typeof window !== 'undefined' && (
