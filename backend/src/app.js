@@ -117,7 +117,7 @@ app.use(checkIpBlacklist);
 app.use('/api/', apiLimiter);
 
 // 2. Base Routes & Honeypot Traps
-app.get('/health', (req, res) => {
+app.get(['/health', '/api/health', '/api/v1/health'], (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 

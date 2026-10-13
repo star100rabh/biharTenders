@@ -1,5 +1,5 @@
 # ==============================================================================
-# Render Blueprint Specification for TenderHub Full-Stack Platform
+# Render Blueprint Specification for BiharTenders Full-Stack Platform
 # Docs: https://render.com/docs/blueprint-spec
 # ==============================================================================
 
@@ -8,7 +8,7 @@ services:
   # 1. Backend API Service (Node.js / Express)
   # ----------------------------------------------------------------------------
   - type: web
-    name: tenderhub-api
+    name: bihartenders-backend
     runtime: node
     rootDir: backend
     plan: free
@@ -24,7 +24,7 @@ services:
       - key: MONGO_URI
         sync: false # Set in Render Dashboard from your MongoDB Atlas connection string
       - key: REDIS_URL
-        sync: false # Set in Render Dashboard from your Upstash Redis connection string
+        value: redis://localhost:6379
       - key: JWT_ACCESS_SECRET
         generateValue: true # Render will automatically generate a secure 256-bit secret
       - key: JWT_REFRESH_SECRET
@@ -34,7 +34,7 @@ services:
       - key: JWT_REFRESH_TTL
         value: 7d
       - key: CORS_ORIGIN
-        value: https://tenderhub-web.onrender.com
+        value: https://bihartenders-frontend.onrender.com,*.onrender.com
       - key: R2_ACCESS_KEY_ID
         sync: false # Cloudflare R2 access key ID
       - key: R2_SECRET_ACCESS_KEY
@@ -42,15 +42,13 @@ services:
       - key: R2_ACCOUNT_ID
         sync: false # Cloudflare account ID
       - key: R2_BUCKET_NAME
-        value: tenderhub
-      - key: OPENAI_API_KEY
-        value: dummy_key
+        value: bihartender
 
   # ----------------------------------------------------------------------------
   # 2. Frontend Web Client (Vite / React SPA)
   # ----------------------------------------------------------------------------
   - type: web
-    name: tenderhub-web
+    name: bihartenders-frontend
     runtime: static
     rootDir: frontend
     plan: free
@@ -64,4 +62,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        sync: false # Points to https://tenderhub-api.onrender.com/api/v1
+        sync: false # Points to https://bihartenders-backend.onrender.com/api/v1

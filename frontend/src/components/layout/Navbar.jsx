@@ -23,8 +23,6 @@ export function Navbar() {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    alert("Logging out...");
-    console.log("Logout clicked!");
     logout();
   };
 
@@ -39,50 +37,50 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-6 h-15 sm:h-16 flex items-center justify-between gap-3 sm:gap-4">
+    <header className="sticky top-0 z-40 w-full bg-[#071325]/95 dark:bg-[#071325]/95 backdrop-blur-md border-b border-slate-800 text-white transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 h-16 sm:h-17 flex items-center justify-between gap-3 sm:gap-4">
         
         {/* Left Side: Brand Identity & Desktop Navigation grouped together */}
-        <div className="flex items-center gap-4 lg:gap-6 xl:gap-8 min-w-0">
-          {/* Institutional Brand Identity */}
-          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group focus:outline-none">
-            <div className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-xl bg-dalBlue text-white flex items-center justify-center shadow-xs shrink-0 group-hover:scale-105 transition-transform duration-150">
-              <Landmark className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
+        <div className="flex items-center gap-5 lg:gap-8 min-w-0">
+          {/* Institutional Brand Identity with Emerald Badge */}
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group focus:outline-none">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 shrink-0 group-hover:scale-105 group-hover:bg-emerald-400 transition-all duration-200">
+              <Landmark className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="text-base sm:text-lg font-display font-black tracking-tight text-dalBlue dark:text-white leading-none">
-                  Bihar<span className="text-chinarRed">Tenders</span>
+                <span className="text-base sm:text-lg font-display font-black tracking-tight text-white leading-none">
+                  Bihar<span className="text-emerald-400">Tenders</span>
                 </span>
                 {(import.meta.env.VITE_TEST_MODE === 'true' || (typeof window !== 'undefined' && window.location.port === '5175')) && (
-                  <span className="text-[9px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 px-1.5 py-0.2 rounded-full border border-purple-200 dark:border-purple-800 select-none">
+                  <span className="text-[9px] font-bold tracking-tight bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded-full border border-purple-500/40 select-none">
                     TEST
                   </span>
                 )}
               </div>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-normal mt-0.5 hidden sm:block">
-                Public Works &amp; Procurement
+              <span className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1 hidden sm:block">
+                National E-Tendering System
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-2.5 xl:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed ${
+                  className={`relative px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 focus:outline-none ${
                     isActive
-                      ? 'bg-dalBlue/10 dark:bg-blue-500/20 text-dalBlue dark:text-blue-200 font-bold border border-dalBlue/20 dark:border-blue-400/30 shadow-2xs'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-dalBlue dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/80 border border-transparent'
+                      ? 'bg-slate-800/80 text-white font-bold border border-slate-700/80 shadow-xs'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/50 border border-transparent'
                   }`}
                 >
                   <span>{link.label}</span>
                   {link.isAi && (
-                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-black tracking-widest bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-2xs">
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-black tracking-widest bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-xs">
                       AI
                     </span>
                   )}
@@ -92,107 +90,95 @@ export function Navbar() {
           </nav>
         </div>
 
-        {/* Right Side Action Center: Theme, Saved, Profile & Mobile Hamburger */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* Right Side Action Center: Theme, Saved, Contractor Workspace & Sign In */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           
           {/* Light/Dark Theme Switcher */}
           <button
             onClick={toggleTheme}
-            className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-slate-200 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 bg-slate-50/80 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-750 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-dalBlue dark:hover:text-white transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed"
+            className="w-8.5 h-8.5 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-750 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer focus:outline-none"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle theme"
           >
             {isDark ? (
-              <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+              <Sun className="w-4 h-4 text-amber-400" />
             ) : (
-              <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />
+              <Moon className="w-4 h-4 text-slate-300" />
             )}
           </button>
 
           {/* Saved Tenders Bookmark Indicator */}
           <Link
             to="/profile"
-            className="relative w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-slate-200 dark:border-slate-700/80 hover:border-red-200 dark:hover:border-red-900/60 bg-slate-50/80 dark:bg-slate-800/80 hover:bg-red-50/60 dark:hover:bg-red-950/30 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-chinarRed dark:hover:text-red-400 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed"
+            className="relative w-8.5 h-8.5 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-750 hover:border-emerald-500/40 flex items-center justify-center text-slate-300 hover:text-emerald-400 transition-all cursor-pointer focus:outline-none"
             title="Saved Tenders"
             aria-label="Saved Tenders"
           >
-            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <Heart className="w-4 h-4" />
             {savedTenders.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-chinarRed text-white text-[9px] font-mono font-bold flex items-center justify-center shadow-xs">
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-slate-950 text-[9px] font-mono font-black flex items-center justify-center shadow-xs">
                 {savedTenders.length}
               </span>
             )}
           </Link>
 
-          {/* Subtle Visual Divider */}
-          <div className="h-4.5 w-px bg-slate-200 dark:bg-slate-700/80 mx-0.5 hidden sm:block" />
-
-          {/* User Auth: Small Circular Profile or Sign In Actions */}
+          {/* User Auth: Contractor Workspace / Sign In */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-1 sm:gap-1.5">
-              {/* Circular Compact Profile Avatar */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 to="/profile"
-                className={`relative w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-dalBlue ${
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-700/80 transition-all"
+              >
+                <User className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Contractor Workspace</span>
+              </Link>
+
+              {/* Circular Avatar */}
+              <Link
+                to="/profile"
+                className={`relative w-8.5 h-8.5 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
                   isPro
-                    ? 'ring-2 ring-amber-400 dark:ring-amber-400 hover:ring-amber-500 shadow-xs'
-                    : 'border border-slate-200 dark:border-slate-700 hover:border-dalBlue dark:hover:border-blue-400 shadow-2xs hover:shadow-xs'
+                    ? 'ring-2 ring-emerald-400'
+                    : 'border border-slate-700'
                 }`}
                 title={user?.name ? `${user.name} (${user.email || ''})` : user?.email || 'Contractor Workspace'}
-                aria-label="Contractor Profile"
               >
                 {user?.picture ? (
                   <img
                     src={user.picture}
                     alt={user.name || 'User'}
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-full h-full rounded-xl object-cover"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div
-                    className={`w-full h-full rounded-full text-[11px] font-bold flex items-center justify-center select-none ${
-                      isPro
-                        ? 'bg-amber-500 text-white'
-                        : 'bg-dalBlue/10 dark:bg-blue-500/20 text-dalBlue dark:text-blue-300'
-                    }`}
-                  >
+                  <div className="w-full h-full rounded-xl text-xs font-bold bg-emerald-600/30 text-emerald-300 flex items-center justify-center">
                     {(user?.name || user?.email || 'U')[0].toUpperCase()}
                   </div>
                 )}
-
-                {/* Floating PRO Badge Indicator */}
-                {isPro && (
-                  <span
-                    className="absolute -bottom-1 -right-1 px-1 py-0.2 text-[8px] font-black uppercase tracking-tighter rounded-full bg-amber-500 text-slate-900 border border-white dark:border-slate-900 shadow-2xs select-none leading-none"
-                    title="Pro Member"
-                  >
-                    PRO
-                  </span>
-                )}
               </Link>
 
-              {/* Compact Logout Icon Button */}
+              {/* Logout Button */}
               <button
                 type="button"
                 onClick={handleLogout}
                 title="Sign Out"
-                className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-transparent hover:border-red-200 dark:hover:border-red-900/60 flex items-center justify-center text-slate-500 hover:text-chinarRed dark:hover:text-red-400 hover:bg-red-50/60 dark:hover:bg-red-950/20 transition-all cursor-pointer focus:outline-none"
-                aria-label="Sign Out"
+                className="w-8.5 h-8.5 rounded-xl border border-transparent hover:border-red-900/60 flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-950/30 transition-all cursor-pointer focus:outline-none"
               >
-                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-1 sm:gap-1.5">
+            <div className="flex items-center gap-2">
               <Link
                 to="/signup"
-                className="hidden sm:inline-flex items-center px-2.5 sm:px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-all"
+                className="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-xl border border-slate-700/90 bg-slate-800/80 text-xs font-semibold text-slate-200 hover:text-white hover:border-slate-600 transition-all"
               >
                 <span>Register</span>
               </Link>
+
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-dalBlue hover:bg-dalBlue/90 text-white text-xs font-bold shadow-xs hover:shadow-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Sign In</span>
@@ -203,10 +189,10 @@ export function Navbar() {
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-slate-200 dark:border-slate-700/80 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none"
+            className="lg:hidden w-8.5 h-8.5 rounded-xl border border-slate-700/80 bg-slate-800/60 flex items-center justify-center text-slate-300 hover:text-white transition-colors focus:outline-none"
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4 sm:w-4.5 sm:h-4.5" /> : <Menu className="w-4 h-4 sm:w-4.5 sm:h-4.5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
 
@@ -219,7 +205,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-2 overflow-hidden"
+            className="lg:hidden border-t border-slate-800 bg-[#071325] px-4 py-4 space-y-2 overflow-hidden text-white"
           >
             {navLinks.map((link) => (
               <Link
@@ -228,46 +214,46 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`min-h-[42px] flex items-center px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                   location.pathname === link.path
-                    ? 'bg-dalBlue/10 dark:bg-blue-500/20 text-dalBlue dark:text-blue-300 font-bold border border-dalBlue/20 dark:border-blue-500/30'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80'
+                    ? 'bg-slate-800 text-emerald-400 font-bold border border-slate-700'
+                    : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
                 }`}
               >
                 {link.label}
               </Link>
             ))}
 
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
+            <div className="pt-2 border-t border-slate-800 space-y-2">
               <Link
                 to="/profile"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[42px] flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-dalBlue dark:text-white bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60"
+                className="min-h-[42px] flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-white bg-slate-800/60 border border-slate-700"
               >
-                <User className="w-4 h-4 text-slate-500 shrink-0" />
+                <User className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Contractor Workspace</span>
               </Link>
 
               {isAuthenticated ? (
-                <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 min-h-[44px]">
+                <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 min-h-[44px]">
                   <div className="flex items-center gap-2.5 min-w-0">
                     {user?.picture ? (
                       <img
                         src={user.picture}
                         alt="Profile"
-                        className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-slate-200 dark:ring-slate-700"
+                        className="w-7 h-7 rounded-xl object-cover shrink-0 ring-1 ring-slate-600"
                         referrerPolicy="no-referrer"
                       />
                     ) : (
-                      <div className="w-7 h-7 rounded-full bg-dalBlue text-white text-xs font-bold flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-xl bg-emerald-600/30 text-emerald-300 text-xs font-bold flex items-center justify-center shrink-0">
                         {(user?.name || user?.email || 'U')[0].toUpperCase()}
                       </div>
                     )}
                     <div className="flex flex-col min-w-0">
                       {user?.name && (
-                        <span className="text-xs font-semibold text-slate-900 dark:text-white truncate">
+                        <span className="text-xs font-semibold text-white truncate">
                           {user.name}
                         </span>
                       )}
-                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">
+                      <span className="text-[11px] font-medium text-slate-400 truncate">
                         {user?.email}
                       </span>
                     </div>
@@ -277,7 +263,7 @@ export function Navbar() {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="text-xs font-bold text-red-600 dark:text-red-400 hover:underline flex items-center gap-1 cursor-pointer py-1 px-2 rounded-lg"
+                    className="text-xs font-bold text-red-400 hover:underline flex items-center gap-1 cursor-pointer py-1 px-2 rounded-lg"
                   >
                     <LogOut className="w-3.5 h-3.5 shrink-0" />
                     <span>Sign Out</span>
@@ -288,15 +274,14 @@ export function Navbar() {
                   <Link
                     to="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="min-h-[42px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60"
+                    className="min-h-[42px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 border border-slate-700 bg-slate-800/80"
                   >
-                    <LogIn className="w-3.5 h-3.5" />
                     <span>Sign In</span>
                   </Link>
                   <Link
                     to="/signup"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="min-h-[42px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white bg-dalBlue hover:bg-dalBlue/90 shadow-xs"
+                    className="min-h-[42px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950"
                   >
                     <span>Register</span>
                   </Link>

@@ -5,10 +5,10 @@ export const useContractorStore = create(
   persist(
     (set) => ({
       profile: {
-        name: 'Ravi Shankar',
+        name: 'Saurabh Patel',
         contractorId: 'NIT-S-2026',
         jurisdiction: 'Bihar / North Zone',
-        affiliation: 'NIT Gaya, Bihar',
+        affiliation: 'NIT Patna, Bihar',
         divisionBadge: 'Bihar Public Works Division',
         accountAuth: 'Google Verified',
         registrationClass: 'Class A Works',

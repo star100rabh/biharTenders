@@ -256,7 +256,7 @@ export default class BiharTenderAdapter {
         await Tender.findOneAndUpdate(
           { sourceTenderId: tenderData.sourceTenderId },
           { $set: tenderData },
-          { upsert: true, new: true, returnDocument: 'after' }
+          { upsert: true, returnDocument: 'after' }
         );
         console.log(`[BiharAdapter] Saved Tender to MongoDB: ${tenderData.sourceTenderId}`);
 

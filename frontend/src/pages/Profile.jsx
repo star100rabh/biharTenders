@@ -430,7 +430,7 @@ export default function Profile() {
                       type="text"
                       value={profileForm.name}
                       onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-                      placeholder="e.g. Ravi Shankar"
+                      placeholder="e.g. Saurabh Patel"
                       required
                       className="text-xs"
                     />
@@ -475,7 +475,7 @@ export default function Profile() {
                       type="text"
                       value={profileForm.affiliation}
                       onChange={(e) => setProfileForm({ ...profileForm, affiliation: e.target.value })}
-                      placeholder="e.g. NIT Gaya, Bihar"
+                      placeholder="e.g. NIT SXR, Bihar"
                       className="text-xs"
                     />
                   </div>
@@ -489,7 +489,7 @@ export default function Profile() {
                       type="text"
                       value={profileForm.contractorId}
                       onChange={(e) => setProfileForm({ ...profileForm, contractorId: e.target.value })}
-                      placeholder="e.g. NIT-S-2026"
+                      placeholder="e.g. SK-PWD-2026"
                       className="text-xs font-mono"
                     />
                   </div>

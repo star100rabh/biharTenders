@@ -1,15 +1,32 @@
 /**
  * @file src/components/shared/TenderCard.jsx
- * @description Clean, human-crafted tender notice card with high legibility,
- * clear submission timeline, financial metrics, and district location tag.
+ * @description Spacious, high-legibility enterprise tender notice card.
+ * Combines full-width readability with the modern ProcureHub theme:
+ * 5-column financial and timeline strip (Value, EMD, Published Date, Closing Date, Countdown),
+ * live status indicator, district location tag, BOQ documents badge, and emerald CTA.
  */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, MapPin, Heart, ArrowRight, FileSpreadsheet, Building2, Calendar, FileText, Layers } from 'lucide-react';
+import { 
+  Clock, 
+  MapPin, 
+  Heart, 
+  ArrowRight, 
+  FileSpreadsheet, 
+  Building2, 
+  Calendar, 
+  FileText, 
+  Layers 
+} from 'lucide-react';
 
-import { formatCurrencyINR, formatDateDisplay, formatDateTimeDisplay, extractFamousLocation, cleanTenderTitle } from '@/utils/formatters';
+import { 
+  formatCurrencyINR, 
+  formatDateDisplay, 
+  formatDateTimeDisplay, 
+  extractFamousLocation, 
+  cleanTenderTitle 
+} from '@/utils/formatters';
 import { useBookmarkStore } from '@/store/useBookmarkStore';
-
 import { useAuthStore } from '@/store/useAuthStore';
 
 export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
@@ -37,9 +54,10 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
   const issuingDept = orgParts[0] || tender.department || 'Government Authority';
   const subDept = orgParts.length > 1 ? orgParts[orgParts.length - 1] : '';
 
-  // Calculate days remaining to bid submission deadline
+  // Calculate days remaining & live countdown to bid submission deadline
   const [liveTimeLeftStr, setLiveTimeLeftStr] = useState('');
   const [daysLeft, setDaysLeft] = useState(null);
+  const [isPastClosing, setIsPastClosing] = useState(false);
 
   useEffect(() => {
     const closingDateStr = tender.bidSubmissionEndDate?.$date || tender.closingDate;
@@ -47,8 +65,9 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
 
     const updateTime = () => {
       const diff = new Date(closingDateStr).getTime() - new Date().getTime();
-      if (diff < 0) {
+      if (diff <= 0) {
         setDaysLeft(-1);
+        setIsPastClosing(true);
         setLiveTimeLeftStr('');
         return;
       }
@@ -58,202 +77,242 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
       const m = Math.floor((diff / 1000 / 60) % 60);
       
       setDaysLeft(Math.ceil(diff / (1000 * 60 * 60 * 24)));
-      setLiveTimeLeftStr(`${d.toString().padStart(2, '0')}:${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} left`);
+      setIsPastClosing(false);
+      setLiveTimeLeftStr(`${d}d ${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m left`);
     };
 
     updateTime();
-    const intervalId = setInterval(updateTime, 60000); // update every minute
+    const intervalId = setInterval(updateTime, 30000); // update every 30s
     return () => clearInterval(intervalId);
   }, [tender.bidSubmissionEndDate, tender.closingDate]);
 
   const isCritical = daysLeft !== null && daysLeft >= 0 && daysLeft <= 3;
   const isWarning = daysLeft !== null && daysLeft > 3 && daysLeft <= 7;
   const bidOpeningTime = tender.bidOpeningDate ? new Date(tender.bidOpeningDate).getTime() : 0;
-  const isAwaitingOpening = daysLeft !== null && daysLeft < 0 && bidOpeningTime >= new Date().getTime();
+  const isAwaitingOpening = isPastClosing && bidOpeningTime >= new Date().getTime();
+  const isUpcoming = tender.status === 'UPCOMING' || Boolean(tender.bidSubmissionStartDate && new Date(tender.bidSubmissionStartDate).getTime() > new Date().getTime());
+
+  // Category normalization
+  const categoryLabel = ['PERCENTAGE', 'ITEM RATE', 'PERCENTAGE RATE'].includes((tender.productCategory || '').toUpperCase()) 
+    ? (tender.tenderCategory || 'Works') 
+    : (tender.productCategory || tender.tenderCategory || 'Works');
+
+  const locationTag = extractFamousLocation(tender);
+  const nitDocsCount = tender.nitDocuments?.length || tender.pdfUrls?.length || 0;
 
   return (
-    <article className={`group bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-xs transition-all duration-200 flex flex-col justify-between ${
+    <article className={`group bg-white dark:bg-slate-800/95 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-xs transition-all duration-200 flex flex-col justify-between ${
       isBlurred 
         ? 'filter blur-[4px] select-none pointer-events-none opacity-45' 
-        : 'hover:border-dalBlue dark:hover:border-blue-400 hover:shadow-md hover:-translate-y-0.5 focus-within:border-dalBlue dark:focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-dalBlue/20 dark:focus-within:ring-blue-400/20'
+        : 'hover:border-emerald-500/60 dark:hover:border-emerald-500/60 hover:shadow-lg hover:-translate-y-0.5'
     }`}>
       
-      {/* Header Row: Tender ID, Authority & Save Heart */}
+      {/* ----------------- Top Header Row: Status Chip, ID, Authority & Save Heart ----------------- */}
       <div>
-        <div className="flex items-start justify-between gap-2.5 mb-2 sm:mb-2.5">
+        <div className="flex items-start justify-between gap-2.5 mb-2.5">
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 min-w-0">
-            <span className="font-mono text-[11px] sm:text-xs font-semibold text-dalBlue dark:text-blue-300 bg-slate-100 dark:bg-slate-900 group-hover:bg-blue-50/60 dark:group-hover:bg-blue-950/40 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 group-hover:border-dalBlue/30 transition-colors shrink-0">
+            {/* Live Bidding / Upcoming / Closed Chip */}
+            {isPastClosing ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 dark:bg-slate-900 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                <span>{isAwaitingOpening ? 'Awaiting Opening' : 'Bidding Closed'}</span>
+              </span>
+            ) : isUpcoming ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span>Upcoming</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Live Bidding</span>
+              </span>
+            )}
+
+            {/* Monospace Tender ID */}
+            <span className="font-mono text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 shrink-0">
               {tender.sourceTenderId || tender.tenderReferenceNumber || 'NIT-ACTIVE'}
             </span>
 
+            {/* Multi-Work NIT Tag */}
             {tender.isMultiTender && (
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-800 shrink-0" title="Part of a Multi-Work Notice">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800 shrink-0" title="Part of a Multi-Work Notice">
                 <Layers className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                 <span>Multi-Work NIT</span>
               </span>
             )}
 
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-300 truncate max-w-[140px] xs:max-w-[200px] sm:max-w-[280px]" title={issuingDept}>
+            {/* Issuing Authority */}
+            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-300 truncate max-w-[150px] xs:max-w-[220px] sm:max-w-[320px]" title={issuingDept}>
               <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <span className="truncate">{issuingDept}</span>
             </span>
           </div>
 
+          {/* Bookmark Heart Button */}
           <button
             type="button"
             onClick={() => toggleBookmark(tender)}
-            className={`p-1.5 rounded-xl border transition-all shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed ${
+            className={`p-1.5 rounded-xl border transition-all shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
               bookmarked
-                ? 'bg-red-50 border-red-200 text-chinarRed dark:bg-red-950/40 dark:border-red-800 shadow-xs'
-                : 'border-slate-200 dark:border-slate-700 text-slate-400 hover:text-chinarRed hover:border-chinarRed/50 hover:bg-red-50/50 dark:hover:bg-red-950/20 bg-white dark:bg-slate-800'
+                ? 'bg-red-50 border-red-200 text-red-500 dark:bg-red-950/40 dark:border-red-800 shadow-xs'
+                : 'border-slate-200 dark:border-slate-700 text-slate-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50/50 dark:hover:bg-red-950/20 bg-white dark:bg-slate-800'
             }`}
             title={bookmarked ? 'Remove from Saved' : 'Save this Tender'}
             aria-label="Bookmark Tender"
           >
-            <Heart className={`w-4 h-4 transition-transform active:scale-125 ${bookmarked ? 'fill-current text-chinarRed' : ''}`} />
+            <Heart className={`w-4 h-4 transition-transform active:scale-125 ${bookmarked ? 'fill-current text-red-500' : ''}`} />
           </button>
         </div>
 
-        {/* Title */}
+        {/* ----------------- Prominent Tender Title ----------------- */}
         <h3 
           onClick={handleCardClick}
           title={cleanTenderTitle(tender.title)}
-          className="text-sm sm:text-base lg:text-lg font-display font-bold text-slate-900 dark:text-white group-hover:text-dalBlue dark:group-hover:text-blue-300 hover:underline decoration-dalBlue/30 underline-offset-2 transition-colors leading-snug break-words cursor-pointer mb-2"
+          className="text-sm sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug break-words cursor-pointer mb-2"
         >
           {cleanTenderTitle(tender.title)}
         </h3>
 
-        {/* Sub-header: Division & Published Time */}
-        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 mb-2 sm:mb-2.5 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
-          {subDept && (
-            <span className="truncate max-w-[260px] font-normal">
-              Division: <span className="font-medium text-slate-700 dark:text-slate-300">{subDept}</span>
+        {/* Sub-header: Division & Quick Reference */}
+        {subDept && (
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mb-2 truncate">
+            <span>Division:</span>
+            <span className="font-medium text-slate-700 dark:text-slate-300 truncate" title={subDept}>
+              {subDept}
             </span>
-          )}
-          {subDept && tender.publishedDate && (
-            <span className="text-slate-300 dark:text-slate-600 hidden xs:inline">•</span>
-          )}
-          {(tender.publishedDateStr || tender.publishedDate) && (
-            <span className="inline-flex items-center gap-1 font-normal text-slate-600 dark:text-slate-300 shrink-0">
-              <Clock className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <span>Published:</span>
-              <strong className="font-semibold text-slate-800 dark:text-slate-200 font-mono">
-                {formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate)}
-              </strong>
-            </span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* Middle Financials & Timeline Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 py-2.5 sm:py-3 my-2.5 sm:my-3 border-y border-slate-100 dark:border-slate-700/60 bg-slate-50/70 dark:bg-slate-900/40 rounded-xl px-3 sm:px-3.5">
+      {/* ----------------- Middle Financials & Timeline Strip (5 Columns) ----------------- */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 py-3 my-3 border-y border-slate-100 dark:border-slate-700/60 bg-slate-50/70 dark:bg-slate-900/40 rounded-xl px-3.5">
+        {/* 1. Estimated Value */}
         <div>
-          <span className="block text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
+          <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
             Estimated Value
           </span>
-          <span className="font-mono text-xs sm:text-sm lg:text-base font-bold text-dalBlue dark:text-blue-300 truncate block">
+          <span className="font-mono text-xs sm:text-sm lg:text-base font-bold text-[#071325] dark:text-white truncate block mt-0.5">
             {formatCurrencyINR(tender.estimatedValue)}
           </span>
         </div>
 
+        {/* 2. EMD Deposit */}
         <div>
-          <span className="block text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
+          <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
             EMD Deposit
           </span>
-          <div className="flex flex-wrap items-center gap-1 font-mono text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
-            <span className="truncate">{formatCurrencyINR(tender.emdAmount)}</span>
+          <div className="flex flex-wrap items-center gap-1 font-mono text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+            <span className="truncate">
+              {tender.emdExemptionAllowed === 'Yes' ? 'Exempt' : formatCurrencyINR(tender.emdAmount)}
+            </span>
             {tender.emdExemptionAllowed === 'Yes' && (
-              <span className="text-[9px] font-sans text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/50 px-1 py-0.2 rounded border border-emerald-200 dark:border-emerald-800 shrink-0" title="Exemption Allowed">
+              <span className="text-[9px] font-sans text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/50 px-1 py-0.2 rounded border border-emerald-200 dark:border-emerald-800 shrink-0">
                 Exempt
               </span>
             )}
           </div>
         </div>
 
+        {/* 3. Published Date & Time */}
         <div>
-          <span className="block text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
-            Published Time
+          <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
+            Published Date
           </span>
-          <span className="font-mono text-[11px] sm:text-xs lg:text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1" title={(tender.publishedDateStr || tender.publishedDate) ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) : 'Refer to Notice'}>
+          <span 
+            className="font-mono text-[11px] sm:text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1 mt-0.5" 
+            title={(tender.publishedDateStr || tender.publishedDate) ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) : 'Refer to Notice'}
+          >
             <Clock className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span className="break-words">{(tender.publishedDateStr || tender.publishedDate) ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) : 'Refer to Notice'}</span>
+            <span className="truncate">
+              {(tender.publishedDateStr || tender.publishedDate) 
+                ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) 
+                : 'Refer to Notice'}
+            </span>
           </span>
         </div>
 
+        {/* 4. Closing / Expire Date */}
         <div>
-          <span className="block text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
+          <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
             Closing Date
           </span>
-          <span className="font-mono text-[11px] sm:text-xs lg:text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
+          <span 
+            className="font-mono text-[11px] sm:text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1 mt-0.5"
+            title={formatDateTimeDisplay(tender.closingDateStr || tender.bidSubmissionEndDateStr || tender.closingDate)}
+          >
             <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
-            <span className="break-words">{formatDateTimeDisplay(tender.closingDateStr || tender.bidSubmissionEndDateStr || tender.closingDate)}</span>
+            <span className="truncate">
+              {formatDateTimeDisplay(tender.closingDateStr || tender.bidSubmissionEndDateStr || tender.closingDate)}
+            </span>
           </span>
         </div>
 
+        {/* 5. Live Countdown / Status */}
         <div className="col-span-2 sm:col-span-1">
-          <span className="block text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
-            Status <span className="lowercase tracking-normal font-medium">(in DD:HH:MM)</span>
+          <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
+            Status <span className="lowercase tracking-normal font-normal text-slate-400">(countdown)</span>
           </span>
-          {liveTimeLeftStr ? (
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded truncate text-emerald-700 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900">
-              <Clock className="w-3 h-3 shrink-0" />
-              <span className="truncate">{liveTimeLeftStr}</span>
-            </span>
-          ) : daysLeft !== null && daysLeft >= 0 ? (
-            <span className={`inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded truncate ${
-              isCritical
-                ? 'text-red-700 bg-red-50 border border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-900'
-                : isWarning
-                ? 'text-amber-800 bg-amber-50 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900'
-                : 'text-emerald-700 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900'
-            }`}>
-              <Clock className="w-3 h-3 shrink-0" />
-              <span className="truncate">{daysLeft === 0 ? 'Closes Today' : `${daysLeft} days left`}</span>
-            </span>
-          ) : isAwaitingOpening ? (
-            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900 px-2 py-0.5 rounded truncate" title="Bid submission deadline has ended. Technical opening / evaluation in progress.">
-              <Clock className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
-              <span className="truncate">Bidding Closed · Awaiting Opening</span>
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 truncate">
-              Closed
-            </span>
-          )}
+          <div className="mt-0.5">
+            {liveTimeLeftStr ? (
+              <span className={`inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-lg border font-mono truncate ${
+                isCritical
+                  ? 'text-red-700 bg-red-50 border-red-200 dark:bg-red-950/40 dark:text-red-300 dark:border-red-900'
+                  : isWarning
+                  ? 'text-amber-800 bg-amber-50 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900'
+                  : 'text-emerald-700 bg-emerald-50 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900'
+              }`}>
+                <Clock className="w-3 h-3 shrink-0" />
+                <span className="truncate">{liveTimeLeftStr}</span>
+              </span>
+            ) : daysLeft !== null && daysLeft >= 0 ? (
+              <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-lg text-emerald-700 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900 truncate">
+                <Clock className="w-3 h-3 shrink-0" />
+                <span className="truncate">{daysLeft === 0 ? 'Closes Today' : `${daysLeft} days left`}</span>
+              </span>
+            ) : isAwaitingOpening ? (
+              <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900 px-2 py-0.5 rounded-lg truncate" title="Bid submission concluded. Awaiting opening.">
+                <Clock className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span className="truncate">Awaiting Opening</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700 truncate">
+                Closed
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Bottom Row: Location, Category & Action */}
+      {/* ----------------- Bottom Row: District, Category, Badges & View Notice CTA ----------------- */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 pt-1">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {/* Famous Location */}
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] sm:text-xs font-medium border border-slate-200 dark:border-slate-700">
-            <MapPin className="w-3 h-3 text-chinarRed shrink-0" />
-            <span className="truncate max-w-[130px] sm:max-w-[170px]" title={extractFamousLocation(tender)}>
-              {extractFamousLocation(tender)}
-            </span>
-          </span>
-
-          {/* Category */}
-          <span className="px-2 py-1 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] sm:text-xs font-medium truncate max-w-[130px] sm:max-w-[180px]" title={tender.productCategory || tender.tenderCategory || 'Works'}>
-            {
-              ['PERCENTAGE', 'ITEM RATE', 'PERCENTAGE RATE'].includes((tender.productCategory || '').toUpperCase()) 
-                ? (tender.tenderCategory || 'Works') 
-                : (tender.productCategory || tender.tenderCategory || 'Works')
-            }
-          </span>
-
-          {/* Multiple Notices Tag */}
-          {((tender.nitDocuments?.length > 1) || (tender.pdfUrls?.length > 1)) && (
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-red-50 dark:bg-red-950/40 text-chinarRed dark:text-red-300 text-[10px] font-mono font-semibold rounded border border-red-200 dark:border-red-800" title={`${tender.nitDocuments?.length || tender.pdfUrls?.length} Official Notices Available`}>
-              <FileText className="w-3 h-3 shrink-0" />
-              <span>{tender.nitDocuments?.length || tender.pdfUrls?.length} Notices</span>
+          {/* Famous District / Location Tag */}
+          {locationTag && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] sm:text-xs font-medium border border-slate-200 dark:border-slate-700">
+              <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
+              <span className="truncate max-w-[140px] sm:max-w-[180px]" title={locationTag}>
+                {locationTag}
+              </span>
             </span>
           )}
 
-          {/* BOQ / Work Item Documents Badge */}
+          {/* Tender Category */}
+          <span className="px-2 py-1 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 rounded-lg text-[11px] sm:text-xs font-medium truncate max-w-[140px] sm:max-w-[190px]" title={categoryLabel}>
+            {categoryLabel}
+          </span>
+
+          {/* Official Notices Count */}
+          {nitDocsCount > 0 && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 text-[10px] font-mono font-semibold rounded-lg border border-blue-200 dark:border-blue-800" title={`${nitDocsCount} Official Notice PDF(s)`}>
+              <FileText className="w-3 h-3 shrink-0" />
+              <span>{nitDocsCount} Notice{nitDocsCount > 1 ? 's' : ''}</span>
+            </span>
+          )}
+
+          {/* BOQ / Work Item Archive Badge */}
           {(tender.boqZipUrl || tender.boqFileUrl || tender.workItemDocuments?.length > 0 || tender.coversInfo?.some((c) => c.documentType === '.xls')) && (
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-[10px] font-mono font-semibold rounded border border-emerald-200 dark:border-emerald-800" title="BOQ & Work Documents Archive">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-[10px] font-mono font-semibold rounded-lg border border-emerald-200 dark:border-emerald-800" title="BOQ & Work Documents Archive Available">
               <FileSpreadsheet className="w-3 h-3 shrink-0" />
               <span>{tender.boqZipUrl ? 'BOQ ZIP' : (tender.workItemDocuments?.length > 1 ? `${tender.workItemDocuments.length} Work Docs` : 'BOQ')}</span>
             </span>
@@ -261,18 +320,19 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
 
           {/* Pending Document Release Badge */}
           {(!tender.nitDocuments?.length && !tender.pdfUrls?.length && !tender.boqZipUrl && !tender.boqFileUrl && tender.documentDownloadStartDate) && (
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 text-[10px] font-mono font-semibold rounded border border-amber-200 dark:border-amber-800" title={`Documents available on ${formatDateTimeDisplay(tender.documentDownloadStartDate)}`}>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 text-[10px] font-mono font-semibold rounded-lg border border-amber-200 dark:border-amber-800" title={`Documents available on ${formatDateTimeDisplay(tender.documentDownloadStartDate)}`}>
               <Clock className="w-3 h-3 shrink-0" />
               <span>Docs: {formatDateTimeDisplay(tender.documentDownloadStartDate)}</span>
             </span>
           )}
         </div>
 
+        {/* Action Button: View Notice */}
         <div className="w-full sm:w-auto">
           <button
             type="button"
             onClick={handleCardClick}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold bg-dalBlue hover:bg-chinarRed text-white rounded-xl transition-all duration-150 shadow-xs hover:shadow-md hover:ring-2 hover:ring-chinarRed/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-chinarRed cursor-pointer group/btn"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold bg-[#071325] hover:bg-emerald-600 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700 rounded-xl transition-all duration-150 shadow-xs hover:shadow-md cursor-pointer group/btn"
           >
             <span>View Notice</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5" />

@@ -52,13 +52,39 @@ export const getTenders = async (req, res, next) => {
     // 2. Build array of base filter conditions (Category, Search, Department, Location)
     const baseConditions = [];
 
-    // Specific Category Filter (Matches productCategory or tenderCategory)
+    // Specific Category & Domain Filter (Matches tenderCategory, productCategory, title, workDescription, organisationChain, departmentName)
     if (category && typeof category === 'string' && category.trim()) {
-      const escapedCategory = escapeRegex(category);
+      const catTrimmed = category.trim();
+      let regexPattern = escapeRegex(catTrimmed);
+
+      // Smart domain aliases for Bihar Government Procurement
+      const lower = catTrimmed.toLowerCase();
+      if (lower.includes('civil')) {
+        regexPattern = 'civil';
+      } else if (lower.includes('electr')) {
+        regexPattern = 'electr';
+      } else if (lower.includes('medic') || lower.includes('health') || lower.includes('hospital')) {
+        regexPattern = 'medic|health|hospital|doctor|swasthya|pharma|ayush|bmsicl';
+      } else if (lower.includes('water') || lower.includes('phe') || lower.includes('jal') || lower.includes('drain')) {
+        regexPattern = 'water|jal|drain|sew|phe|phed|pipe|boring|tube.?well|buidco|irrigation';
+      } else if (lower.includes('road') || lower.includes('highway') || lower.includes('path') || lower.includes('bridge')) {
+        regexPattern = 'road|highway|path|sadak|bridge|pul|flyover|culvert|rwd|rcd|bsrdcl';
+      } else if (lower.includes('energy') || lower.includes('solar') || lower.includes('power') || lower.includes('utilit')) {
+        regexPattern = 'energy|solar|power|urja|bijli|electric|breda|discom|transmis|grid';
+      } else if (lower.includes('mech')) {
+        regexPattern = 'mech';
+      } else if (lower.includes('it') || lower.includes('tech') || lower.includes('comput')) {
+        regexPattern = 'it-related|software|hardware|computer|digital|cctv|server';
+      }
+
       baseConditions.push({
         $or: [
-          { productCategory: { $regex: escapedCategory, $options: 'i' } },
-          { tenderCategory: { $regex: escapedCategory, $options: 'i' } }
+          { tenderCategory: { $regex: regexPattern, $options: 'i' } },
+          { productCategory: { $regex: regexPattern, $options: 'i' } },
+          { title: { $regex: regexPattern, $options: 'i' } },
+          { workDescription: { $regex: regexPattern, $options: 'i' } },
+          { organisationChain: { $regex: regexPattern, $options: 'i' } },
+          { departmentName: { $regex: regexPattern, $options: 'i' } }
         ]
       });
     }

@@ -449,7 +449,7 @@ export default function Login({ defaultMode }) {
                             type="text"
                             value={profileDetails.name}
                             onChange={(e) => setProfileDetails({ ...profileDetails, name: e.target.value })}
-                            placeholder="e.g. Ravi Shankar"
+                            placeholder="e.g. Saurabh Patel"
                             className="text-xs h-9"
                           />
                         </div>
@@ -463,7 +463,7 @@ export default function Login({ defaultMode }) {
                             type="text"
                             value={profileDetails.affiliation}
                             onChange={(e) => setProfileDetails({ ...profileDetails, affiliation: e.target.value })}
-                            placeholder="e.g. M/S Valley Infratech / NIT Gaya"
+                            placeholder="e.g. M/S Valley Infratech / NIT SXR"
                             className="text-xs h-9"
                           />
                         </div>
@@ -478,7 +478,7 @@ export default function Login({ defaultMode }) {
                               type="text"
                               value={profileDetails.contractorId}
                               onChange={(e) => setProfileDetails({ ...profileDetails, contractorId: e.target.value })}
-                              placeholder="e.g. JK-PWD-2026"
+                              placeholder="e.g. SK-PWD-2026"
                               className="text-xs h-9 font-mono"
                             />
                           </div>
