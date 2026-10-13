@@ -43,6 +43,9 @@ export const getClientIp = (req) => {
  */
 export const checkIpBlacklist = async (req, res, next) => {
   try {
+    // If Redis is offline or not ready, immediately bypass to prevent blocking requests
+    if (redis.status !== 'ready') return next();
+
     const ip = getClientIp(req);
     if (ip && ip !== '127.0.0.1' && ip !== '::1') {
       const isBlacklisted = await redis.get(`blacklist:ip:${ip}`);

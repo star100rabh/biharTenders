@@ -7,6 +7,7 @@ const logger = pino();
 // Parse Redis connection details dynamically from env.REDIS_URL
 const redisUrl = new URL(env.REDIS_URL);
 const isSecure = redisUrl.protocol === 'rediss:' || redisUrl.hostname.includes('upstash.io');
+export const isLocalRedis = redisUrl.hostname === 'localhost' || redisUrl.hostname === '127.0.0.1';
 
 export const redis = new Redis({
   host: redisUrl.hostname,
@@ -16,20 +17,22 @@ export const redis = new Redis({
   tls: isSecure ? { rejectUnauthorized: false } : undefined,
   family: 4, // Force IPv4 to prevent socket resets
   keepAlive: 30000,
-  maxRetriesPerRequest: null, // Critical requirement for BullMQ
+  enableOfflineQueue: false, // Critical: Fail immediately rather than hanging requests when Redis is down
+  commandTimeout: 2000, // Never let a Redis command hang for more than 2 seconds
   retryStrategy(times) {
-    // If local, slow down retries significantly to prevent CPU/terminal spam
-    if (redisUrl.hostname === 'localhost' || redisUrl.hostname === '127.0.0.1') {
-      return Math.min(times * 2000, 30000); 
+    // If local, stop retrying after 3 attempts so it doesn't spin or block
+    if (isLocalRedis && times > 3) {
+      return null;
     }
-    const delay = Math.min(times * 50, 2000);
+    const delay = Math.min(times * 1000, 30000);
     return delay;
   }
 });
 
 redis.on('connect', () => logger.info('Redis Connected Successfully'));
 redis.on('error', (err) => {
-  if (!err.message.includes('ECONNRESET') && !err.message.includes('ECONNREFUSED')) {
+  // Suppress local connection errors if no local redis exists
+  if (!isLocalRedis && !err.message.includes('ECONNRESET') && !err.message.includes('ECONNREFUSED')) {
     logger.error(`Redis Error: ${err.message}`);
   }
 });
