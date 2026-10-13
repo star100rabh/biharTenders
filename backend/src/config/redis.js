@@ -5,7 +5,12 @@ import { env } from './env.js';
 const logger = pino();
 
 // Parse Redis connection details dynamically from env.REDIS_URL
-const redisUrl = new URL(env.REDIS_URL);
+let redisUrl;
+try {
+  redisUrl = new URL(env.REDIS_URL);
+} catch {
+  redisUrl = new URL('redis://localhost:6379');
+}
 const isSecure = redisUrl.protocol === 'rediss:' || redisUrl.hostname.includes('upstash.io');
 export const isLocalRedis = redisUrl.hostname === 'localhost' || redisUrl.hostname === '127.0.0.1';
 

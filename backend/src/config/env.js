@@ -54,4 +54,18 @@ if (error) {
   throw new Error(`Environment validation error: ${error.message}`);
 }
 
+// Automatically sanitize values (strip accidental KEY= prefixes or surrounding quotes from copy-paste)
+if (envVars.REDIS_URL) {
+  envVars.REDIS_URL = envVars.REDIS_URL.trim()
+    .replace(/^REDIS_URL\s*=\s*/i, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
+}
+if (envVars.MONGO_URI) {
+  envVars.MONGO_URI = envVars.MONGO_URI.trim()
+    .replace(/^MONGO_URI\s*=\s*/i, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
+}
+
 export const env = envVars;
