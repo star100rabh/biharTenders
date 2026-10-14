@@ -47,37 +47,37 @@ export default function Contact() {
         {/* Left Column: Institutional Info */}
         <div className="lg:col-span-5 space-y-5 sm:space-y-6 flex flex-col justify-between">
           <div className="space-y-2.5 sm:space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] sm:text-xs font-semibold border border-slate-200 dark:border-slate-600">
-              <Landmark className="w-3.5 h-3.5 text-dalBlue dark:text-blue-400 shrink-0" />
-              <span>Operations &amp; Support Desk</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 text-[11px] sm:text-xs font-semibold border border-orange-200 dark:border-orange-800">
+              <Landmark className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+              <span>BiharTenders Support Desk • Patna, Bihar</span>
             </div>
             <h1 className="text-xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
-              Get in Touch with our Technical Team
+              Technical Support &amp; Helpdesk <span className="block text-base sm:text-lg font-normal text-slate-500 dark:text-slate-400">Get in touch with our Bihar operations team</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              Have questions regarding portal synchronization, tender document archives, or contractor notifications? Our technical support desk is available to assist.
+              Contact our Patna support desk for assistance with e-Procurement synchronization, BOQ documents, contractor registrations, or tender alerts.
             </p>
           </div>
 
           <div className="space-y-3 text-sm text-slate-700 dark:text-slate-200">
             <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
-              <MapPin className="w-5 h-5 text-chinarRed shrink-0 mt-0.5" />
+              <MapPin className="w-5 h-5 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5" />
               <div>
-                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Campus Location</span>
-                <span className="text-xs font-semibold">NIT Campus, Hazratbal, Srinagar, J&amp;K 190006</span>
+                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Patna Office Location</span>
+                <span className="text-xs font-semibold">Dak Bungalow Chauraha, Bailey Road, Patna, Bihar 800001</span>
               </div>
             </div>
 
             <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
-              <Mail className="w-5 h-5 text-dalBlue dark:text-blue-400 shrink-0 mt-0.5" />
+              <Mail className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Email Inquiries</span>
+                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Email Support</span>
                 <span className="text-xs font-mono font-semibold">support@bihartenders.in</span>
               </div>
             </div>
 
             <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
-              <Clock className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
+              <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <div>
                 <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Operational Hours</span>
                 <span className="text-xs font-semibold">Monday – Saturday, 09:30 AM – 06:00 PM IST</span>

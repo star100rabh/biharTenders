@@ -104,7 +104,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
     <article className={`group bg-white dark:bg-slate-800/95 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-xs transition-all duration-200 flex flex-col justify-between ${
       isBlurred 
         ? 'filter blur-[4px] select-none pointer-events-none opacity-45' 
-        : 'hover:border-emerald-500/60 dark:hover:border-emerald-500/60 hover:shadow-lg hover:-translate-y-0.5'
+        : 'hover:border-orange-500/60 dark:hover:border-amber-500/60 hover:shadow-lg hover:-translate-y-0.5'
     }`}>
       
       {/* ----------------- Top Header Row: Status Chip, ID, Authority & Save Heart ----------------- */}
@@ -115,7 +115,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
             {isPastClosing ? (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 dark:bg-slate-900 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-                <span>{isAwaitingOpening ? 'Awaiting Opening' : 'Bidding Closed'}</span>
+                <span>{isAwaitingOpening ? 'Awaiting Opening' : 'Closed'}</span>
               </span>
             ) : isUpcoming ? (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shrink-0">
@@ -123,7 +123,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
                 <span>Upcoming</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 shrink-0">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span>Live Bidding</span>
               </span>
@@ -153,7 +153,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           <button
             type="button"
             onClick={() => toggleBookmark(tender)}
-            className={`p-1.5 rounded-xl border transition-all shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+            className={`p-1.5 rounded-xl border transition-all shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
               bookmarked
                 ? 'bg-red-50 border-red-200 text-red-500 dark:bg-red-950/40 dark:border-red-800 shadow-xs'
                 : 'border-slate-200 dark:border-slate-700 text-slate-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50/50 dark:hover:bg-red-950/20 bg-white dark:bg-slate-800'
@@ -169,7 +169,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
         <h3 
           onClick={handleCardClick}
           title={cleanTenderTitle(tender.title)}
-          className="text-sm sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug break-words cursor-pointer mb-2"
+          className="text-sm sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-amber-400 transition-colors leading-snug break-words cursor-pointer mb-2"
         >
           {cleanTenderTitle(tender.title)}
         </h3>
@@ -202,7 +202,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
             EMD Deposit
           </span>
-          <div className="flex flex-wrap items-center gap-1 font-mono text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+          <div className="flex flex-wrap items-center gap-1 font-mono text-xs sm:text-sm font-bold text-orange-600 dark:text-amber-400 mt-0.5">
             <span className="truncate">
               {tender.emdExemptionAllowed === 'Yes' ? 'Exempt' : formatCurrencyINR(tender.emdAmount)}
             </span>
@@ -221,13 +221,13 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           </span>
           <span 
             className="font-mono text-[11px] sm:text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1 mt-0.5" 
-            title={(tender.publishedDateStr || tender.publishedDate) ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) : 'Refer to Notice'}
+            title={(tender.publishedDateStr || tender.publishedDate) ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) : 'See Notice'}
           >
-            <Clock className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <Clock className="w-3 h-3 text-orange-600 dark:text-amber-400 shrink-0" />
             <span className="truncate">
               {(tender.publishedDateStr || tender.publishedDate) 
                 ? formatDateTimeDisplay(tender.publishedDateStr || tender.publishedDate) 
-                : 'Refer to Notice'}
+                : 'See Notice'}
             </span>
           </span>
         </div>
@@ -251,7 +251,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
         {/* 5. Live Countdown / Status */}
         <div className="col-span-2 sm:col-span-1">
           <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
-            Status <span className="lowercase tracking-normal font-normal text-slate-400">(countdown)</span>
+            Time Left
           </span>
           <div className="mt-0.5">
             {liveTimeLeftStr ? (
@@ -268,10 +268,10 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
             ) : daysLeft !== null && daysLeft >= 0 ? (
               <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-lg text-emerald-700 bg-emerald-50 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900 truncate">
                 <Clock className="w-3 h-3 shrink-0" />
-                <span className="truncate">{daysLeft === 0 ? 'Closes Today' : `${daysLeft} days left`}</span>
+                <span className="truncate">{daysLeft === 0 ? 'Closes Today' : `${daysLeft}d left`}</span>
               </span>
             ) : isAwaitingOpening ? (
-              <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900 px-2 py-0.5 rounded-lg truncate" title="Bid submission concluded. Awaiting opening.">
+              <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900 px-2 py-0.5 rounded-lg truncate" title="Bids submitted. Awaiting opening.">
                 <Clock className="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0" />
                 <span className="truncate">Awaiting Opening</span>
               </span>
@@ -287,10 +287,10 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
       {/* ----------------- Bottom Row: District, Category, Badges & View Notice CTA ----------------- */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 pt-1">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {/* Famous District / Location Tag */}
+          {/* Famous Bihar District / Location Tag */}
           {locationTag && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-lg text-[11px] sm:text-xs font-medium border border-slate-200 dark:border-slate-700">
-              <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-50 dark:bg-orange-950/40 text-orange-800 dark:text-orange-200 rounded-lg text-[11px] sm:text-xs font-semibold border border-orange-200 dark:border-orange-800/60 shadow-xs">
+              <MapPin className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400 shrink-0" />
               <span className="truncate max-w-[140px] sm:max-w-[180px]" title={locationTag}>
                 {locationTag}
               </span>
@@ -306,7 +306,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           {nitDocsCount > 0 && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 text-[10px] font-mono font-semibold rounded-lg border border-blue-200 dark:border-blue-800" title={`${nitDocsCount} Official Notice PDF(s)`}>
               <FileText className="w-3 h-3 shrink-0" />
-              <span>{nitDocsCount} Notice{nitDocsCount > 1 ? 's' : ''}</span>
+              <span>{nitDocsCount} {nitDocsCount > 1 ? 'NIT Docs' : 'NIT Doc'}</span>
             </span>
           )}
 
@@ -327,14 +327,14 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           )}
         </div>
 
-        {/* Action Button: View Notice */}
+        {/* Action Button: View Notice with Bihar Kesariya Gradient */}
         <div className="w-full sm:w-auto">
           <button
             type="button"
             onClick={handleCardClick}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold bg-[#071325] hover:bg-emerald-600 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700 rounded-xl transition-all duration-150 shadow-xs hover:shadow-md cursor-pointer group/btn"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white rounded-xl transition-all duration-150 shadow-xs hover:shadow-saffron-glow cursor-pointer group/btn"
           >
-            <span>View Notice</span>
+            <span>View Tender Details</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5" />
           </button>
         </div>

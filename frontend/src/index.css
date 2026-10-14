@@ -250,3 +250,48 @@ html:not(.dark) .modal-content-box {
     0 8px 16px -4px rgba(15, 23, 42, 0.12),
     0 0 0 1px rgba(15, 23, 42, 0.10);
 }
+
+/* ==========================================================================
+   BIHAR REGIONAL & CULTURAL DESIGN SYSTEM UTILITIES
+   ========================================================================== */
+
+/* Authentic Mithila / Madhubani-inspired folk decorative border accent */
+.border-bihar-motif {
+  border-image: repeating-linear-gradient(
+    45deg,
+    #EA580C 0,
+    #EA580C 10px,
+    #D97706 10px,
+    #D97706 20px,
+    #059669 20px,
+    #059669 30px,
+    #0B2545 30px,
+    #0B2545 40px
+  ) 10;
+}
+
+/* Elegant Bihar Saffron & Gold subtle top ribbon for cards */
+.bihar-ribbon {
+  background: linear-gradient(90deg, #EA580C 0%, #D97706 50%, #059669 100%);
+}
+
+/* Gangetic Deep Hero Gradient with Auspicious Kesariya Glow */
+.bg-bihar-hero {
+  background: radial-gradient(circle at 50% 15%, rgba(234, 88, 12, 0.12) 0%, rgba(217, 119, 6, 0.08) 35%, rgba(7, 21, 39, 0.98) 75%), #071527;
+}
+
+/* High-Contrast Bihar Saffron Button Glow */
+.shadow-saffron-glow {
+  box-shadow: 0 4px 18px -2px rgba(234, 88, 12, 0.35), 0 2px 6px -1px rgba(217, 119, 6, 0.25);
+}
+
+/* High-Contrast Harit Emerald Button Glow */
+.shadow-harit-glow {
+  box-shadow: 0 4px 18px -2px rgba(5, 150, 105, 0.35), 0 2px 6px -1px rgba(16, 185, 129, 0.25);
+}
+
+/* Warm Khadi Paper tint for light mode cards */
+html:not(.dark) .bg-khadi-card {
+  background-color: #FFFDF9;
+  border-color: #EFE9DC;
+}

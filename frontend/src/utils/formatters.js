@@ -187,16 +187,22 @@ export const formatTimeDisplay = (dateValue) => {
 };
 
 
-// Known famous districts and prominent towns in Bihar (ordered specifically)
+// Known famous districts and prominent towns across all 38 districts of Bihar
 const FAMOUS_DISTRICTS_TOWNS = [
-  'Muzaffarpur', 'Bhagalpur', 'Darbhanga', 'Kulgam', 'Purnia',
-  'Budgam', 'Kupwara', 'Ganderbal', 'Shopian', 'Udhampur', 'Reasi', 'Kathua',
-  'Samba', 'Rajouri', 'Poonch', 'Doda', 'Ramban', 'Kishtwar', 'Leh', 'Kargil',
-  'Katra', 'Sopore', 'Pattan', 'Handwara', 'Uri', 'Akhnoor', 'Bhaderwah', 'Bijbehara'
+  'Patna', 'Muzaffarpur', 'Gaya', 'Bhagalpur', 'Darbhanga', 'Purnia',
+  'Nalanda', 'Bihar Sharif', 'Begusarai', 'Rohtas', 'Sasaram', 'Saran', 'Chhapra',
+  'Samastipur', 'Madhubani', 'Siwan', 'East Champaran', 'Motihari', 'West Champaran', 'Bettiah',
+  'Katihar', 'Saharsa', 'Munger', 'Vaishali', 'Hajipur', 'Buxar', 'Bhojpur', 'Ara',
+  'Gopalganj', 'Sitamarhi', 'Supaul', 'Araria', 'Kishanganj', 'Banka', 'Jamui',
+  'Nawada', 'Jehanabad', 'Aurangabad', 'Kaimur', 'Bhabua', 'Khagaria', 'Madhepura',
+  'Lakhisarai', 'Sheikhpura', 'Arwal', 'Sheohar', 'Danapur', 'Dehri', 'Barauni',
+  'Phulwari Sharif', 'Mokama', 'Barh', 'Fatwah', 'Narkatiaganj', 'Bagaha', 'Raxaul',
+  'Forbesganj', 'Kishanganj', 'Jamalpur'
 ];
 
 const MAJOR_INDIAN_CITIES = [
-  'New Delhi', 'Delhi', 'Chandigarh', 'Shimla', 'Dehradun', 'Mumbai', 'Bengaluru', 'Kolkata', 'Hyderabad', 'Chennai'
+  'New Delhi', 'Delhi', 'Kolkata', 'Varanasi', 'Ranchi', 'Jamshedpur', 'Gorakhpur',
+  'Patna', 'Lucknow', 'Kanpur', 'Mumbai', 'Bengaluru', 'Hyderabad'
 ];
 
 /**
@@ -214,40 +220,45 @@ export const extractFamousLocation = (tender) => {
   const loc = tender.location || '';
   const combined = `${loc} ${title} ${org}`;
 
-  // 1. Check known specific districts and towns first
+  // 1. Check known specific districts and towns in Bihar first
   for (const place of FAMOUS_DISTRICTS_TOWNS) {
     if (new RegExp(`\\b${place}\\b`, 'i').test(combined)) {
       return place;
     }
   }
 
-  // 2. Check for Gaya explicitly
-  if (/\bSrinagar\b/i.test(combined)) {
-    return 'Gaya';
-  }
-
-  // 3. Check for Patna (stripping state-level "Bihar" / "Bihar" mentions)
-  const textWithoutJK = combined.replace(/Patna\s*(and|&)\s*Kashmir/gi, '');
-  if (/\bJammu\b/i.test(textWithoutJK)) {
-    return 'Patna';
-  }
-
-  // 4. Check for major Indian cities outside Bihar
+  // 2. Check for major Indian cities
   for (const city of MAJOR_INDIAN_CITIES) {
     if (new RegExp(`\\b${city}\\b`, 'i').test(combined)) {
       return city;
     }
   }
 
-  // 5. Check Pincode prefix heuristics
+  // 3. Check Bihar Pincode prefix heuristics (800xxx to 854xxx)
   const pincode = tender.pincode?.toString() || '';
-  if (pincode.startsWith('190')) return 'Gaya';
-  if (pincode.startsWith('193')) return 'Muzaffarpur';
-  if (pincode.startsWith('192')) return 'Darbhanga';
-  if (pincode.startsWith('180')) return 'Patna';
-  if (pincode.startsWith('182')) return 'Udhampur';
+  if (pincode.startsWith('800') || pincode.startsWith('801')) return 'Patna';
+  if (pincode.startsWith('802')) return 'Bhojpur (Ara)';
+  if (pincode.startsWith('803')) return 'Nalanda (Bihar Sharif)';
+  if (pincode.startsWith('804')) return 'Jehanabad';
+  if (pincode.startsWith('805')) return 'Nawada';
+  if (pincode.startsWith('811')) return 'Munger';
+  if (pincode.startsWith('812')) return 'Bhagalpur';
+  if (pincode.startsWith('813')) return 'Banka';
+  if (pincode.startsWith('821')) return 'Rohtas (Sasaram)';
+  if (pincode.startsWith('823')) return 'Gaya';
+  if (pincode.startsWith('824')) return 'Aurangabad';
+  if (pincode.startsWith('841')) return 'Saran (Chhapra)';
+  if (pincode.startsWith('842')) return 'Muzaffarpur';
+  if (pincode.startsWith('843') || pincode.startsWith('844')) return 'Vaishali (Hajipur)';
+  if (pincode.startsWith('845')) return 'East Champaran (Motihari)';
+  if (pincode.startsWith('846')) return 'Darbhanga';
+  if (pincode.startsWith('847')) return 'Madhubani';
+  if (pincode.startsWith('848')) return 'Samastipur';
+  if (pincode.startsWith('851')) return 'Begusarai';
+  if (pincode.startsWith('852')) return 'Saharsa';
+  if (pincode.startsWith('853') || pincode.startsWith('854')) return 'Purnia';
 
-  // 6. If raw location exists and doesn't look like a scraped work description, sanitize it
+  // 4. If raw location exists and doesn't look like a scraped work description, sanitize it
   if (loc && !/construction|drilled|borewell|deep bore|village/i.test(loc)) {
     const trimmed = loc.trim();
     if (trimmed.length > 0 && trimmed.length <= 30) {

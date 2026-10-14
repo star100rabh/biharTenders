@@ -29,18 +29,18 @@ export class DummyTenderAdapter extends TenderSourceAdapter {
           },
           {
             Title: "Supply and Installation of IT Equipment for Govt Schools",
-            TenderId: `JK-EDU-${Math.floor(Math.random() * 10000)}`,
+            TenderId: `BHR-EDU-${Math.floor(Math.random() * 10000)}`,
             Category: "IT Hardware",
-            Department: "Department of Education",
+            Department: "Department of Education, Bihar",
             EstimatedValue: 1200000, 
             ClosingDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
             Status: "ACTIVE"
           },
           {
-            Title: "Maintenance of Water Supply Lines in District Srinagar",
-            TenderId: `JK-JAL-${Math.floor(Math.random() * 10000)}`,
+            Title: "Maintenance of Nal-Jal Water Supply Lines in District Patna",
+            TenderId: `BHR-PHED-${Math.floor(Math.random() * 10000)}`,
             Category: "Plumbing & Pipeline",
-            Department: "Jal Shakti Department",
+            Department: "Public Health Engineering Department (PHED Bihar)",
             EstimatedValue: 850000, 
             ClosingDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
             Status: "ACTIVE"

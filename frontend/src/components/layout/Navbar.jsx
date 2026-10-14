@@ -28,29 +28,34 @@ export function Navbar() {
 
   const navLinks = [
     { label: 'Home', path: '/' },
-    { label: 'Browse Tenders', path: '/tenders' },
-    { label: 'Services', path: '/services', isAi: true },
+    { label: 'Tenders', path: '/tenders' },
+    { label: 'AI Services', path: '/services', isAi: true },
     { label: 'Check Score', path: '/check-score' },
     { label: 'Pricing', path: '/pricing' },
-    { label: 'About', path: '/about' },
     { label: 'Contact', path: '/contact' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#071325]/95 dark:bg-[#071325]/95 backdrop-blur-md border-b border-slate-800 text-white transition-colors duration-200">
+    <header className="sticky top-0 z-40 w-full bg-[#071527]/95 dark:bg-[#071527]/95 backdrop-blur-md border-b border-orange-500/20 text-white transition-colors duration-200">
+      {/* Top Auspicious Cultural Ribbon */}
+      <div className="h-1 w-full bg-gradient-to-r from-orange-600 via-amber-500 to-emerald-600" />
+      
       <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 h-16 sm:h-17 flex items-center justify-between gap-3 sm:gap-4">
         
         {/* Left Side: Brand Identity & Desktop Navigation grouped together */}
-        <div className="flex items-center gap-5 lg:gap-8 min-w-0">
-          {/* Institutional Brand Identity with Emerald Badge */}
+        <div className="flex items-center gap-4 lg:gap-6 min-w-0">
+          {/* Institutional Brand Identity with Bihar Saffron Badge */}
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group focus:outline-none">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 shrink-0 group-hover:scale-105 group-hover:bg-emerald-400 transition-all duration-200">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0 group-hover:scale-105 group-hover:from-orange-400 group-hover:to-amber-500 transition-all duration-200 border border-amber-300/40">
               <Landmark className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="text-base sm:text-lg font-display font-black tracking-tight text-white leading-none">
-                  Bihar<span className="text-emerald-400">Tenders</span>
+                  Bihar<span className="text-amber-400">Tenders</span>
+                </span>
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/40 hidden xs:inline-block">
+                  BIHAR
                 </span>
                 {(import.meta.env.VITE_TEST_MODE === 'true' || (typeof window !== 'undefined' && window.location.port === '5175')) && (
                   <span className="text-[9px] font-bold tracking-tight bg-purple-500/20 text-purple-300 px-1.5 py-0.2 rounded-full border border-purple-500/40 select-none">
@@ -58,29 +63,29 @@ export function Navbar() {
                   </span>
                 )}
               </div>
-              <span className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1 hidden sm:block">
-                National E-Tendering System
+              <span className="text-[9px] sm:text-[10px] text-amber-200/80 font-semibold tracking-wider mt-0.5 hidden sm:block">
+                Bihar Government Tenders & e-Procurement Portal
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 focus:outline-none ${
+                  className={`relative px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1 focus:outline-none ${
                     isActive
-                      ? 'bg-slate-800/80 text-white font-bold border border-slate-700/80 shadow-xs'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/50 border border-transparent'
+                      ? 'bg-orange-600/20 text-amber-300 font-bold border border-orange-500/40 shadow-xs'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border border-transparent'
                   }`}
                 >
                   <span>{link.label}</span>
                   {link.isAi && (
-                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-black tracking-widest bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-xs">
+                    <span className="px-1.5 py-0.2 rounded-full text-[9px] font-black tracking-widest bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-xs">
                       AI
                     </span>
                   )}
@@ -171,14 +176,14 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 to="/signup"
-                className="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-xl border border-slate-700/90 bg-slate-800/80 text-xs font-semibold text-slate-200 hover:text-white hover:border-slate-600 transition-all"
+                className="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-xl border border-amber-500/40 bg-slate-800/80 text-xs font-semibold text-amber-200 hover:text-white hover:border-amber-400 transition-all"
               >
                 <span>Register</span>
               </Link>
 
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-bold shadow-md shadow-orange-600/30 hover:shadow-orange-600/40 transition-all cursor-pointer border border-amber-300/30"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Sign In</span>
