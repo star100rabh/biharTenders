@@ -292,14 +292,22 @@ OTHER DOCUMENTS: ${JSON.stringify(tender.otherImportantDocuments || [])}
 
     // Try Gemini First if key exists
     if (geminiClient) {
-      try {
-        const model = geminiClient.getGenerativeModel({ 
-          model: env.GEMINI_MODEL || 'gemini-1.5-flash',
-          generationConfig: {
-            temperature: 0.2,
-            responseMimeType: 'application/json',
-          }
-        });
+      const candidateModels = [
+        env.GEMINI_MODEL,
+        'gemini-3.5-flash-lite',
+        'gemini-3.1-flash-lite',
+        'gemini-flash-latest',
+      ].filter(Boolean);
+
+      for (const modelName of candidateModels) {
+        try {
+          const model = geminiClient.getGenerativeModel({ 
+            model: modelName,
+            generationConfig: {
+              temperature: 0.2,
+              responseMimeType: 'application/json',
+            }
+          });
 
         const prompt = `You are BiharTenders's Chief AI Quantity Surveyor and Senior Government Contracting Consultant.
 Analyze the following tender details thoroughly and generate a complete, high-fidelity engineering dossier.
@@ -410,14 +418,16 @@ Return strictly valid JSON with this exact schema:
 }`;
 
         const response = await model.generateContent(prompt);
-        const text = response.response.text();
+        let text = response.response.text();
+        text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
         const parsed = JSON.parse(text);
         parsed.tokens = { promptTokens: 14200, completionTokens: 3100, cachedTokens: 9800 };
         return parsed;
       } catch (geminiErr) {
-        logger.warn(`Gemini analysis failed (${geminiErr.message}), trying fallback...`);
+        logger.warn(`Gemini analysis with ${modelName} failed (${geminiErr.message}), trying next candidate...`);
       }
     }
+  }
 
     // Try OpenAI fallback if Gemini didn't run
     if (openaiClient) {
@@ -736,7 +746,7 @@ Return strictly valid JSON with this exact schema:
     // Generate response using Gemini / OpenAI or contextual reasoning
     if (geminiClient) {
       try {
-        const model = geminiClient.getGenerativeModel({ model: env.GEMINI_MODEL || 'gemini-1.5-flash' });
+        const model = geminiClient.getGenerativeModel({ model: env.GEMINI_MODEL || 'gemini-3.5-flash-lite' });
         const contextPrompt = `
 CONTRACTOR PROFILE:
 Company: ${profile.companyName}
