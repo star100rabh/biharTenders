@@ -214,47 +214,85 @@ export default function Home() {
       {/* =========================================================================
           HERO SECTION (Bihar Cultural Colors: Deep Navy + Kesariya Glow + Skyline)
           ========================================================================= */}
-      <section className="relative bg-[#071527] text-white pt-10 sm:pt-14 pb-24 sm:pb-32 px-4 sm:px-6 lg:px-8 border-b border-amber-900/40 bg-dot-grid overflow-hidden">
+      <section className="relative bg-bihar-heritage-hero bg-madhubani-pattern text-white pt-8 sm:pt-12 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 border-b border-orange-500/30 overflow-hidden">
         {/* Saffron & Surya Gold radial glow in center */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-600/20 via-amber-500/15 to-emerald-500/10 blur-[130px] pointer-events-none rounded-full" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-gradient-to-r from-orange-600/25 via-amber-500/20 to-emerald-500/15 blur-[120px] pointer-events-none rounded-full" />
 
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-5 sm:space-y-6">
+        {/* Sacred Mithila Sun Mandala Watermark (Surya Chakra) */}
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-80 sm:w-96 h-80 sm:h-96 opacity-10 pointer-events-none select-none">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-amber-400">
+            <circle cx="100" cy="100" r="90" stroke="currentColor" strokeWidth="2" strokeDasharray="6 4" />
+            <circle cx="100" cy="100" r="75" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="100" cy="100" r="50" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+            <circle cx="100" cy="100" r="25" fill="currentColor" fillOpacity="0.2" />
+            {Array.from({ length: 16 }).map((_, i) => {
+              const angle = (i * 360) / 16;
+              return (
+                <line
+                  key={i}
+                  x1="100"
+                  y1="10"
+                  x2="100"
+                  y2="25"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  transform={`rotate(${angle} 100 100)`}
+                />
+              );
+            })}
+          </svg>
+        </div>
+
+        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-4 sm:space-y-5">
           
           {/* Official Badge: Bihar State Procurement */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-orange-500/40 text-amber-200 text-xs font-semibold shadow-inner max-w-full truncate">
-            <Landmark className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-            <span className="truncate">Bihar State E-Procurement Portal • All 38 Districts Unified</span>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-orange-500/50 text-amber-300 text-xs font-semibold shadow-inner max-w-full truncate">
+            <Landmark className="w-4 h-4 text-orange-400 shrink-0" />
+            <span className="truncate">Government of Bihar • e-Procurement Portal (eproc2.bihar.gov.in)</span>
+          </div>
+
+          {/* 9 Administrative Divisions of Bihar Ribbon */}
+          <div className="hidden sm:flex items-center justify-center flex-wrap gap-1.5 text-[11px] font-semibold text-amber-200/90">
+            <span className="text-orange-400">9 Divisions:</span>
+            {['Patna', 'Tirhut', 'Magadh', 'Darbhanga', 'Saran', 'Kosi', 'Purnia', 'Bhagalpur', 'Munger'].map((div, i) => (
+              <span key={div} className="inline-flex items-center gap-1.5">
+                <span className="px-2 py-0.5 rounded-md bg-orange-950/60 border border-orange-500/30 text-amber-300">
+                  {div}
+                </span>
+                {i < 8 && <span className="text-orange-500/60">•</span>}
+              </span>
+            ))}
           </div>
 
           {/* Primary Headline with Saffron/Gold Accent */}
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-white max-w-4xl mx-auto">
+          <div className="space-y-1.5 pt-1">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] text-white max-w-4xl mx-auto">
               Public Tenders &amp; Works Across{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400">
                 All 38 Districts of Bihar
               </span>
             </h1>
-            <p className="text-xs sm:text-sm font-semibold tracking-wide text-orange-200/90 uppercase">
+            <p className="text-xs sm:text-sm font-bold tracking-wider text-orange-300 uppercase">
               Discover, Bid &amp; Win Bihar Public Works &amp; eProc2 Tenders
             </p>
           </div>
 
           {/* Subtitle */}
-          <p className="text-xs sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
+          <p className="text-xs sm:text-base text-slate-200 max-w-3xl mx-auto leading-relaxed font-normal">
             Rural Works Department (RWD), Road Construction (RCD), Building Construction (BCD), Water Resources (WRD), Public Health Engineering (PHED), and Municipal Corporation notices, BOQs, and corrigenda directly on your screen.
           </p>
 
           {/* Floating Search Console with Bihar Theme */}
-          <div className="max-w-4xl mx-auto mt-8 pt-2">
+          <div className="max-w-4xl mx-auto mt-6 pt-1">
             <form 
               onSubmit={handleSearch}
-              className="bg-white dark:bg-slate-800 rounded-3xl p-3 sm:p-4 shadow-2xl border border-orange-200/80 dark:border-slate-700/80 text-left transition-all"
+              className="bg-white dark:bg-slate-800/95 rounded-3xl p-3 sm:p-4 shadow-2xl border-2 border-orange-400/50 dark:border-orange-500/40 text-left transition-all shadow-saffron-glow"
             >
               {/* Row 1: Search Input + Category + Region + Find Tenders Button */}
               <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2.5">
                 
                 {/* Search Text Input */}
-                <div className="flex items-center flex-1 bg-slate-50 dark:bg-slate-900/60 rounded-2xl px-3.5 py-2.5 border border-slate-200 dark:border-slate-700/80 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20">
+                <div className="flex items-center flex-1 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3.5 py-2.5 border border-slate-200 dark:border-slate-700/80 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20">
                   <Search className="w-4 h-4 text-orange-500 shrink-0 mr-2.5" />
                   <input
                     type="text"
@@ -266,7 +304,7 @@ export default function Home() {
                 </div>
 
                 {/* Categories Dropdown */}
-                <div className="w-full lg:w-52 bg-slate-50 dark:bg-slate-900/60 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700/80">
+                <div className="w-full lg:w-52 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700/80">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -281,7 +319,7 @@ export default function Home() {
                 </div>
 
                 {/* Regions / Districts Dropdown */}
-                <div className="w-full lg:w-48 bg-slate-50 dark:bg-slate-900/60 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700/80">
+                <div className="w-full lg:w-48 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700/80">
                   <select
                     value={selectedRegion}
                     onChange={(e) => setSelectedRegion(e.target.value)}
@@ -337,15 +375,63 @@ export default function Home() {
             </form>
           </div>
 
+          {/* Quick Contractor Departments Selector Chips */}
+          <div className="max-w-4xl mx-auto pt-2">
+            <div className="flex items-center justify-center flex-wrap gap-2 text-xs">
+              <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider">
+                Direct Department Tenders:
+              </span>
+              {[
+                { label: 'RWD PMGSY Roads', query: { department: 'Rural Works' } },
+                { label: 'RCD Highways', query: { department: 'Road Construction' } },
+                { label: 'PHED Nal-Jal', query: { category: 'Water' } },
+                { label: 'BCD Civil Buildings', query: { department: 'Building Construction' } },
+                { label: 'WRD Canals', query: { category: 'Civil Works' } },
+                { label: 'BSPHCL Grid', query: { category: 'Electrical Works' } },
+                { label: 'BRPNNL Bridges', query: { department: 'BRPNNL' } },
+                { label: 'Patna Municipal', query: { department: 'Patna Municipal' } }
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => {
+                    const params = new URLSearchParams();
+                    if (item.query.department) params.set('department', item.query.department);
+                    if (item.query.category) params.set('category', item.query.category);
+                    navigate(`/tenders?${params.toString()}`);
+                  }}
+                  className="px-3 py-1.5 rounded-xl font-bold bg-slate-900/80 hover:bg-orange-600 text-amber-200 hover:text-white border border-amber-500/30 hover:border-amber-400 transition-all cursor-pointer shadow-xs hover:scale-105"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Animated Scroll Down Indicator to Explore 38 Districts & Departments */}
+          <div className="pt-2">
+            <button
+              onClick={() => {
+                const el = document.getElementById('districts-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                else window.scrollBy({ top: 500, behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/20 hover:bg-orange-500/30 text-amber-300 border border-orange-500/40 text-xs font-bold transition-all animate-bounce cursor-pointer"
+            >
+              <span>Explore All 38 Districts &amp; Major Departments Below</span>
+              <ArrowRight className="w-3.5 h-3.5 rotate-90" />
+            </button>
+          </div>
+
         </div>
 
         {/* Bihar Architectural Landmarks Skyline (Mahabodhi, Golghar, Nalanda, Ganga Path) */}
-        <div className="absolute bottom-0 left-0 right-0 z-0 pointer-events-none">
-          <BiharSkyline className="w-full h-24 sm:h-36 opacity-25" />
+        <div className="relative mt-8 -mb-20 sm:-mb-28 z-0 pointer-events-none">
+          <BiharSkyline className="w-full h-44 sm:h-60 opacity-60" />
           {/* Ganga River Wave Divider Curve */}
-          <div className="w-full overflow-hidden leading-none -mb-[1px]">
+          <div className="w-full overflow-hidden leading-none -mt-4">
             <svg 
-              className="relative block w-full h-8 sm:h-12 text-paper dark:text-[#071325]" 
+              className="relative block w-full h-10 sm:h-14 text-paper dark:text-[#071325]" 
               viewBox="0 0 1200 120" 
               preserveAspectRatio="none" 
               fill="currentColor"
@@ -355,6 +441,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* =========================================================================
           KEY METRICS ROW (4 Rounded Cards with Saffron / Royal Navy / Emerald Accents)
