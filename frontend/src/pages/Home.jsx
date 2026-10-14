@@ -1,9 +1,10 @@
 /**
  * @file src/pages/Home.jsx
- * @description Official public procurement portal for Bihar, styled with authentic
- * Bihar state visual identity: Deep Bihar Royal Navy (#071527), Kesariya/Saffron Gold
- * accents, Madhubani geometric trims, Bihar architectural landmark skyline, 9-division
- * & 38-district explorer, major engineering departments grid, and live procurement pipeline.
+ * @description Official public procurement portal for Bihar, styled with modern,
+ * high-contrast enterprise aesthetics: Deep Royal Bihar Navy (#071527), vibrant Kesariya
+ * Saffron Gold (#EA580C / #F59E0B) buttons, Emerald Harit (#059669) accents, crisp clean
+ * cards (#F8FAFC / #FFFFFF), interactive 9-division & 38-district navigator, major engineering
+ * departments grid, and real-time live procurement pipeline.
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -27,13 +28,15 @@ import {
   RotateCcw,
   Zap,
   CheckCircle2,
-  Bell
+  Bell,
+  HardHat,
+  Droplets,
+  Waves
 } from 'lucide-react';
 
 import { PreferenceModal } from '@/components/shared/PreferenceModal';
 import { AuthPromptModal } from '@/components/shared/AuthPromptModal';
 import { TenderCard } from '@/components/shared/TenderCard';
-import { BiharSkyline } from '@/components/shared/BiharSkyline';
 import { BiharDistrictsExplorer } from '@/components/home/BiharDistrictsExplorer';
 import { MajorDepartmentsGrid } from '@/components/home/MajorDepartmentsGrid';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -179,7 +182,7 @@ export default function Home() {
   const carouselItems = [...rawCarousel, ...rawCarousel];
 
   return (
-    <div className="min-h-screen bg-paper dark:bg-[#071325] text-slate-800 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#071325] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <PreferenceModal />
       <AuthPromptModal 
         open={authModalOpen}
@@ -190,82 +193,43 @@ export default function Home() {
       />
 
       {/* =========================================================================
-          BIHAR E-PROC2 LIVE BEACON & TICKER
+          TOP E-PROC2 LIVE GATEWAY STATUS BAR
           ========================================================================= */}
-      <div className="bg-[#050e1a] border-b border-orange-500/20 py-2 px-4 text-center overflow-hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-center flex-wrap gap-2 sm:gap-3 text-[11px] sm:text-xs">
-          <span className="relative flex h-2 w-2 shrink-0">
+      <div className="bg-[#040D1A] border-b border-orange-500/30 py-2.5 px-4 text-center">
+        <div className="max-w-7xl mx-auto flex items-center justify-center flex-wrap gap-2 sm:gap-3 text-xs">
+          <span className="relative flex h-2.5 w-2.5 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
-          <span className="font-bold text-emerald-400">Bihar e-Proc2 Live Gateway</span>
-          <span className="text-slate-500 hidden sm:inline">•</span>
-          <span className="text-slate-300">Synchronized with eproc2.bihar.gov.in</span>
-          <span className="text-slate-500 hidden md:inline">•</span>
-          <span className="text-amber-300 font-semibold hidden md:inline">All 38 Districts &amp; 9 Administrative Divisions</span>
-          <span className="text-slate-500 hidden lg:inline">•</span>
+          <span className="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">
+            Bihar e-Proc2 Live Gateway
+          </span>
+          <span className="text-slate-600 hidden sm:inline">•</span>
+          <span className="text-slate-300 font-medium">Synchronized with eproc2.bihar.gov.in</span>
+          <span className="text-slate-600 hidden md:inline">•</span>
+          <span className="text-amber-400 font-bold hidden md:inline">All 38 Districts &amp; 9 Administrative Divisions</span>
+          <span className="text-slate-600 hidden lg:inline">•</span>
           <span className="text-orange-400 font-bold hidden lg:inline">⚡ AI Contractor Dossier Active</span>
         </div>
       </div>
 
-      {/* Auspicious Madhubani Geometric Trim */}
-      <div className="bihar-madhubani-strip w-full" />
-
       {/* =========================================================================
-          HERO SECTION (Bihar Cultural Colors: Deep Navy + Kesariya Glow + Skyline)
+          HERO SECTION (High-Tech Enterprise Navy + Kesariya Glow + Search Console)
           ========================================================================= */}
-      <section className="relative bg-bihar-heritage-hero bg-madhubani-pattern text-white pt-8 sm:pt-12 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 border-b border-orange-500/30 overflow-hidden">
-        {/* Saffron & Surya Gold radial glow in center */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-gradient-to-r from-orange-600/25 via-amber-500/20 to-emerald-500/15 blur-[120px] pointer-events-none rounded-full" />
+      <section className="relative bg-gradient-to-b from-[#071527] via-[#091D38] to-[#0D264A] text-white pt-12 sm:pt-16 pb-20 sm:pb-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800 bg-tech-grid overflow-hidden">
+        {/* Subtle Ambient Radial Lighting */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-600/20 via-amber-500/15 to-emerald-500/10 blur-[120px] pointer-events-none rounded-full" />
 
-        {/* Sacred Mithila Sun Mandala Watermark (Surya Chakra) */}
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-80 sm:w-96 h-80 sm:h-96 opacity-10 pointer-events-none select-none">
-          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-amber-400">
-            <circle cx="100" cy="100" r="90" stroke="currentColor" strokeWidth="2" strokeDasharray="6 4" />
-            <circle cx="100" cy="100" r="75" stroke="currentColor" strokeWidth="1.5" />
-            <circle cx="100" cy="100" r="50" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
-            <circle cx="100" cy="100" r="25" fill="currentColor" fillOpacity="0.2" />
-            {Array.from({ length: 16 }).map((_, i) => {
-              const angle = (i * 360) / 16;
-              return (
-                <line
-                  key={i}
-                  x1="100"
-                  y1="10"
-                  x2="100"
-                  y2="25"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  transform={`rotate(${angle} 100 100)`}
-                />
-              );
-            })}
-          </svg>
-        </div>
-
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-4 sm:space-y-5">
+        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-5">
           
           {/* Official Badge: Bihar State Procurement */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-orange-500/50 text-amber-300 text-xs font-semibold shadow-inner max-w-full truncate">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-orange-500/40 text-amber-300 text-xs font-bold shadow-lg max-w-full truncate">
             <Landmark className="w-4 h-4 text-orange-400 shrink-0" />
-            <span className="truncate">Government of Bihar • e-Procurement Portal (eproc2.bihar.gov.in)</span>
-          </div>
-
-          {/* 9 Administrative Divisions of Bihar Ribbon */}
-          <div className="hidden sm:flex items-center justify-center flex-wrap gap-1.5 text-[11px] font-semibold text-amber-200/90">
-            <span className="text-orange-400">9 Divisions:</span>
-            {['Patna', 'Tirhut', 'Magadh', 'Darbhanga', 'Saran', 'Kosi', 'Purnia', 'Bhagalpur', 'Munger'].map((div, i) => (
-              <span key={div} className="inline-flex items-center gap-1.5">
-                <span className="px-2 py-0.5 rounded-md bg-orange-950/60 border border-orange-500/30 text-amber-300">
-                  {div}
-                </span>
-                {i < 8 && <span className="text-orange-500/60">•</span>}
-              </span>
-            ))}
+            <span className="truncate">Bihar State E-Procurement Portal • All 38 Districts Unified</span>
           </div>
 
           {/* Primary Headline with Saffron/Gold Accent */}
-          <div className="space-y-1.5 pt-1">
+          <div className="space-y-2">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] text-white max-w-4xl mx-auto">
               Public Tenders &amp; Works Across{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400">
@@ -282,17 +246,17 @@ export default function Home() {
             Rural Works Department (RWD), Road Construction (RCD), Building Construction (BCD), Water Resources (WRD), Public Health Engineering (PHED), and Municipal Corporation notices, BOQs, and corrigenda directly on your screen.
           </p>
 
-          {/* Floating Search Console with Bihar Theme */}
-          <div className="max-w-4xl mx-auto mt-6 pt-1">
+          {/* Floating Search Console */}
+          <div className="max-w-4xl mx-auto mt-7 pt-1">
             <form 
               onSubmit={handleSearch}
-              className="bg-white dark:bg-slate-800/95 rounded-3xl p-3 sm:p-4 shadow-2xl border-2 border-orange-400/50 dark:border-orange-500/40 text-left transition-all shadow-saffron-glow"
+              className="bg-white dark:bg-slate-850 rounded-3xl p-3 sm:p-4 shadow-2xl border border-slate-200/90 dark:border-slate-700/80 text-left transition-all"
             >
               {/* Row 1: Search Input + Category + Region + Find Tenders Button */}
               <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2.5">
                 
                 {/* Search Text Input */}
-                <div className="flex items-center flex-1 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3.5 py-2.5 border border-slate-200 dark:border-slate-700/80 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20">
+                <div className="flex items-center flex-1 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20">
                   <Search className="w-4 h-4 text-orange-500 shrink-0 mr-2.5" />
                   <input
                     type="text"
@@ -304,11 +268,11 @@ export default function Home() {
                 </div>
 
                 {/* Categories Dropdown */}
-                <div className="w-full lg:w-52 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700/80">
+                <div className="w-full lg:w-52 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
+                    className="w-full text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
                   >
                     {CATEGORY_DROPDOWN.map((cat) => (
                       <option key={cat.value} value={cat.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -319,11 +283,11 @@ export default function Home() {
                 </div>
 
                 {/* Regions / Districts Dropdown */}
-                <div className="w-full lg:w-48 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700/80">
+                <div className="w-full lg:w-48 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700">
                   <select
                     value={selectedRegion}
                     onChange={(e) => setSelectedRegion(e.target.value)}
-                    className="w-full text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
+                    className="w-full text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
                   >
                     {REGION_DROPDOWN.map((reg) => (
                       <option key={reg.value} value={reg.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -333,10 +297,10 @@ export default function Home() {
                   </select>
                 </div>
 
-                {/* Find Tenders Action Button (Kesariya-Saffron Gradient) */}
+                {/* Find Tenders Action Button (Solid Kesariya-Saffron Gradient) */}
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 active:bg-orange-800 text-white font-bold px-6 py-3 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-saffron-glow cursor-pointer shrink-0"
+                  className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 active:bg-orange-800 text-white font-bold px-7 py-3 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-saffron-glow cursor-pointer shrink-0"
                 >
                   <Search className="w-4 h-4" />
                   <span>Search Tenders</span>
@@ -346,7 +310,7 @@ export default function Home() {
               {/* Row 2: Trending Searches Bar */}
               <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/60 px-1 text-xs">
                 <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 min-w-0">
-                  <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-orange-600 dark:text-amber-400">
+                  <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-orange-600 dark:text-amber-400">
                     <span>Trending in Bihar:</span>
                   </span>
                   {TRENDING_SEARCHES.map((term, idx) => (
@@ -354,7 +318,7 @@ export default function Home() {
                       key={idx}
                       type="button"
                       onClick={() => handleTrendingClick(term)}
-                      className="px-2.5 py-1 rounded-xl text-[11px] font-medium bg-orange-50/70 hover:bg-orange-100 dark:bg-slate-700/60 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors cursor-pointer border border-orange-100 dark:border-slate-600"
+                      className="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-slate-100 hover:bg-orange-50 hover:text-orange-600 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
                     >
                       {term}
                     </button>
@@ -375,17 +339,17 @@ export default function Home() {
             </form>
           </div>
 
-          {/* Quick Contractor Departments Selector Chips */}
+          {/* Quick Department Quick-Jump Chips */}
           <div className="max-w-4xl mx-auto pt-2">
             <div className="flex items-center justify-center flex-wrap gap-2 text-xs">
-              <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider">
-                Direct Department Tenders:
+              <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                Direct Department Works:
               </span>
               {[
-                { label: 'RWD PMGSY Roads', query: { department: 'Rural Works' } },
+                { label: 'RWD Roads', query: { department: 'Rural Works' } },
                 { label: 'RCD Highways', query: { department: 'Road Construction' } },
                 { label: 'PHED Nal-Jal', query: { category: 'Water' } },
-                { label: 'BCD Civil Buildings', query: { department: 'Building Construction' } },
+                { label: 'BCD Buildings', query: { department: 'Building Construction' } },
                 { label: 'WRD Canals', query: { category: 'Civil Works' } },
                 { label: 'BSPHCL Grid', query: { category: 'Electrical Works' } },
                 { label: 'BRPNNL Bridges', query: { department: 'BRPNNL' } },
@@ -400,7 +364,7 @@ export default function Home() {
                     if (item.query.category) params.set('category', item.query.category);
                     navigate(`/tenders?${params.toString()}`);
                   }}
-                  className="px-3 py-1.5 rounded-xl font-bold bg-slate-900/80 hover:bg-orange-600 text-amber-200 hover:text-white border border-amber-500/30 hover:border-amber-400 transition-all cursor-pointer shadow-xs hover:scale-105"
+                  className="px-3 py-1.5 rounded-xl font-bold bg-slate-900/90 hover:bg-orange-600 text-slate-200 hover:text-white border border-slate-700 hover:border-orange-500 transition-all cursor-pointer shadow-xs"
                 >
                   {item.label}
                 </button>
@@ -408,103 +372,71 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Animated Scroll Down Indicator to Explore 38 Districts & Departments */}
-          <div className="pt-2">
-            <button
-              onClick={() => {
-                const el = document.getElementById('districts-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-                else window.scrollBy({ top: 500, behavior: 'smooth' });
-              }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/20 hover:bg-orange-500/30 text-amber-300 border border-orange-500/40 text-xs font-bold transition-all animate-bounce cursor-pointer"
-            >
-              <span>Explore All 38 Districts &amp; Major Departments Below</span>
-              <ArrowRight className="w-3.5 h-3.5 rotate-90" />
-            </button>
-          </div>
-
-        </div>
-
-        {/* Bihar Architectural Landmarks Skyline (Mahabodhi, Golghar, Nalanda, Ganga Path) */}
-        <div className="relative mt-8 -mb-20 sm:-mb-28 z-0 pointer-events-none">
-          <BiharSkyline className="w-full h-44 sm:h-60 opacity-60" />
-          {/* Ganga River Wave Divider Curve */}
-          <div className="w-full overflow-hidden leading-none -mt-4">
-            <svg 
-              className="relative block w-full h-10 sm:h-14 text-paper dark:text-[#071325]" 
-              viewBox="0 0 1200 120" 
-              preserveAspectRatio="none" 
-              fill="currentColor"
-            >
-              <path d="M0,0 C150,80 350,-20 500,45 C650,110 900,20 1200,60 L1200,120 L0,120 Z"></path>
-            </svg>
-          </div>
         </div>
       </section>
 
-
       {/* =========================================================================
-          KEY METRICS ROW (4 Rounded Cards with Saffron / Royal Navy / Emerald Accents)
+          KEY METRICS ROW (4 Crisp Cards with Saffron / Royal Navy / Emerald Accents)
           ========================================================================= */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
-          {/* Card 1: Active E-Tenders (Saffron / Folder) */}
-          <div className="bg-white dark:bg-slate-800 border border-orange-100 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 shadow-lg flex items-center gap-3.5 sm:gap-4 hover:border-orange-300 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 border border-orange-100 dark:border-orange-900/60">
+          {/* Card 1: Active E-Tenders (Saffron Gradient / Folder) */}
+          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-orange-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
+            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-orange-500/25 group-hover:scale-105 transition-transform">
               <FolderGit2 className="w-6 h-6" />
             </div>
             <div className="min-w-0">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">
+              <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white truncate">
                 {isStatsLoading ? '...' : `${stats?.activeTendersCount ?? 865}+`}
               </div>
-              <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
+              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
                 Active E-Tenders
               </div>
             </div>
           </div>
 
-          {/* Card 2: Total Contract Value (Royal Ganga Blue / Rupee) */}
-          <div className="bg-white dark:bg-slate-800 border border-blue-100 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 shadow-lg flex items-center gap-3.5 sm:gap-4 hover:border-blue-300 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-900/60">
+          {/* Card 2: Total Contract Value (Royal Ganga Blue Gradient / Rupee) */}
+          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
+            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
               <IndianRupee className="w-6 h-6" />
             </div>
             <div className="min-w-0">
-              <div className="text-lg sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">
+              <div className="text-xl sm:text-2xl font-black font-mono text-slate-900 dark:text-white truncate">
                 {isStatsLoading ? '...' : formatCurrencyINR(stats?.totalValue ?? 1450000000)}
               </div>
-              <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
-                Total Contract Value
+              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
+                Total Value Live
               </div>
             </div>
           </div>
 
-          {/* Card 3: Verified Departments & Municipal Bodies (Amber Gold Building) */}
-          <div className="bg-white dark:bg-slate-800 border border-amber-100 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 shadow-lg flex items-center gap-3.5 sm:gap-4 hover:border-amber-300 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900/60">
+          {/* Card 3: Verified Departments & Municipal Bodies (Amber Gold Gradient / Building) */}
+          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-amber-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
+            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/25 group-hover:scale-105 transition-transform">
               <Building2 className="w-6 h-6" />
             </div>
             <div className="min-w-0">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">
+              <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white truncate">
                 {isStatsLoading ? '...' : `${stats?.authoritiesCount ?? 34}+`}
               </div>
-              <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
-                Government Bodies &amp; Depts
+              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
+                Govt. Bodies &amp; Depts
               </div>
             </div>
           </div>
 
-          {/* Card 4: Districts Covered (Emerald Harit Green / Map Pin) */}
-          <div className="bg-white dark:bg-slate-800 border border-emerald-100 dark:border-slate-700/80 rounded-2xl p-4 sm:p-5 shadow-lg flex items-center gap-3.5 sm:gap-4 hover:border-emerald-300 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-900/60">
+          {/* Card 4: Districts Covered (Emerald Harit Green Gradient / Map Pin) */}
+          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-emerald-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
+            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform">
               <MapPin className="w-6 h-6" />
             </div>
             <div className="min-w-0">
-              <div className="text-xl sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">
+              <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white truncate">
                 38
               </div>
-              <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
-                All 38 Districts Covered
+              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
+                Districts Covered
               </div>
             </div>
           </div>
@@ -514,10 +446,10 @@ export default function Home() {
         {/* =========================================================================
             BIHAR CONTRACTOR TENDER ALERT BANNER
             ========================================================================= */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0B2545] via-[#071527] to-[#8C2500] border border-orange-500/40 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#071527] via-[#0B2545] to-[#8C2500] border border-orange-500/40 p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-3.5">
             <div className="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-orange-400 shrink-0">
-              <Bell className="w-6 h-6 animate-pulse" />
+              <Bell className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -536,7 +468,7 @@ export default function Home() {
           </div>
           <Link
             to="/contractor/preferences"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-saffron-glow transition-all shrink-0 cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-saffron-glow transition-all shrink-0 cursor-pointer"
           >
             <span>Set Free Alerts</span>
             <ArrowRight className="w-4 h-4" />
@@ -557,7 +489,7 @@ export default function Home() {
       {/* =========================================================================
           ANIMATED LIVE PIPELINE CAROUSEL SECTION
           ========================================================================= */}
-      <section className="py-12 sm:py-16 overflow-hidden bg-slate-50/50 dark:bg-[#06101e]/60 border-y border-orange-100/60 dark:border-slate-800">
+      <section className="py-12 sm:py-16 overflow-hidden bg-slate-100/70 dark:bg-[#06101e]/60 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3">
             <div>
@@ -587,8 +519,8 @@ export default function Home() {
 
         {/* Continuous Moving Track */}
         <div className="relative w-full overflow-hidden group">
-          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-paper dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-paper dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-slate-100 dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-slate-100 dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
 
           <motion.div
             className="flex gap-4 sm:gap-5 w-max py-2"
@@ -684,7 +616,7 @@ export default function Home() {
       {/* =========================================================================
           PROCUREMENT & BIDDING GUIDANCE (Bihar Specific 2x2 Grid)
           ========================================================================= */}
-      <section className="bg-slate-50/70 dark:bg-slate-900/40 py-16 sm:py-20 border-t border-orange-100 dark:border-slate-800 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white dark:bg-slate-900/60 py-16 sm:py-20 border-t border-slate-200 dark:border-slate-800 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -704,9 +636,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
             
             {/* Card 1: EMD */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-300 transition-all">
+            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
               <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-100 dark:border-orange-900">
+                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
@@ -719,9 +651,9 @@ export default function Home() {
             </div>
 
             {/* Card 2: Upcoming Tenders */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-300 transition-all">
+            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
               <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-100 dark:border-orange-900">
+                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
@@ -734,9 +666,9 @@ export default function Home() {
             </div>
 
             {/* Card 3: Digital Credentials */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-300 transition-all">
+            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
               <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-100 dark:border-orange-900">
+                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
@@ -749,9 +681,9 @@ export default function Home() {
             </div>
 
             {/* Card 4: Official Verification */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-300 transition-all">
+            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
               <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-100 dark:border-orange-900">
+                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
@@ -766,9 +698,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Auspicious Madhubani Geometric Trim before Footer */}
-      <div className="bihar-madhubani-strip w-full" />
     </div>
   );
 }
