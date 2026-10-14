@@ -67,5 +67,11 @@ if (envVars.MONGO_URI) {
     .replace(/^["']|["']$/g, '')
     .trim();
 }
+if (envVars.GEMINI_API_KEY) {
+  envVars.GEMINI_API_KEY = envVars.GEMINI_API_KEY.trim()
+    .replace(/^GEMINI_API_KEY\s*=\s*/i, '')
+    .replace(/^["']|["']$/g, '')
+    .trim();
+}
 
 export const env = envVars;

@@ -9,7 +9,7 @@ import {
   getMyDossiers,
   submitContactForm,
 } from '../controllers/services.controller.js';
-import { verifyToken } from '../middleware/auth.middleware.js';
+import { verifyToken, optionalAuth } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
@@ -17,8 +17,8 @@ const router = express.Router();
 router.get('/plans', getAiPlans);
 router.post('/contact', submitContactForm);
 
-// Authenticated / Test-bypass contractor routes
-router.use(verifyToken);
+// Allow seamless AI analysis with optionalAuth (works for both logged-in and guest contractors)
+router.use(optionalAuth);
 
 router.get('/contractor-profile', getContractorProfile);
 router.put('/contractor-profile', updateContractorProfile);

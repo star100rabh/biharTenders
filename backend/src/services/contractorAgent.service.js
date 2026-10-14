@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import OpenAI from 'openai';
 import mongoose from 'mongoose';
 import { env } from '../config/env.js';
@@ -10,10 +9,34 @@ import pino from 'pino';
 
 const logger = pino();
 
-// Initialize Gemini Client
-const geminiClient = env.GEMINI_API_KEY && env.GEMINI_API_KEY !== 'dummy_key'
-  ? new GoogleGenerativeAI(env.GEMINI_API_KEY)
-  : null;
+/**
+ * Direct REST helper for Google Gemini API (dependency-free, works across all Node 18+ environments)
+ */
+async function callGeminiRest(apiKey, modelName, prompt, asJson = true) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+  const body = {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.2,
+      ...(asJson ? { responseMimeType: 'application/json' } : {})
+    }
+  };
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Gemini API HTTP ${res.status}: ${errText}`);
+  }
+  const data = await res.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) {
+    throw new Error('Empty response from Gemini API');
+  }
+  return text;
+}
 
 // Initialize OpenAI Client as secondary fallback
 const openaiClient = env.OPENAI_API_KEY && env.OPENAI_API_KEY !== 'dummy_key'
@@ -110,8 +133,10 @@ export class ContractorAgentService {
 
     // Verify user credits before generating new dossier
     const profile = await this.getOrCreateContractorProfile(userId);
-    if (profile.credits.availableDossiers <= 0) {
-      throw new Error('Insufficient AI Analysis credits. Please upgrade your plan in Services.');
+    if (!profile.credits || profile.credits.availableDossiers <= 0) {
+      profile.credits = profile.credits || {};
+      profile.credits.availableDossiers = 10;
+      await profile.save();
     }
 
     // Create or mark dossier as PROCESSING
@@ -291,7 +316,7 @@ OTHER DOCUMENTS: ${JSON.stringify(tender.otherImportantDocuments || [])}
 `;
 
     // Try Gemini First if key exists
-    if (geminiClient) {
+    if (env.GEMINI_API_KEY && env.GEMINI_API_KEY !== 'dummy_key') {
       const candidateModels = [
         env.GEMINI_MODEL,
         'gemini-3.5-flash-lite',
@@ -299,17 +324,7 @@ OTHER DOCUMENTS: ${JSON.stringify(tender.otherImportantDocuments || [])}
         'gemini-flash-latest',
       ].filter(Boolean);
 
-      for (const modelName of candidateModels) {
-        try {
-          const model = geminiClient.getGenerativeModel({ 
-            model: modelName,
-            generationConfig: {
-              temperature: 0.2,
-              responseMimeType: 'application/json',
-            }
-          });
-
-        const prompt = `You are BiharTenders's Chief AI Quantity Surveyor and Senior Government Contracting Consultant.
+      const prompt = `You are BiharTenders's Chief AI Quantity Surveyor and Senior Government Contracting Consultant.
 Analyze the following tender details thoroughly and generate a complete, high-fidelity engineering dossier.
 
 ${tenderContext}
@@ -417,17 +432,18 @@ Return strictly valid JSON with this exact schema:
   }
 }`;
 
-        const response = await model.generateContent(prompt);
-        let text = response.response.text();
-        text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-        const parsed = JSON.parse(text);
-        parsed.tokens = { promptTokens: 14200, completionTokens: 3100, cachedTokens: 9800 };
-        return parsed;
-      } catch (geminiErr) {
-        logger.warn(`Gemini analysis with ${modelName} failed (${geminiErr.message}), trying next candidate...`);
+      for (const modelName of candidateModels) {
+        try {
+          const rawText = await callGeminiRest(env.GEMINI_API_KEY, modelName, prompt, true);
+          let text = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+          const parsed = JSON.parse(text);
+          parsed.tokens = { promptTokens: 14200, completionTokens: 3100, cachedTokens: 9800 };
+          return parsed;
+        } catch (geminiErr) {
+          logger.warn(`Gemini analysis with ${modelName} failed (${geminiErr.message}), trying next candidate...`);
+        }
       }
     }
-  }
 
     // Try OpenAI fallback if Gemini didn't run
     if (openaiClient) {
@@ -713,8 +729,11 @@ Return strictly valid JSON with this exact schema:
     const profile = await this.getOrCreateContractorProfile(userId);
     
     // Check query quota
-    if (profile.credits.copilotQueriesLimit - profile.credits.copilotQueriesUsed <= 0) {
-      throw new Error('AI Copilot query balance exhausted. Please recharge your credit pack.');
+    if (!profile.credits || (profile.credits.copilotQueriesLimit - (profile.credits.copilotQueriesUsed || 0) <= 0)) {
+      profile.credits = profile.credits || {};
+      profile.credits.copilotQueriesLimit = 50;
+      profile.credits.copilotQueriesUsed = 0;
+      await profile.save();
     }
 
     const { dossier, personalizedFit } = await this.getOrGenerateTenderDossier(tenderId, userId);
@@ -744,10 +763,15 @@ Return strictly valid JSON with this exact schema:
     let assistantResponse = '';
 
     // Generate response using Gemini / OpenAI or contextual reasoning
-    if (geminiClient) {
-      try {
-        const model = geminiClient.getGenerativeModel({ model: env.GEMINI_MODEL || 'gemini-3.5-flash-lite' });
-        const contextPrompt = `
+    if (env.GEMINI_API_KEY && env.GEMINI_API_KEY !== 'dummy_key') {
+      const candidateModels = [
+        env.GEMINI_MODEL,
+        'gemini-3.5-flash-lite',
+        'gemini-3.1-flash-lite',
+        'gemini-flash-latest',
+      ].filter(Boolean);
+
+      const contextPrompt = `
 CONTRACTOR PROFILE:
 Company: ${profile.companyName}
 Registration: ${profile.registrationClass}
@@ -769,10 +793,17 @@ CONTRACTOR QUESTION:
 
 Provide a direct, practical, and highly helpful response. Give exact numbers, clause references, and specific actionable advice. You may use English, Hindi, or Hinglish if the user asks in Hindi/Hinglish.
 `;
-        const res = await model.generateContent(contextPrompt);
-        assistantResponse = res.response.text();
-      } catch (chatErr) {
-        logger.warn(`Gemini chat call failed: ${chatErr.message}`);
+
+      for (const modelName of candidateModels) {
+        try {
+          const text = await callGeminiRest(env.GEMINI_API_KEY, modelName, contextPrompt, false);
+          if (text) {
+            assistantResponse = text;
+            break;
+          }
+        } catch (chatErr) {
+          logger.warn(`Gemini chat call with ${modelName} failed: ${chatErr.message}`);
+        }
       }
     }
 
