@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { contractorAgentService } from '../services/contractorAgent.service.js';
 import ContractorAgentProfile from '../models/ContractorAgentProfile.js';
 import TenderAiDossier from '../models/TenderAiDossier.js';
@@ -180,17 +181,30 @@ export const getTenderDossier = async (req, res) => {
     const { tenderId } = req.params;
     const userId = req.user?.userId || req.user?._id || '6abe2b7f4ec335668fdc702a';
 
-    const tender = await Tender.findById(tenderId);
+    let tender = null;
+    if (mongoose.isValidObjectId(tenderId)) {
+      tender = await Tender.findById(tenderId);
+    }
     if (!tender) {
-      return res.status(404).json({ success: false, error: 'Tender not found' });
+      tender = await Tender.findOne({ sourceTenderId: tenderId });
     }
 
-    const dossier = await TenderAiDossier.findOne({ tenderId });
+    const dossier = await TenderAiDossier.findOne({
+      $or: [
+        ...(mongoose.isValidObjectId(tenderId) ? [{ tenderId }] : []),
+        { sourceTenderId: tenderId }
+      ]
+    });
+
     if (!dossier) {
       return res.status(404).json({ success: false, error: 'No AI Dossier exists yet for this tender. Click "Analyze" to generate.' });
     }
 
-    const personalizedFit = await contractorAgentService.calculateContractorPersonalizedFit(tender, userId, dossier);
+    const personalizedFit = await contractorAgentService.calculateContractorPersonalizedFit(
+      tender || { estimatedValue: dossier.executiveOverview?.estimatedValue || 5000000 },
+      userId,
+      dossier
+    );
     return res.status(200).json({ success: true, dossier, personalizedFit });
   } catch (error) {
     logger.error(`Error fetching tender dossier: ${error.message}`);

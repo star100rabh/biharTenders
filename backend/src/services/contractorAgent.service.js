@@ -738,12 +738,17 @@ Return strictly valid JSON with this exact schema:
 
     const { dossier, personalizedFit } = await this.getOrGenerateTenderDossier(tenderId, userId);
 
+    const resolvedTenderId = dossier?.tenderId || tenderId;
+
     // Fetch or create chat session
-    let session = await AiAgentChatSession.findOne({ userId, tenderId });
+    let session = await AiAgentChatSession.findOne({
+      userId,
+      $or: [{ tenderId: resolvedTenderId }, { tenderId }]
+    });
     if (!session) {
       session = new AiAgentChatSession({
         userId,
-        tenderId,
+        tenderId: resolvedTenderId,
         messages: [
           {
             role: 'system',
