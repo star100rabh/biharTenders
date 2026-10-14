@@ -255,39 +255,39 @@ html:not(.dark) .modal-content-box {
    BIHAR REGIONAL & CULTURAL DESIGN SYSTEM UTILITIES
    ========================================================================== */
 
-/* Authentic Mithila / Madhubani-inspired folk decorative border accent */
-.border-bihar-motif {
-  border-image: repeating-linear-gradient(
-    45deg,
-    #EA580C 0,
-    #EA580C 10px,
-    #D97706 10px,
-    #D97706 20px,
-    #059669 20px,
-    #059669 30px,
-    #0B2545 30px,
-    #0B2545 40px
-  ) 10;
+/* Authentic Mithila / Madhubani-inspired geometric trim */
+.bihar-madhubani-strip {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(234, 88, 12, 0.7) 0,
+    rgba(234, 88, 12, 0.7) 8px,
+    rgba(217, 119, 6, 0.8) 8px,
+    rgba(217, 119, 6, 0.8) 16px,
+    rgba(5, 150, 105, 0.75) 16px,
+    rgba(5, 150, 105, 0.75) 24px,
+    rgba(11, 37, 69, 0.8) 24px,
+    rgba(11, 37, 69, 0.8) 32px
+  );
 }
 
 /* Elegant Bihar Saffron & Gold subtle top ribbon for cards */
 .bihar-ribbon {
-  background: linear-gradient(90deg, #EA580C 0%, #D97706 50%, #059669 100%);
+  background: linear-gradient(90deg, #EA580C 0%, #F59E0B 50%, #10B981 100%);
 }
 
-/* Gangetic Deep Hero Gradient with Auspicious Kesariya Glow */
-.bg-bihar-hero {
-  background: radial-gradient(circle at 50% 15%, rgba(234, 88, 12, 0.12) 0%, rgba(217, 119, 6, 0.08) 35%, rgba(7, 21, 39, 0.98) 75%), #071527;
-}
-
-/* High-Contrast Bihar Saffron Button Glow */
+/* High-Contrast Bihar Kesariya Glow */
 .shadow-saffron-glow {
-  box-shadow: 0 4px 18px -2px rgba(234, 88, 12, 0.35), 0 2px 6px -1px rgba(217, 119, 6, 0.25);
+  box-shadow: 0 4px 20px -2px rgba(234, 88, 12, 0.45), 0 2px 8px -1px rgba(245, 158, 11, 0.35);
 }
 
-/* High-Contrast Harit Emerald Button Glow */
+/* High-Contrast Harit Emerald Glow */
 .shadow-harit-glow {
-  box-shadow: 0 4px 18px -2px rgba(5, 150, 105, 0.35), 0 2px 6px -1px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.40), 0 2px 8px -1px rgba(16, 185, 129, 0.30);
+}
+
+/* Royal Bihar Navy Border Glow */
+.shadow-bihar-navy {
+  box-shadow: 0 8px 30px -4px rgba(7, 21, 39, 0.6), 0 0 0 1px rgba(245, 158, 11, 0.2);
 }
 
 /* Warm Khadi Paper tint for light mode cards */

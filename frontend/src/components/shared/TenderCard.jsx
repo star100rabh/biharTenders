@@ -16,7 +16,8 @@ import {
   Building2, 
   Calendar, 
   FileText, 
-  Layers 
+  Layers,
+  Sparkles 
 } from 'lucide-react';
 
 import { 
@@ -327,14 +328,27 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           )}
         </div>
 
-        {/* Action Button: View Notice with Bihar Kesariya Gradient */}
-        <div className="w-full sm:w-auto">
+        {/* Action Buttons: AI Analysis + View Details with Bihar Kesariya Gradient */}
+        <div className="w-full sm:w-auto flex items-center gap-2">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/services/${encodeURIComponent(tender.sourceTenderId || tenderId)}`);
+            }}
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-300 dark:border-amber-700/60 rounded-xl transition-all cursor-pointer shadow-xs"
+            title="Instant AI Tender Dossier & BOQ Extract"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span>AI Analyze</span>
+          </button>
+
           <button
             type="button"
             onClick={handleCardClick}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white rounded-xl transition-all duration-150 shadow-xs hover:shadow-saffron-glow cursor-pointer group/btn"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white rounded-xl transition-all duration-150 shadow-xs hover:shadow-saffron-glow cursor-pointer group/btn shrink-0"
           >
-            <span>View Tender Details</span>
+            <span>View Details</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5" />
           </button>
         </div>

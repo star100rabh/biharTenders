@@ -1,9 +1,9 @@
 /**
  * @file src/pages/Home.jsx
- * @description Official public procurement portal for Bihar, styled to strictly
- * match the Procure Hub visual theme (Images 1 & 3) with deep midnight navy hero,
- * floating search console with category & district dropdowns, 4 stat highlight cards,
- * live pipeline carousel, recent notices, and 2x2 guidance FAQ cards.
+ * @description Official public procurement portal for Bihar, styled with authentic
+ * Bihar state visual identity: Deep Bihar Royal Navy (#071527), Kesariya/Saffron Gold
+ * accents, Madhubani geometric trims, Bihar architectural landmark skyline, 9-division
+ * & 38-district explorer, major engineering departments grid, and live procurement pipeline.
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -24,12 +24,18 @@ import {
   FolderGit2,
   BadgePercent,
   HelpCircle,
-  RotateCcw
+  RotateCcw,
+  Zap,
+  CheckCircle2,
+  Bell
 } from 'lucide-react';
 
 import { PreferenceModal } from '@/components/shared/PreferenceModal';
 import { AuthPromptModal } from '@/components/shared/AuthPromptModal';
 import { TenderCard } from '@/components/shared/TenderCard';
+import { BiharSkyline } from '@/components/shared/BiharSkyline';
+import { BiharDistrictsExplorer } from '@/components/home/BiharDistrictsExplorer';
+import { MajorDepartmentsGrid } from '@/components/home/MajorDepartmentsGrid';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/Button';
 import { useTenderStats } from '@/hooks/useTenders';
@@ -131,7 +137,6 @@ export default function Home() {
   };
 
   const handleTrendingClick = (term) => {
-    // Clean Hindi tag to core English search keyword if applicable
     const cleanTerm = term.replace(/[\u0900-\u097F()]/g, '').trim() || term;
     navigate(`/tenders?search=${encodeURIComponent(cleanTerm)}`);
   };
@@ -185,9 +190,31 @@ export default function Home() {
       />
 
       {/* =========================================================================
-          HERO SECTION (Bihar Cultural Colors: Deep Navy + Kesariya Glow + Authentic Copy)
+          BIHAR E-PROC2 LIVE BEACON & TICKER
           ========================================================================= */}
-      <section className="relative bg-[#071527] text-white pt-12 sm:pt-16 pb-20 sm:pb-24 px-4 sm:px-6 lg:px-8 border-b border-amber-900/40 bg-dot-grid overflow-hidden">
+      <div className="bg-[#050e1a] border-b border-orange-500/20 py-2 px-4 text-center overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-center flex-wrap gap-2 sm:gap-3 text-[11px] sm:text-xs">
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="font-bold text-emerald-400">Bihar e-Proc2 Live Gateway</span>
+          <span className="text-slate-500 hidden sm:inline">•</span>
+          <span className="text-slate-300">Synchronized with eproc2.bihar.gov.in</span>
+          <span className="text-slate-500 hidden md:inline">•</span>
+          <span className="text-amber-300 font-semibold hidden md:inline">All 38 Districts &amp; 9 Administrative Divisions</span>
+          <span className="text-slate-500 hidden lg:inline">•</span>
+          <span className="text-orange-400 font-bold hidden lg:inline">⚡ AI Contractor Dossier Active</span>
+        </div>
+      </div>
+
+      {/* Auspicious Madhubani Geometric Trim */}
+      <div className="bihar-madhubani-strip w-full" />
+
+      {/* =========================================================================
+          HERO SECTION (Bihar Cultural Colors: Deep Navy + Kesariya Glow + Skyline)
+          ========================================================================= */}
+      <section className="relative bg-[#071527] text-white pt-10 sm:pt-14 pb-24 sm:pb-32 px-4 sm:px-6 lg:px-8 border-b border-amber-900/40 bg-dot-grid overflow-hidden">
         {/* Saffron & Surya Gold radial glow in center */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-600/20 via-amber-500/15 to-emerald-500/10 blur-[130px] pointer-events-none rounded-full" />
 
@@ -311,12 +338,28 @@ export default function Home() {
           </div>
 
         </div>
+
+        {/* Bihar Architectural Landmarks Skyline (Mahabodhi, Golghar, Nalanda, Ganga Path) */}
+        <div className="absolute bottom-0 left-0 right-0 z-0 pointer-events-none">
+          <BiharSkyline className="w-full h-24 sm:h-36 opacity-25" />
+          {/* Ganga River Wave Divider Curve */}
+          <div className="w-full overflow-hidden leading-none -mb-[1px]">
+            <svg 
+              className="relative block w-full h-8 sm:h-12 text-paper dark:text-[#071325]" 
+              viewBox="0 0 1200 120" 
+              preserveAspectRatio="none" 
+              fill="currentColor"
+            >
+              <path d="M0,0 C150,80 350,-20 500,45 C650,110 900,20 1200,60 L1200,120 L0,120 Z"></path>
+            </svg>
+          </div>
+        </div>
       </section>
 
       {/* =========================================================================
           KEY METRICS ROW (4 Rounded Cards with Saffron / Royal Navy / Emerald Accents)
           ========================================================================= */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-12 relative z-20">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           
           {/* Card 1: Active E-Tenders (Saffron / Folder) */}
@@ -359,7 +402,7 @@ export default function Home() {
                 {isStatsLoading ? '...' : `${stats?.authoritiesCount ?? 34}+`}
               </div>
               <div className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
-                Government Bodies & Depts
+                Government Bodies &amp; Depts
               </div>
             </div>
           </div>
@@ -387,7 +430,7 @@ export default function Home() {
         <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#0B2545] via-[#071527] to-[#8C2500] border border-orange-500/40 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-3.5">
             <div className="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-orange-400 shrink-0">
-              <Sparkles className="w-6 h-6 animate-pulse" />
+              <Bell className="w-6 h-6 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -397,7 +440,7 @@ export default function Home() {
                 <span className="text-xs text-amber-300 font-semibold">Covering all 38 districts of Bihar</span>
               </div>
               <h3 className="text-sm sm:text-base font-bold text-white mt-1">
-                Get instant WhatsApp & Email alerts for new tenders in your district and sector
+                Get instant WhatsApp &amp; Email alerts for new tenders in your district and sector
               </h3>
               <p className="text-xs text-slate-300">
                 Receive immediate notifications when RWD, RCD, BCD, PHED, WRD, and municipal notices are published.
@@ -415,9 +458,19 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
+          MAJOR BIHAR ENGINEERING & WORKS DEPARTMENTS GRID
+          ========================================================================= */}
+      <MajorDepartmentsGrid />
+
+      {/* =========================================================================
+          INTERACTIVE 9-DIVISION & 38-DISTRICT PROCUREMENT NAVIGATOR
+          ========================================================================= */}
+      <BiharDistrictsExplorer />
+
+      {/* =========================================================================
           ANIMATED LIVE PIPELINE CAROUSEL SECTION
           ========================================================================= */}
-      <section className="py-12 sm:py-16 overflow-hidden">
+      <section className="py-12 sm:py-16 overflow-hidden bg-slate-50/50 dark:bg-[#06101e]/60 border-y border-orange-100/60 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3">
             <div>
@@ -447,8 +500,8 @@ export default function Home() {
 
         {/* Continuous Moving Track */}
         <div className="relative w-full overflow-hidden group">
-          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-paper dark:from-[#071325] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-paper dark:from-[#071325] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-paper dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-paper dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
 
           <motion.div
             className="flex gap-4 sm:gap-5 w-max py-2"
@@ -502,13 +555,17 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          RECENT TENDER ANNOUNCEMENTS (Matching 3-Column Grid)
+          RECENT TENDER ANNOUNCEMENTS (With AI Analyze & Details Buttons)
           ========================================================================= */}
       {stats?.latestTenders && stats.latestTenders.length > 0 && (
-        <section className="py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-3">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 dark:text-amber-400 uppercase tracking-wider mb-1">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Live eProc2 Synchronized</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                 Recent Tender Notices
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -544,6 +601,10 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           
           <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 dark:text-amber-400 uppercase tracking-wider mb-2">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Contractor Bidding Handbook</span>
+            </div>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
               Bihar Procurement &amp; Contractor Guidance
             </h2>
@@ -619,6 +680,8 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Auspicious Madhubani Geometric Trim before Footer */}
+      <div className="bihar-madhubani-strip w-full" />
     </div>
   );
 }
