@@ -497,15 +497,7 @@ export const googleCallback = async (req, res, next) => {
     // 3. Find user by verified email
     let user = await User.findOne({ email: normalizedEmail });
 
-    // Mode-specific validation:
-    if (mode === 'login' && !user) {
-      return res.redirect(`${frontendRedirect}/signup?error=no_account&email=${encodeURIComponent(normalizedEmail)}`);
-    }
-
-    if (mode === 'signup' && user) {
-      return res.redirect(`${frontendRedirect}/login?error=account_exists&email=${encodeURIComponent(normalizedEmail)}`);
-    }
-
+    // If user does not exist yet, seamlessly create a new contractor account; otherwise log in existing
     if (!user) {
       // Create new user account during signup
       user = await User.create({
