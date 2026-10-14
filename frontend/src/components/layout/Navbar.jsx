@@ -101,7 +101,7 @@ export function Navbar() {
           {/* Light/Dark Theme Switcher */}
           <button
             onClick={toggleTheme}
-            className="w-8.5 h-8.5 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-750 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer focus:outline-none"
+            className="w-9 h-9 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white transition-all cursor-pointer focus:outline-none shrink-0"
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle theme"
           >
@@ -115,7 +115,7 @@ export function Navbar() {
           {/* Saved Tenders Bookmark Indicator */}
           <Link
             to="/profile"
-            className="relative w-8.5 h-8.5 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-750 hover:border-emerald-500/40 flex items-center justify-center text-slate-300 hover:text-emerald-400 transition-all cursor-pointer focus:outline-none"
+            className="relative w-9 h-9 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-700/60 hover:border-emerald-500/40 flex items-center justify-center text-slate-300 hover:text-emerald-400 transition-all cursor-pointer focus:outline-none shrink-0"
             title="Saved Tenders"
             aria-label="Saved Tenders"
           >
@@ -132,7 +132,7 @@ export function Navbar() {
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 to="/profile"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-700/80 transition-all"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-800/80 text-xs font-semibold text-slate-200 hover:text-white hover:bg-slate-700/80 transition-all shrink-0"
               >
                 <User className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Contractor Workspace</span>
@@ -141,10 +141,10 @@ export function Navbar() {
               {/* Circular Avatar */}
               <Link
                 to="/profile"
-                className={`relative w-8.5 h-8.5 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                className={`relative w-9 h-9 rounded-full overflow-hidden shrink-0 flex items-center justify-center transition-all cursor-pointer ${
                   isPro
                     ? 'ring-2 ring-emerald-400'
-                    : 'border border-slate-700'
+                    : 'border border-slate-700 hover:border-slate-500'
                 }`}
                 title={user?.name ? `${user.name} (${user.email || ''})` : user?.email || 'Contractor Workspace'}
               >
@@ -152,11 +152,11 @@ export function Navbar() {
                   <img
                     src={user.picture}
                     alt={user.name || 'User'}
-                    className="w-full h-full rounded-xl object-cover"
+                    className="w-9 h-9 rounded-full object-cover shrink-0"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-full h-full rounded-xl text-xs font-bold bg-emerald-600/30 text-emerald-300 flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full text-xs font-bold bg-emerald-600/30 text-emerald-300 flex items-center justify-center shrink-0">
                     {(user?.name || user?.email || 'U')[0].toUpperCase()}
                   </div>
                 )}
@@ -167,7 +167,7 @@ export function Navbar() {
                 type="button"
                 onClick={handleLogout}
                 title="Sign Out"
-                className="w-8.5 h-8.5 rounded-xl border border-transparent hover:border-red-900/60 flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-950/30 transition-all cursor-pointer focus:outline-none"
+                className="w-9 h-9 rounded-xl border border-transparent hover:border-red-900/60 flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-950/30 transition-all cursor-pointer focus:outline-none shrink-0"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -194,7 +194,7 @@ export function Navbar() {
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-8.5 h-8.5 rounded-xl border border-slate-700/80 bg-slate-800/60 flex items-center justify-center text-slate-300 hover:text-white transition-colors focus:outline-none"
+            className="lg:hidden w-9 h-9 rounded-xl border border-slate-700/80 bg-slate-800/60 flex items-center justify-center text-slate-300 hover:text-white transition-colors focus:outline-none shrink-0"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
