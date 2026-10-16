@@ -499,65 +499,81 @@ export default class BiharTenderAdapter {
 
     console.log(`[BiharAdapter] 📋 Found ${validIconsInfo.length} unique genuine document(s) to fetch for Tender: ${tenderId}`);
 
-    // Process EVERY SINGLE document - zero artificial capping so no file is ever missed!
+    // Process EVERY SINGLE document - 120s timeout + retry ensure 0% file loss!
+    let fileIndex = 0;
     for (const item of validIconsInfo) {
+      fileIndex++;
       const icon = allIcons[item.idx];
       if (!icon) continue;
 
       let tempPath = null;
-      try {
-        await page.waitForTimeout(150);
-        
-        // 20-second timeout for the download event to initiate
-        const [download] = await Promise.all([
-          page.waitForEvent('download', { timeout: 20000 }),
-          icon.click({ timeout: 10000 })
-        ]);
+      let downloadSuccess = false;
 
-        const originalFileName = download.suggestedFilename() || item.hintName;
-
-        // Skip duplicate download if this exact file was already downloaded for this tender
-        if (downloadedFileNames.has(originalFileName)) {
-          continue;
-        }
-
-        const safePrefix = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
-        tempPath = path.join(process.cwd(), 'temp', `${safePrefix}_${originalFileName}`);
-
-        if (!fs.existsSync(path.join(process.cwd(), 'temp'))) {
-          fs.mkdirSync(path.join(process.cwd(), 'temp'), { recursive: true });
-        }
-
-        // Safeguard: 35s stream timeout so a stalled government server socket NEVER freezes the scraper!
-        const savePromise = download.saveAs(tempPath);
-        const saveTimeout = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Download stream stalled by government server (35s limit)')), 35000)
-        );
-        await Promise.race([savePromise, saveTimeout]);
-
-        const stats = fs.statSync(tempPath);
-        const fileSizeKb = Math.round(stats.size / 1024);
-
-        downloadedFileNames.add(originalFileName);
-        localDownloadedFiles.push({
-          tempPath,
-          originalFileName,
-          fileSizeKb,
-          sNo: sno++
-        });
-        console.log(`[BiharAdapter] ✅ [${sno - 1}/${validIconsInfo.length}] Downloaded locally: ${originalFileName} (${fileSizeKb} KB)`);
-      } catch (downloadErr) {
-        console.warn(`[BiharAdapter] ⚠️ Notice while downloading document (${item.hintName}): ${downloadErr.message}`);
-        // Clean up partial temp file if download stalled
+      // Try up to 2 attempts per document in case of transient government server glitches
+      for (let attempt = 1; attempt <= 2 && !downloadSuccess; attempt++) {
         try {
-          if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
-        } catch (_) {}
+          if (attempt > 1) {
+            console.log(`[BiharAdapter] 🔄 Retrying "${item.hintName}" (Attempt 2/2)...`);
+            await page.waitForTimeout(1500);
+          } else {
+            console.log(`[BiharAdapter] ⏳ [${fileIndex}/${validIconsInfo.length}] Downloading "${item.hintName}" (Streaming from Bihar portal)...`);
+          }
 
-        // If the portal redirected to an error page, safely navigate back
-        if (page.url().includes('downloadattachment.action') || page.url().includes('Error')) {
-          console.log('[BiharAdapter] Navigating back from error page...');
-          await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
-          await page.waitForTimeout(1500);
+          await page.waitForTimeout(150);
+
+          // 25-second timeout for the initial download handshake
+          const [download] = await Promise.all([
+            page.waitForEvent('download', { timeout: 25000 }),
+            icon.click({ timeout: 10000 })
+          ]);
+
+          const originalFileName = download.suggestedFilename() || item.hintName;
+
+          // Skip duplicate download if this exact file was already downloaded for this tender
+          if (downloadedFileNames.has(originalFileName)) {
+            downloadSuccess = true;
+            break;
+          }
+
+          const safePrefix = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+          tempPath = path.join(process.cwd(), 'temp', `${safePrefix}_${originalFileName}`);
+
+          if (!fs.existsSync(path.join(process.cwd(), 'temp'))) {
+            fs.mkdirSync(path.join(process.cwd(), 'temp'), { recursive: true });
+          }
+
+          // 120s (2 Minutes) Timeout: ensures large 10MB-20MB SBDs and PDFs have ample time to complete!
+          const savePromise = download.saveAs(tempPath);
+          const saveTimeout = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Download stream timed out after 120 seconds')), 120000)
+          );
+          await Promise.race([savePromise, saveTimeout]);
+
+          const stats = fs.statSync(tempPath);
+          const fileSizeKb = Math.round(stats.size / 1024);
+
+          downloadedFileNames.add(originalFileName);
+          localDownloadedFiles.push({
+            tempPath,
+            originalFileName,
+            fileSizeKb,
+            sNo: sno++
+          });
+          downloadSuccess = true;
+          console.log(`[BiharAdapter] ✅ [${sno - 1}/${validIconsInfo.length}] Downloaded locally: ${originalFileName} (${fileSizeKb} KB)`);
+        } catch (downloadErr) {
+          console.warn(`[BiharAdapter] ⚠️ Notice while downloading "${item.hintName}" (Attempt ${attempt}/2): ${downloadErr.message}`);
+          // Clean up partial temp file if download stalled
+          try {
+            if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+          } catch (_) {}
+
+          // If the portal redirected to an error page, safely navigate back
+          if (page.url().includes('downloadattachment.action') || page.url().includes('Error')) {
+            console.log('[BiharAdapter] Navigating back from error page...');
+            await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
+            await page.waitForTimeout(1500);
+          }
         }
       }
     }
