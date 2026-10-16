@@ -113,7 +113,7 @@ export default class BiharTenderAdapter {
 
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    // Background watcher to automatically close annoying popups/alerts that block clicks
+    // Background watcher to automatically close annoying popups/alerts and remove loading overlays that block clicks
     await page.evaluate(() => {
       setInterval(() => {
         const bootboxOkBtn = document.querySelector('.bootbox-alert.in button[data-bb-handler="ok"]');
@@ -121,6 +121,16 @@ export default class BiharTenderAdapter {
         
         const bootboxCloseBtn = document.querySelector('.bootbox-alert.in .bootbox-close-button');
         if (bootboxCloseBtn) bootboxCloseBtn.click();
+
+        // Clear any stuck spinner/overlay that intercepts clicks
+        const loading = document.getElementById('loading');
+        if (loading && loading.style.display !== 'none') {
+          loading.style.display = 'none';
+        }
+        const overlay = document.getElementById('overlay');
+        if (overlay && overlay.style.display !== 'none') {
+          overlay.style.display = 'none';
+        }
       }, 500);
     });
 
@@ -233,11 +243,31 @@ export default class BiharTenderAdapter {
 
       const { sourceTenderId, rowEndDate, timeLeftStr } = item;
       try {
-        // Small delay to prevent complete blockage but keep it fast
-        await page.waitForTimeout(100);
+        // Clear any stuck spinner/overlay or display styles before opening modal
+        await page.evaluate(() => {
+          const loading = document.getElementById('loading');
+          if (loading) loading.style.display = 'none';
+          const overlay = document.getElementById('overlay');
+          if (overlay) overlay.style.display = 'none';
+          const modal = document.getElementById('myModalprev');
+          if (modal) {
+            modal.style.display = '';
+          }
+        });
 
-        await button.click();
-        await page.waitForSelector('#myModalprev', { state: 'visible' });
+        await button.scrollIntoViewIfNeeded().catch(() => {});
+        await button.click({ force: true });
+
+        try {
+          await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 10000 });
+        } catch (_) {
+          // If modal didn't open via button.click, trigger click via DOM directly
+          await page.evaluate((idx) => {
+            const btns = document.querySelectorAll('#latestTenders button[ng-click^="previewTender"], #upcomingTenders button[ng-click^="previewTender"]');
+            if (btns[idx]) btns[idx].click();
+          }, item.btnIndex);
+          await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 15000 });
+        }
 
         const tenderData = await this.extractTextFromModal(page, rowEndDate);
         tenderData.status = targetStatus; // Set the explicitly detected status
@@ -302,7 +332,7 @@ export default class BiharTenderAdapter {
             const modal = document.getElementById('myModalprev');
             if (modal) {
                 modal.classList.remove('in');
-                modal.style.display = 'none';
+                modal.style.display = '';
             }
             const backdrop = document.querySelector('.modal-backdrop');
             if (backdrop) backdrop.remove();
