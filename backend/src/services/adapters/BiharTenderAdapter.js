@@ -111,7 +111,20 @@ export default class BiharTenderAdapter {
       await dialog.dismiss().catch(() => {});
     });
 
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    let navigated = false;
+    for (let navAttempt = 1; navAttempt <= 3 && !navigated; navAttempt++) {
+      try {
+        if (navAttempt > 1) {
+          console.log(`[BiharAdapter] 🔄 Retrying navigation to ${url} (Attempt ${navAttempt}/3)...`);
+          await page.waitForTimeout(3000);
+        }
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
+        navigated = true;
+      } catch (err) {
+        if (navAttempt === 3) throw err;
+        console.warn(`[BiharAdapter] ⚠️ Navigation timeout/error (Attempt ${navAttempt}/3): ${err.message}`);
+      }
+    }
 
     // Background watcher to automatically close annoying popups/alerts and remove loading overlays that block clicks
     await page.evaluate(() => {
@@ -163,7 +176,7 @@ export default class BiharTenderAdapter {
     
     // Wait for the Angular table to fully render
     try {
-      await page.waitForSelector(viewButtonsSelector, { state: 'visible', timeout: 30000 });
+      await page.waitForSelector(viewButtonsSelector, { state: 'visible', timeout: 60000 });
       
       // Load ALL tenders by clicking "More..." until it disappears
       console.log(`[BiharAdapter] Loading all pages by clicking 'More...' link in ${tabPaneId}...`);
