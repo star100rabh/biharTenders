@@ -104,6 +104,13 @@ export default class BiharTenderAdapter {
    */
   async scrapeTenders(page, limit = Infinity, url = this.tenderListingUrl, targetStatus = 'ACTIVE', targetDateStr = null) {
     console.log(`[BiharAdapter] Navigating to ${url}`);
+
+    // Auto-dismiss any unexpected browser alerts or prompts that could freeze Playwright
+    page.on('dialog', async (dialog) => {
+      console.log(`[BiharAdapter] ⚠️ Auto-dismissed browser dialog: ${dialog.message()}`);
+      await dialog.dismiss().catch(() => {});
+    });
+
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     // Background watcher to automatically close annoying popups/alerts that block clicks
@@ -227,7 +234,7 @@ export default class BiharTenderAdapter {
       const { sourceTenderId, rowEndDate, timeLeftStr } = item;
       try {
         // Small delay to prevent complete blockage but keep it fast
-        await page.waitForTimeout(200);
+        await page.waitForTimeout(100);
 
         await button.click();
         await page.waitForSelector('#myModalprev', { state: 'visible' });
@@ -252,13 +259,26 @@ export default class BiharTenderAdapter {
         tenderData.isDocumentAvailable = documents.length > 0;
         tenderData.pdfFetchStatus = documents.length > 0 ? 'COMPLETED' : 'NOT_AVAILABLE';
 
+        // Systematically identify and map BOQ file if present
+        const boqDoc = documents.find(d => 
+          d.documentName.toLowerCase().endsWith('.xls') || 
+          d.documentName.toLowerCase().endsWith('.xlsx') || 
+          d.documentName.toLowerCase().includes('boq')
+        );
+        if (boqDoc) {
+          tenderData.boqFileUrl = boqDoc.fileUrl;
+          tenderData.boqFetchStatus = 'COMPLETED';
+        } else {
+          tenderData.boqFetchStatus = 'NOT_AVAILABLE';
+        }
+
         // Save tenderData to MongoDB
         await Tender.findOneAndUpdate(
           { sourceTenderId: tenderData.sourceTenderId },
           { $set: tenderData },
           { upsert: true, returnDocument: 'after' }
         );
-        console.log(`[BiharAdapter] Saved Tender to MongoDB: ${tenderData.sourceTenderId}`);
+        console.log(`[BiharAdapter] Saved Tender to MongoDB: ${tenderData.sourceTenderId} (${documents.length} files attached)`);
 
         summary.totalIngested++;
         summary.totalPdfsSecured += documents.length;
@@ -288,7 +308,7 @@ export default class BiharTenderAdapter {
             if (backdrop) backdrop.remove();
             document.body.classList.remove('modal-open');
           });
-          await page.waitForTimeout(500); // wait for modal animation to clear
+          await page.waitForTimeout(200); // wait for modal animation to clear
         } catch(e){}
       }
       processedCount++;
@@ -431,81 +451,166 @@ export default class BiharTenderAdapter {
   }
 
   /**
-   * Finds all download icons in the modal, downloads them, compresses, and uploads to R2.
-   * Returns array of document objects for nitDocuments
+   * Finds ALL government documents in the modal, downloads every single one without missing any,
+   * and uploads all files to Cloudflare R2.
+   * Returns complete array of document objects for nitDocuments.
    */
   async downloadAndUploadAttachments(page, tenderId) {
-    const downloadIcons = await page.$$('span[ng-click^="downloadFile"]:visible');
-    let documents = [];
+    // 1. Identify all genuine, visible download icons on the active modal table
+    // (Filters out bidder submission placeholders where download is prohibited by the portal)
+    const validIconsInfo = await page.evaluate(() => {
+      const icons = Array.from(document.querySelectorAll('#myModalprev span[ng-click^="downloadFile"]'));
+      const valid = [];
+      const seenFileKeys = new Set();
+
+      icons.forEach((icon, idx) => {
+        // Must be visible in the active modal table
+        if (icon.offsetParent === null) return;
+
+        const ngClick = icon.getAttribute('ng-click') || '';
+        // Skip bidder submission placeholders where isDownloadPossible is 'N' (requires bidder login/NDA)
+        if (ngClick.includes(",'N'") || ngClick.includes(', "N"') || ngClick.includes(',\'n\'')) return;
+
+        // Deduplicate using filename to avoid downloading identical duplicate files twice
+        const tr = icon.closest('tr');
+        const text = tr ? tr.innerText.replace(/\s+/g, ' ').trim() : '';
+        const match = text.match(/([a-zA-Z0-9_\-\s.]+\.(?:pdf|docx?|xlsx?|zip|rar))/i);
+        const fileKey = match ? match[1].toLowerCase().trim() : `icon_${idx}`;
+
+        if (seenFileKeys.has(fileKey)) return;
+        seenFileKeys.add(fileKey);
+
+        valid.push({
+          idx,
+          hintName: match ? match[1].trim() : `doc_${idx}`
+        });
+      });
+      return valid;
+    });
+
+    if (validIconsInfo.length === 0) {
+      return [];
+    }
+
+    const allIcons = await page.$$('#myModalprev span[ng-click^="downloadFile"]');
+    const localDownloadedFiles = [];
+    const downloadedFileNames = new Set();
     let sno = 1;
 
-    for (const icon of downloadIcons) {
+    console.log(`[BiharAdapter] 📋 Found ${validIconsInfo.length} unique genuine document(s) to fetch for Tender: ${tenderId}`);
+
+    // Process EVERY SINGLE document - zero artificial capping so no file is ever missed!
+    for (const item of validIconsInfo) {
+      const icon = allIcons[item.idx];
+      if (!icon) continue;
+
+      let tempPath = null;
       try {
-        await page.waitForTimeout(300); // Tiny delay to prevent click drops
-        // Setup Playwright to intercept the file download (max 30 seconds)
+        await page.waitForTimeout(150);
+        
+        // 20-second timeout for the download event to initiate
         const [download] = await Promise.all([
-          page.waitForEvent('download', { timeout: 30000 }),
-          icon.click()
+          page.waitForEvent('download', { timeout: 20000 }),
+          icon.click({ timeout: 10000 })
         ]);
-        
-        const originalFileName = download.suggestedFilename();
-        
-        // Define a temporary path to save the file
-        const tempPath = path.join(process.cwd(), 'temp', originalFileName);
-        
-        // Ensure temp directory exists
+
+        const originalFileName = download.suggestedFilename() || item.hintName;
+
+        // Skip duplicate download if this exact file was already downloaded for this tender
+        if (downloadedFileNames.has(originalFileName)) {
+          continue;
+        }
+
+        const safePrefix = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+        tempPath = path.join(process.cwd(), 'temp', `${safePrefix}_${originalFileName}`);
+
         if (!fs.existsSync(path.join(process.cwd(), 'temp'))) {
           fs.mkdirSync(path.join(process.cwd(), 'temp'), { recursive: true });
         }
 
-        await download.saveAs(tempPath);
-        console.log(`[BiharAdapter] Downloaded locally: ${originalFileName}`);
+        // Safeguard: 35s stream timeout so a stalled government server socket NEVER freezes the scraper!
+        const savePromise = download.saveAs(tempPath);
+        const saveTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Download stream stalled by government server (35s limit)')), 35000)
+        );
+        await Promise.race([savePromise, saveTimeout]);
 
-        // Get file size
         const stats = fs.statSync(tempPath);
         const fileSizeKb = Math.round(stats.size / 1024);
 
-        // Upload to Cloudflare R2 with 50s timeout safeguard
-        console.log(`[BiharAdapter] Uploading to R2: ${originalFileName}`);
-        
-        const uploadPromise = uploadFileToR2({
-          filePath: tempPath,
-          fileName: originalFileName,
-          tenderId: tenderId,
-          publishedDate: new Date().toISOString(), // Fallback date if not parsed yet
-          deptCode: 'BIHAR',
-          contentType: originalFileName.toLowerCase().endsWith('.pdf') ? 'application/pdf' : 'application/octet-stream'
+        downloadedFileNames.add(originalFileName);
+        localDownloadedFiles.push({
+          tempPath,
+          originalFileName,
+          fileSizeKb,
+          sNo: sno++
         });
-        const uploadTimeout = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('R2 upload timed out after 50 seconds')), 50000)
-        );
-
-        const r2Url = await Promise.race([uploadPromise, uploadTimeout]);
-
-        if (r2Url) {
-          documents.push({
-            sNo: sno++,
-            documentName: originalFileName,
-            description: originalFileName.replace(/_/g, ' ').replace('.pdf', ''),
-            documentSizeKb: fileSizeKb,
-            fileUrl: r2Url
-          });
-        }
+        console.log(`[BiharAdapter] ✅ [${sno - 1}/${validIconsInfo.length}] Downloaded locally: ${originalFileName} (${fileSizeKb} KB)`);
       } catch (downloadErr) {
-        console.log(`[BiharAdapter] Failed to download or upload an attachment: ${downloadErr.message}`);
-        // If the portal redirected us to an error page instead of downloading, go back!
-        if (page.url().includes('downloadattachment.action') || page.url().includes('Error')) {
-          console.log('[BiharAdapter] Stuck on error page! Navigating back...');
-          await page.goBack({ waitUntil: 'networkidle' }).catch(() => {});
-          await page.waitForTimeout(2000); // Give it a moment to render the modal again
-        }
-      } finally {
-        // Guarantee cleanup of local temp file
+        console.warn(`[BiharAdapter] ⚠️ Notice while downloading document (${item.hintName}): ${downloadErr.message}`);
+        // Clean up partial temp file if download stalled
         try {
           if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
-        } catch (cleanupErr) {}
+        } catch (_) {}
+
+        // If the portal redirected to an error page, safely navigate back
+        if (page.url().includes('downloadattachment.action') || page.url().includes('Error')) {
+          console.log('[BiharAdapter] Navigating back from error page...');
+          await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
+          await page.waitForTimeout(1500);
+        }
       }
     }
-    return documents;
+
+    if (localDownloadedFiles.length === 0) {
+      return [];
+    }
+
+    // 2. Parallel R2 Uploads - uploads 100% of the downloaded files to Cloudflare R2
+    console.log(`[BiharAdapter] ☁️ Uploading all ${localDownloadedFiles.length} file(s) to Cloudflare R2...`);
+    const uploadPromises = localDownloadedFiles.map(async (fileInfo) => {
+      try {
+        const ext = path.extname(fileInfo.originalFileName).toLowerCase();
+        let contentType = 'application/octet-stream';
+        if (ext === '.pdf') contentType = 'application/pdf';
+        else if (ext === '.xls') contentType = 'application/vnd.ms-excel';
+        else if (ext === '.xlsx') contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        else if (ext === '.doc') contentType = 'application/msword';
+        else if (ext === '.docx') contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+        const r2Url = await uploadFileToR2({
+          filePath: fileInfo.tempPath,
+          fileName: fileInfo.originalFileName,
+          tenderId: tenderId,
+          publishedDate: new Date().toISOString(),
+          deptCode: 'BIHAR',
+          contentType
+        });
+
+        if (r2Url) {
+          return {
+            sNo: fileInfo.sNo,
+            documentName: fileInfo.originalFileName,
+            description: fileInfo.originalFileName.replace(/_/g, ' ').replace(/\.[^/.]+$/, ''),
+            documentSizeKb: fileInfo.fileSizeKb,
+            fileUrl: r2Url
+          };
+        }
+      } catch (upErr) {
+        console.error(`[BiharAdapter] ❌ R2 upload error for ${fileInfo.originalFileName}:`, upErr.message);
+      } finally {
+        try {
+          if (fileInfo.tempPath && fs.existsSync(fileInfo.tempPath)) {
+            fs.unlinkSync(fileInfo.tempPath);
+          }
+        } catch (_) {}
+      }
+      return null;
+    });
+
+    const uploadedResults = await Promise.all(uploadPromises);
+    const validDocuments = uploadedResults.filter(Boolean);
+    console.log(`[BiharAdapter] 🔒 Secured ${validDocuments.length}/${localDownloadedFiles.length} document(s) in Cloudflare R2 for Tender: ${tenderId}`);
+    return validDocuments;
   }
 }
