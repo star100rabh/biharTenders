@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 import { chromium } from 'playwright';
 import { uploadFileToR2 } from '../../utils/r2Storage.js';
 import Tender from '../../models/Tender.js';
@@ -74,10 +75,28 @@ export default class BiharTenderAdapter {
   async _runScrapeSession(scrapeFn, headless) {
     console.log(`[BiharAdapter] Launching browser (headless: ${headless})...`);
     
-    const browser = await chromium.launch({ 
+    let browser;
+    const launchOptions = { 
       headless, 
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'] 
-    });
+    };
+
+    try {
+      browser = await chromium.launch(launchOptions);
+    } catch (launchErr) {
+      if (launchErr.message && (launchErr.message.includes("Executable doesn't exist") || launchErr.message.includes('playwright install'))) {
+        console.log("⚠️ Playwright Chromium binary missing! Running dynamic install: 'npx playwright install chromium'...");
+        try {
+          execSync('npx playwright install chromium', { stdio: 'inherit' });
+          browser = await chromium.launch(launchOptions);
+        } catch (installErr) {
+          console.error("❌ Failed to dynamic-install Playwright Chromium:", installErr);
+          throw launchErr;
+        }
+      } else {
+        throw launchErr;
+      }
+    }
     const context = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
     const page = await context.newPage();
 
