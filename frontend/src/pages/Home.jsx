@@ -429,37 +429,6 @@ export default function Home() {
 
         </div>
 
-        {/* =========================================================================
-            BIHAR CONTRACTOR TENDER ALERT BANNER
-            ========================================================================= */}
-        <div className="mt-6 rounded-2xl bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center text-[#C85A32] dark:text-[#E07A5F] shrink-0">
-              <Bell className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#C85A32]/10 text-[#C85A32] dark:bg-[#E07A5F]/20 dark:text-[#E07A5F] px-2.5 py-0.5 rounded-full border border-[#C85A32]/25">
-                  Free Contractor Service
-                </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Covering all 38 districts of Bihar</span>
-              </div>
-              <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white mt-1">
-                Get instant WhatsApp &amp; Email alerts for new tenders in your district and sector
-              </h3>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
-                Receive immediate notifications when RWD, RCD, BCD, PHED, WRD, and municipal notices are published.
-              </p>
-            </div>
-          </div>
-          <Link
-            to="/contractor/preferences"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white font-bold text-xs sm:text-sm transition-all shrink-0 cursor-pointer border border-[#C85A32]/40"
-          >
-            <span>Set Free Alerts</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
       </section>
 
       {/* =========================================================================
