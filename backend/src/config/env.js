@@ -32,7 +32,7 @@ const envVarsSchema = Joi.object({
   R2_ACCOUNT_ID: Joi.string().allow('').optional(),
   R2_BUCKET_NAME: Joi.string().allow('').optional(),
   ADMIN_SECRET_KEY: Joi.string().min(8).default('11112222').description('Master Admin Secret Key'),
-  ADMIN_EMAIL: Joi.string().email().default('bgmiwale@gmail.com').description('Authorized Master Admin Email'),
+  ADMIN_EMAIL: Joi.string().email().default('rsaurabhp03@gmail.com').description('Authorized Master Admin Email'),
   BACKUP_R2_ACCESS_KEY_ID: Joi.string().allow('').optional(),
   BACKUP_R2_SECRET_ACCESS_KEY: Joi.string().allow('').optional(),
   BACKUP_R2_ACCOUNT_ID: Joi.string().allow('').optional(),

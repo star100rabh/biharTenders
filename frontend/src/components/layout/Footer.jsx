@@ -4,7 +4,7 @@
  * regional operations desk information, and directory shortcuts.
  */
 import { Link } from 'react-router-dom';
-import { Landmark, Mail, MapPin, ExternalLink } from 'lucide-react';
+import { Landmark, Mail, MapPin, ExternalLink, Phone } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -139,9 +139,15 @@ export function Footer() {
               <span>Dak Bungalow Chauraha, Bailey Road, Patna, Bihar 800001</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-slate-300">
+              <Phone className="w-4 h-4 text-orange-400 shrink-0" />
+              <a href="tel:+918933068171" className="hover:text-amber-400 transition-colors font-mono">
+                +91 8933068171
+              </a>
+            </div>
+            <div className="flex items-center gap-2.5 text-xs text-slate-300">
               <Mail className="w-4 h-4 text-orange-400 shrink-0" />
-              <a href="mailto:support@bihartenders.in" className="hover:text-amber-400 transition-colors font-mono">
-                support@bihartenders.in
+              <a href="mailto:rsaurabhp03@gmail.com" className="hover:text-amber-400 transition-colors font-mono">
+                rsaurabhp03@gmail.com
               </a>
             </div>
             <div className="pt-2 text-[11px] text-slate-400">

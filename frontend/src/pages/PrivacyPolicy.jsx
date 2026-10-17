@@ -33,7 +33,7 @@ export default function PrivacyPolicy() {
           </ul>
 
           <h2>3. Data Security and Third-Party Sharing</h2>
-          <p>We take data security seriously. Your personal information is encrypted and stored securely. We do not sell or share your personal data with third parties for marketing purposes. Your payment details are processed directly by our payment gateway partner (Razorpay) and are never stored on our servers.</p>
+          <p>We take data security seriously. Your personal information is encrypted and stored securely. We do not sell or share your personal data with third parties for marketing purposes. Your payment details are processed directly by our authorized PCI-DSS compliant payment gateway partners (Cashfree / Razorpay) and are never stored on our servers.</p>
 
           <h2>4. Cookies</h2>
           <p>We use cookies to maintain your login session and save your preferences (such as dark mode and filter settings). You can instruct your browser to refuse all cookies, but some parts of the service may not function properly.</p>
@@ -44,8 +44,9 @@ export default function PrivacyPolicy() {
           <h2>6. Contact Us</h2>
           <p>For any privacy-related concerns, please reach out to us:</p>
           <ul>
-            <li><strong>Email:</strong> bgmiwale@gmail.com</li>
-            <li><strong>Address:</strong> Bihar, India</li>
+            <li><strong>Email:</strong> <a href="mailto:rsaurabhp03@gmail.com" className="text-dalBlue dark:text-blue-400 hover:underline">rsaurabhp03@gmail.com</a></li>
+            <li><strong>Phone / WhatsApp:</strong> <a href="tel:+918933068171" className="text-dalBlue dark:text-blue-400 hover:underline">+91 8933068171</a></li>
+            <li><strong>Address:</strong> Dak Bungalow Chauraha, Bailey Road, Patna, Bihar 800001, India</li>
           </ul>
         </div>
       </div>

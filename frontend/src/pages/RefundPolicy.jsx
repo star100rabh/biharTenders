@@ -38,10 +38,11 @@ export default function RefundPolicy() {
           <p>If a refund is approved, it will be processed and credited back to your original method of payment (bank account, UPI, or card) within 5 to 7 business days, depending on your bank's processing times.</p>
 
           <h2>5. Contact for Billing Issues</h2>
-          <p>For any billing disputes or cancellation requests, please write to us immediately:</p>
+          <p>For any billing disputes or cancellation requests, please contact us immediately:</p>
           <ul>
-            <li><strong>Email:</strong> bgmiwale@gmail.com</li>
-            <li><strong>Address:</strong> Bihar, India</li>
+            <li><strong>Email:</strong> <a href="mailto:rsaurabhp03@gmail.com" className="text-dalBlue dark:text-blue-400 hover:underline">rsaurabhp03@gmail.com</a></li>
+            <li><strong>Phone / WhatsApp:</strong> <a href="tel:+918933068171" className="text-dalBlue dark:text-blue-400 hover:underline">+91 8933068171</a></li>
+            <li><strong>Address:</strong> Dak Bungalow Chauraha, Bailey Road, Patna, Bihar 800001, India</li>
           </ul>
         </div>
       </div>

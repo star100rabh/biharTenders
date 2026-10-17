@@ -3,7 +3,7 @@
  * @description Operational support and inquiry desk with humanized classical layout and full light/dark harmony.
  */
 import { useState } from 'react';
-import { Mail, MapPin, Send, CheckCircle2, Clock, HelpCircle, Landmark, Loader2 } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle2, Clock, HelpCircle, Landmark, Loader2, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { servicesApi } from '@/services/servicesApi';
@@ -69,10 +69,18 @@ export default function Contact() {
             </div>
 
             <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
+              <Phone className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Direct Support &amp; WhatsApp</span>
+                <a href="tel:+918933068171" className="text-xs font-mono font-bold text-slate-900 dark:text-white hover:underline">+91 8933068171</a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700">
               <Mail className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Email Support</span>
-                <span className="text-xs font-mono font-semibold">support@bihartenders.in</span>
+                <span className="block text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400">Official Email Support</span>
+                <a href="mailto:rsaurabhp03@gmail.com" className="text-xs font-mono font-semibold text-slate-900 dark:text-white hover:underline">rsaurabhp03@gmail.com</a>
               </div>
             </div>
 

@@ -27,7 +27,7 @@ export default function TermsOfService() {
           <p>BiharTenders provides aggregated public procurement data, tender alerts, and related insights. You agree to use the service only for lawful purposes and in a way that does not infringe the rights of, restrict, or inhibit anyone else's use of the website.</p>
 
           <h2>3. Subscriptions and Payments</h2>
-          <p>Certain features are offered on a paid subscription basis. By subscribing, you agree to pay the fees indicated for the service. Payments are securely processed through Razorpay. All fees are exclusive of applicable taxes unless stated otherwise.</p>
+          <p>Certain features are offered on a paid subscription basis. By subscribing, you agree to pay the fees indicated for the service. Payments are securely processed through authorized, RBI-compliant payment gateways (Cashfree / Razorpay). All fees are exclusive of applicable taxes unless stated otherwise.</p>
 
           <h2>4. Data Accuracy and Liability</h2>
           <p>While we strive to provide accurate and timely tender information gathered from public portals, BiharTenders does not guarantee the absolute accuracy, completeness, or timeliness of the data. Users are advised to cross-verify critical information from official government sources.</p>
@@ -42,8 +42,9 @@ export default function TermsOfService() {
           <h2>7. Contact Information</h2>
           <p>If you have any questions regarding these Terms of Service, please contact us at:</p>
           <ul>
-            <li><strong>Email:</strong> bgmiwale@gmail.com</li>
-            <li><strong>Address:</strong> Bihar, India</li>
+            <li><strong>Email:</strong> <a href="mailto:rsaurabhp03@gmail.com" className="text-dalBlue dark:text-blue-400 hover:underline">rsaurabhp03@gmail.com</a></li>
+            <li><strong>Phone / WhatsApp:</strong> <a href="tel:+918933068171" className="text-dalBlue dark:text-blue-400 hover:underline">+91 8933068171</a></li>
+            <li><strong>Address:</strong> Dak Bungalow Chauraha, Bailey Road, Patna, Bihar 800001, India</li>
           </ul>
         </div>
       </div>
