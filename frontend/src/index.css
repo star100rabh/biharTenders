@@ -51,46 +51,46 @@
 
 /* Universal Patliputra Translucent Glass Utility Classes (Subtle Watermark & Solid Readability) */
 .patliputra-glass {
-  background-color: rgba(255, 255, 255, 0.72) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
+  background-color: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
   border-color: rgba(226, 218, 206, 0.95) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04) !important;
 }
 
 .dark .patliputra-glass {
-  background-color: rgba(21, 27, 38, 0.75) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
+  background-color: rgba(21, 27, 38, 0.85) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
   border-color: rgba(45, 55, 72, 0.9) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25) !important;
 }
 
 .patliputra-glass-subtle {
-  background-color: rgba(255, 255, 255, 0.50) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
-  border-color: rgba(226, 218, 206, 0.8) !important;
+  background-color: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  border-color: rgba(226, 218, 206, 0.85) !important;
 }
 
 .dark .patliputra-glass-subtle {
-  background-color: rgba(13, 17, 23, 0.55) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
-  border-color: rgba(45, 55, 72, 0.8) !important;
+  background-color: rgba(13, 17, 23, 0.70) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  border-color: rgba(45, 55, 72, 0.85) !important;
 }
 
 .patliputra-glass-badge {
-  background-color: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
-  border-color: rgba(226, 218, 206, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  border-color: rgba(226, 218, 206, 0.95) !important;
 }
 
 .dark .patliputra-glass-badge {
-  background-color: rgba(21, 27, 38, 0.75) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
+  background-color: rgba(21, 27, 38, 0.88) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
   border-color: rgba(45, 55, 72, 0.9) !important;
 }
 
