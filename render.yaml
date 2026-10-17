@@ -81,4 +81,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://bihartenders-backend-jofq.onrender.com/api/v1/admin
+        value: https://bihartenders-backend.onrender.com/api/v1/admin

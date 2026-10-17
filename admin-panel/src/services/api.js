@@ -3,19 +3,19 @@
  * @description Administrative API client communicating with backend /api/v1/admin endpoints.
  */
 
-const PRODUCTION_BACKEND_URL = 'https://bihartenders-backend-jofq.onrender.com/api/v1/admin';
+const PRODUCTION_BACKEND_URL = 'https://bihartenders-backend.onrender.com/api/v1/admin';
+const LOCAL_BACKEND_URL = 'http://localhost:8000/api/v1/admin';
 
-const getBaseUrl = () => {
+export const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    const custom = sessionStorage.getItem('ADMIN_CUSTOM_API_URL') || localStorage.getItem('ADMIN_CUSTOM_API_URL');
+    if (custom) return custom;
+  }
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    if (hostname.includes('onrender.com') || hostname.includes('bihartenders.in')) {
-      return PRODUCTION_BACKEND_URL;
-    }
-  }
-  return 'http://localhost:8000/api/v1/admin';
+  // Default to live Production Render Backend so admin panel works immediately out-of-the-box
+  return PRODUCTION_BACKEND_URL;
 };
 
 const BASE_URL = getBaseUrl();
