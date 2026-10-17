@@ -102,10 +102,10 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
   const nitDocsCount = tender.nitDocuments?.length || tender.pdfUrls?.length || 0;
 
   return (
-    <article className={`group bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 border-l-2 border-l-[#C85A32] dark:border-l-[#E07A5F] rounded-2xl p-4 sm:p-5 shadow-xs transition-all duration-200 flex flex-col justify-between ${
+    <article className={`group bg-white/40 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] border-l-4 border-l-[#C85A32] dark:border-l-[#E07A5F] rounded-2xl p-4 sm:p-5 shadow-xs transition-all duration-200 flex flex-col justify-between ${
       isBlurred 
         ? 'filter blur-[4px] select-none pointer-events-none opacity-45' 
-        : 'hover:border-[#C85A32]/60 dark:hover:border-[#E07A5F]/60 hover:shadow-md'
+        : 'hover:border-[#C85A32]/60 dark:hover:border-[#E07A5F]/60 hover:bg-white/50 dark:hover:bg-[#151B26]/60'
     }`}>
       
       {/* ----------------- Top Header Row: Status Chip, ID, Authority & Save Heart ----------------- */}
@@ -114,7 +114,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 min-w-0">
             {/* Live Bidding / Upcoming / Closed Chip */}
             {isPastClosing ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 dark:bg-[#0D1117] dark:text-slate-400 border border-[#E6E1D8] dark:border-[#283341] shrink-0">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100/70 text-slate-600 dark:bg-[#0D1117]/60 dark:text-slate-400 border border-[#E6E1D8] dark:border-[#283341] shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                 <span>{isAwaitingOpening ? 'Awaiting Opening' : 'Closed'}</span>
               </span>
@@ -131,13 +131,13 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
             )}
 
             {/* Monospace Tabular Tender ID */}
-            <span className="font-mono tabular-nums text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-slate-200 bg-[#FAF8F5]/80 dark:bg-[#0D1117]/60 backdrop-blur-xs px-2 py-0.5 rounded-lg border border-[#E6E1D8]/80 dark:border-[#283341]/80 shrink-0">
+            <span className="font-mono tabular-nums text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white/50 dark:bg-[#0D1117]/50 backdrop-blur-xs px-2 py-0.5 rounded-lg border border-[#E6E1D8] dark:border-[#283341] shrink-0">
               {tender.sourceTenderId || tender.tenderReferenceNumber || 'NIT-ACTIVE'}
             </span>
 
             {/* Location Tag in Top Metadata Strip */}
             {locationTag && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#FAF8F5]/80 dark:bg-[#0D1117]/60 backdrop-blur-xs text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium border border-[#E6E1D8]/80 dark:border-[#283341]/80">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/50 dark:bg-[#0D1117]/50 backdrop-blur-xs text-slate-700 dark:text-slate-300 rounded-lg text-[11px] font-medium border border-[#E6E1D8] dark:border-[#283341]">
                 <MapPin className="w-3 h-3 text-[#C85A32] dark:text-[#E07A5F] shrink-0" />
                 <span className="truncate max-w-[120px] sm:max-w-[160px]">{locationTag}</span>
               </span>
@@ -195,7 +195,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
       </div>
 
       {/* ----------------- Middle Financials & Timeline Strip (Stacked Grid Columns) ----------------- */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 py-2.5 my-2.5 border border-[#E6E1D8]/80 dark:border-[#283341]/80 bg-[#FAF8F5]/60 dark:bg-[#0D1117]/50 backdrop-blur-xs rounded-xl px-3.5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 py-2.5 my-2.5 border border-[#E6E1D8]/70 dark:border-[#283341]/70 bg-white/25 dark:bg-[#0D1117]/25 backdrop-blur-xs rounded-xl px-3.5">
         {/* 1. Estimated Value */}
         <div>
           <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
@@ -297,13 +297,13 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 pt-1">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           {/* Tender Category */}
-          <span className="px-2 py-0.5 bg-[#FAF8F5]/80 dark:bg-[#0D1117]/60 backdrop-blur-xs text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-medium border border-[#E6E1D8]/80 dark:border-[#283341]/80 truncate max-w-[140px] sm:max-w-[190px]" title={categoryLabel}>
+          <span className="px-2 py-0.5 bg-white/50 dark:bg-[#0D1117]/50 backdrop-blur-xs text-slate-600 dark:text-slate-300 rounded-lg text-[11px] font-medium border border-[#E6E1D8] dark:border-[#283341] truncate max-w-[140px] sm:max-w-[190px]" title={categoryLabel}>
             {categoryLabel}
           </span>
 
           {/* Official Notices Count */}
           {nitDocsCount > 0 && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#FAF8F5]/80 dark:bg-[#0D1117]/60 backdrop-blur-xs text-[#1D3557] dark:text-[#7EA2D6] text-[10px] font-mono tabular-nums font-semibold rounded-lg border border-[#E6E1D8]/80 dark:border-[#283341]/80" title={`${nitDocsCount} Official Notice PDF(s)`}>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/50 dark:bg-[#0D1117]/50 backdrop-blur-xs text-[#1D3557] dark:text-[#7EA2D6] text-[10px] font-mono tabular-nums font-semibold rounded-lg border border-[#E6E1D8] dark:border-[#283341]" title={`${nitDocsCount} Official Notice PDF(s)`}>
               <FileText className="w-3 h-3 shrink-0" />
               <span>{nitDocsCount} NIT Doc{nitDocsCount > 1 ? 's' : ''}</span>
             </span>
@@ -326,7 +326,7 @@ export function TenderCard({ tender, onViewDetails, isBlurred = false }) {
               e.stopPropagation();
               navigate(`/services/${encodeURIComponent(tender.sourceTenderId || tenderId)}`);
             }}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#1D3557] dark:text-[#7EA2D6] bg-[#FAF8F5]/80 dark:bg-[#0D1117]/60 hover:bg-slate-100 dark:hover:bg-slate-800 border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-xl backdrop-blur-xs transition-all cursor-pointer"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#1D3557] dark:text-[#7EA2D6] bg-white/50 dark:bg-[#0D1117]/50 hover:bg-white/80 dark:hover:bg-slate-800 border border-[#E6E1D8] dark:border-[#283341] rounded-xl backdrop-blur-xs transition-all cursor-pointer"
             title="Instant AI Tender Dossier & BOQ Extract"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C85A32] dark:text-[#E07A5F] shrink-0" />

@@ -26,12 +26,9 @@ export function PatliputraWatermark() {
         className="absolute inset-0 w-full h-full object-cover object-center lg:object-[center_35%] opacity-90 dark:opacity-25 dark:invert dark:mix-blend-screen transition-all duration-300"
       />
 
-      {/* 
-        Subtle Bottom Gradient Fade:
-        Ensures the lower directory sections, data metrics, and department cards remain 100% legible
-      */}
+      {/* Very soft ambient tint so background watermark lines remain clearly visible everywhere */}
       <div 
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FAF7F2]/25 to-[#FAF8F5]/95 dark:via-[#0D1117]/35 dark:to-[#0D1117]/95 pointer-events-none" 
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF8F5]/20 dark:to-[#0D1117]/40 pointer-events-none" 
       />
     </div>
   );

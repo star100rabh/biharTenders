@@ -452,11 +452,11 @@ export default function Tenders() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
           
           {/* ---------------- FILTER SIDEBAR ---------------- */}
-          <aside className={`lg:col-span-1 bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
+          <aside className={`lg:col-span-1 bg-white/45 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
             mobileFiltersOpen ? 'flex mb-4 lg:mb-0' : 'hidden lg:flex'
           }`}>
             {/* Pinned Header */}
-            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8]/80 dark:border-[#283341]/80 text-patliputra-indigo dark:text-patliputra-iceSteel bg-white/40 dark:bg-[#151B26]/40 backdrop-blur-xs shrink-0 select-none">
+            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8] dark:border-[#283341] text-patliputra-indigo dark:text-patliputra-iceSteel bg-white/40 dark:bg-[#151B26]/40 backdrop-blur-xs shrink-0 select-none">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-patliputra-terracotta dark:text-patliputra-darkTerracotta" />
                 <h2 className="text-xs font-bold uppercase tracking-wider font-display">Search Filters</h2>
@@ -698,7 +698,7 @@ export default function Tenders() {
           <main className="lg:col-span-3 space-y-4">
             
             {/* Top Tab Bar strictly matching Image 2 */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 p-2 sm:p-2.5 rounded-2xl shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white/45 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] p-2 sm:p-2.5 rounded-2xl shadow-xs">
               {/* Menu Tabs: Active Tenders, Upcoming, Expired */}
               <div 
                 className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-hide [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-thumb]:hidden [&::-webkit-scrollbar-track]:hidden"
@@ -940,7 +940,7 @@ export default function Tenders() {
             )}
 
             {/* Total Results Summary with Top Navigation Arrows */}
-            <div className="flex items-center justify-between bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-400 shadow-xs">
+            <div className="flex items-center justify-between bg-white/45 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-400 shadow-xs">
               <span>
                 Showing <strong className="font-mono text-sm text-emerald-600 dark:text-emerald-400 font-bold">{totalCount}</strong> {status === 'upcoming' ? 'upcoming notices' : status === 'expired' ? 'expired notices' : 'active notices'}
               </span>
