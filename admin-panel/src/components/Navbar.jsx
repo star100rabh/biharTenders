@@ -1,6 +1,6 @@
 import { Landmark, RefreshCw, LogOut, Sun, Moon, Clock, ShieldCheck } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { clearStoredAdminKey } from '../services/api';
+import { clearStoredAdminCredentials } from '../services/api';
 
 export function Navbar({ isOperational, lastUpdated, onRefresh, isRefreshing, onLogout }) {
   const { isDark, toggleTheme } = useTheme();
@@ -76,7 +76,7 @@ export function Navbar({ isOperational, lastUpdated, onRefresh, isRefreshing, on
           {/* Logout */}
           <button
             onClick={() => {
-              clearStoredAdminKey();
+              clearStoredAdminCredentials();
               onLogout();
             }}
             className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/60 border border-red-200 dark:border-red-900/60 text-xs font-semibold text-red-700 dark:text-red-300 transition-all cursor-pointer shadow-xs"

@@ -10,8 +10,8 @@ import {
 } from '../services/api';
 
 export function AdminLogin({ onAuthenticated }) {
-  const [emailInput, setEmailInput] = useState(getStoredAdminEmail() || 'rsaurabhp03@gmail.com');
-  const [keyInput, setKeyInput] = useState('11112222');
+  const [emailInput, setEmailInput] = useState(getStoredAdminEmail() || '');
+  const [keyInput, setKeyInput] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');

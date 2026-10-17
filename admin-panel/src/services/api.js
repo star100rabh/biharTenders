@@ -36,11 +36,13 @@ export const setCustomApiUrl = (url) => {
 };
 
 export function getStoredAdminKey() {
-  return sessionStorage.getItem('TENDERHUB_ADMIN_KEY') || localStorage.getItem('TENDERHUB_ADMIN_KEY') || '11112222';
+  if (typeof window === 'undefined') return '';
+  return sessionStorage.getItem('TENDERHUB_ADMIN_KEY') || localStorage.getItem('TENDERHUB_ADMIN_KEY') || '';
 }
 
 export function getStoredAdminEmail() {
-  return sessionStorage.getItem('TENDERHUB_ADMIN_EMAIL') || localStorage.getItem('TENDERHUB_ADMIN_EMAIL') || 'rsaurabhp03@gmail.com';
+  if (typeof window === 'undefined') return '';
+  return sessionStorage.getItem('TENDERHUB_ADMIN_EMAIL') || localStorage.getItem('TENDERHUB_ADMIN_EMAIL') || '';
 }
 
 export function setStoredAdminCredentials(key, email, persist = false) {
