@@ -4,6 +4,7 @@
  */
 import Subscription from './models/Subscription.js';
 import { razorpayAdapter } from './adapters/RazorpayAdapter.js';
+import { cashfreeAdapter } from './adapters/CashfreeAdapter.js';
 import User from '../../models/User.js';
 import ContractorPreference from '../notifications/models/ContractorPreference.js';
 import ContractorAgentProfile from '../../models/ContractorAgentProfile.js';
@@ -124,7 +125,7 @@ export class BillingService {
     return Object.values(PLANS);
   }
 
-  async createCheckoutOrder(userId, planId) {
+  async createCheckoutOrder(userId, planId, options = {}) {
     const plan = PLANS[planId];
     if (!plan) {
       throw new Error(`Invalid plan selected: "${planId}".`);
@@ -135,6 +136,49 @@ export class BillingService {
       throw new Error('User not found.');
     }
 
+    const activeGateway = env.ACTIVE_PAYMENT_GATEWAY || (cashfreeAdapter.isConfigured ? 'cashfree' : 'razorpay');
+
+    // 1. CASHFREE FLOW
+    if (activeGateway === 'cashfree' && cashfreeAdapter.isConfigured) {
+      const cleanPhone = (options.phone || user.phone || '8933068171').toString().replace(/\D/g, '').slice(-10);
+      const order = await cashfreeAdapter.createOrder({
+        amount: plan.price,
+        currency: 'INR',
+        customerDetails: {
+          id: userId.toString(),
+          name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Contractor',
+          email: user.email || 'contractor@bihartenders.in',
+          phone: cleanPhone.length === 10 ? cleanPhone : '8933068171',
+        },
+        notes: {
+          userId: userId.toString(),
+          planId: plan.id,
+          planName: plan.name,
+        },
+      });
+
+      return {
+        gateway: 'cashfree',
+        orderId: order.orderId,
+        cfOrderId: order.cfOrderId,
+        paymentSessionId: order.paymentSessionId,
+        amount: order.amount,
+        currency: order.currency,
+        environment: order.environment,
+        plan: {
+          id: plan.id,
+          name: plan.name,
+          price: plan.price,
+        },
+        prefill: {
+          name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+          email: user.email,
+          phone: cleanPhone,
+        },
+      };
+    }
+
+    // 2. RAZORPAY FALLBACK FLOW
     // Amount in paise (1 INR = 100 paise)
     const amountInPaise = plan.price * 100;
     const receipt = `rcpt_${userId.toString().slice(-6)}_${Date.now()}`;
@@ -151,6 +195,7 @@ export class BillingService {
     });
 
     return {
+      gateway: 'razorpay',
       orderId: order.orderId,
       amount: order.amount,
       currency: order.currency,
@@ -168,54 +213,72 @@ export class BillingService {
     };
   }
 
-  async verifyAndActivateSubscription(userId, { orderId, paymentId, signature, planId, phone }) {
+  async verifyAndActivateSubscription(userId, { orderId, paymentId, signature, planId, phone, gateway }) {
     const plan = PLANS[planId];
     if (!plan) {
       throw new Error(`Invalid plan selected: "${planId}".`);
     }
 
-    if (env.NODE_ENV === 'production' && razorpayAdapter.isMockMode) {
-      throw new Error('Payment gateway is not configured for production transactions.');
-    }
+    const determinedGateway = gateway || (orderId?.startsWith('cf_') ? 'cashfree' : (env.ACTIVE_PAYMENT_GATEWAY || 'razorpay'));
+    let verifiedPaymentId = paymentId || orderId;
 
-    // 1. Replay prevention: verify this paymentId has not already been used for another subscription
-    const existingPaymentSub = await Subscription.findOne({ gatewayPaymentId: paymentId });
-    if (existingPaymentSub) {
-      throw new Error('This payment transaction has already been redeemed.');
-    }
+    if (determinedGateway === 'cashfree') {
+      const verifyResult = await cashfreeAdapter.verifyPayment({ orderId, paymentId });
+      if (!verifyResult.isPaid) {
+        logger.warn(`Cashfree payment verification failed for user ${userId}, order ${orderId}: ${verifyResult.error}`);
+        throw new Error(`Payment verification failed: ${verifyResult.error || 'Payment not completed on Cashfree.'}`);
+      }
 
-    // 2. Verify cryptographic signature from Gateway
-    if (signature !== 'webhook_verified') {
-      const isValidSignature = razorpayAdapter.verifyPaymentSignature({
-        orderId,
-        paymentId,
-        signature,
-      });
+      if (Number(verifyResult.amount) < Number(plan.price)) {
+        logger.error(`Cashfree amount mismatch: user ${userId} paid ₹${verifyResult.amount}, required ₹${plan.price}`);
+        throw new Error(`Paid amount ₹${verifyResult.amount} does not match required price ₹${plan.price}.`);
+      }
 
-      if (!isValidSignature) {
-        logger.warn(`Signature verification failed for user ${userId}, order ${orderId}`);
-        throw new Error('Payment signature verification failed. Untrusted payment payload.');
+      verifiedPaymentId = verifyResult.paymentId;
+    } else {
+      if (env.NODE_ENV === 'production' && razorpayAdapter.isMockMode) {
+        throw new Error('Payment gateway is not configured for production transactions.');
+      }
+
+      // 1. Verify cryptographic signature from Gateway
+      if (signature !== 'webhook_verified') {
+        const isValidSignature = razorpayAdapter.verifyPaymentSignature({
+          orderId,
+          paymentId: verifiedPaymentId,
+          signature,
+        });
+
+        if (!isValidSignature) {
+          logger.warn(`Signature verification failed for user ${userId}, order ${orderId}`);
+          throw new Error('Payment signature verification failed. Untrusted payment payload.');
+        }
+      }
+
+      // 2. For live mode, verify that the payment was captured and amount matches the plan!
+      if (!razorpayAdapter.isMockMode) {
+        const paymentData = await razorpayAdapter.fetchPayment(verifiedPaymentId);
+        if (!paymentData || paymentData.status !== 'captured') {
+          throw new Error('Payment transaction is not in captured status.');
+        }
+        const expectedAmountPaise = Math.round(plan.price * 100);
+        if (paymentData.amount < expectedAmountPaise) {
+          logger.error(`Plan tampering attempt: user ${userId} paid ${paymentData.amount} paise, but requested plan ${plan.id} (${expectedAmountPaise} paise)`);
+          throw new Error('Paid amount does not match the required price for this plan.');
+        }
       }
     }
 
-    // 3. For live mode, verify that the payment was captured and amount matches the plan!
-    if (!razorpayAdapter.isMockMode) {
-      const paymentData = await razorpayAdapter.fetchPayment(paymentId);
-      if (!paymentData || paymentData.status !== 'captured') {
-        throw new Error('Payment transaction is not in captured status.');
-      }
-      const expectedAmountPaise = Math.round(plan.price * 100);
-      if (paymentData.amount < expectedAmountPaise) {
-        logger.error(`Plan tampering attempt: user ${userId} paid ${paymentData.amount} paise, but requested plan ${plan.id} (${expectedAmountPaise} paise)`);
-        throw new Error('Paid amount does not match the required price for this plan.');
-      }
+    // 3. Replay prevention: verify this paymentId has not already been used for another subscription
+    const existingPaymentSub = await Subscription.findOne({ gatewayPaymentId: verifiedPaymentId });
+    if (existingPaymentSub && String(existingPaymentSub.userId) !== String(userId)) {
+      throw new Error('This payment transaction has already been redeemed by another account.');
     }
 
-    // 2. Calculate period duration
+    // 4. Calculate period duration
     const startDate = new Date();
     const endDate = new Date(startDate.getTime() + plan.periodDays * 24 * 60 * 60 * 1000);
 
-    // 3. Upsert / Activate Subscription
+    // 5. Upsert / Activate Subscription
     let subscription = await Subscription.findOne({ userId });
 
     if (!subscription) {
@@ -227,9 +290,9 @@ export class BillingService {
         status: 'active',
         currentPeriodStart: startDate,
         currentPeriodEnd: endDate,
-        gateway: razorpayAdapter.isMockMode ? 'mock_test' : 'razorpay',
+        gateway: determinedGateway,
         gatewayOrderId: orderId,
-        gatewayPaymentId: paymentId,
+        gatewayPaymentId: verifiedPaymentId,
       });
     } else {
       subscription.planId = plan.id;
@@ -240,8 +303,9 @@ export class BillingService {
       // If user had existing active time left, extend from currentPeriodEnd
       const baseEnd = subscription.currentPeriodEnd > startDate ? subscription.currentPeriodEnd : startDate;
       subscription.currentPeriodEnd = new Date(baseEnd.getTime() + plan.periodDays * 24 * 60 * 60 * 1000);
+      subscription.gateway = determinedGateway;
       subscription.gatewayOrderId = orderId;
-      subscription.gatewayPaymentId = paymentId;
+      subscription.gatewayPaymentId = verifiedPaymentId;
       subscription.cancelAtPeriodEnd = false;
     }
 

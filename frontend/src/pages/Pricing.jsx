@@ -68,6 +68,20 @@ export default function Pricing() {
     });
   };
 
+  const loadCashfreeScript = () => {
+    return new Promise((resolve) => {
+      if (window.Cashfree) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   // Step 1: When user clicks Upgrade on a plan card
   const handleInitiateUpgrade = (plan) => {
     if (!isAuthenticated) {
@@ -81,7 +95,7 @@ export default function Pricing() {
     setShowPhoneModal(true);
   };
 
-  // Step 2: User confirms WhatsApp number and proceeds to Razorpay
+  // Step 2: User confirms WhatsApp number and proceeds to Payment Gateway
   const handleProceedToPayment = async (e) => {
     e?.preventDefault();
     const cleanPhone = whatsappPhone.trim().replace(/\D/g, '');
@@ -96,16 +110,64 @@ export default function Pricing() {
     setLoadingPlanId(selectedPlan.id);
 
     try {
-      // 1. Create order on backend
-      const orderData = await billingApi.createOrder(selectedPlan.id);
+      // 1. Create order on backend with user's confirmed phone
+      const orderData = await billingApi.createOrder(selectedPlan.id, { phone: cleanPhone });
 
-      // 2. Load Razorpay SDK
+      // ==========================================
+      // FLOW A: CASHFREE PAYMENT GATEWAY
+      // ==========================================
+      if (orderData.gateway === 'cashfree' && orderData.paymentSessionId) {
+        const isLoaded = await loadCashfreeScript();
+        if (!isLoaded || !window.Cashfree) {
+          throw new Error('Failed to load Cashfree payment gateway SDK. Please check your internet connection.');
+        }
+
+        const cashfree = window.Cashfree({
+          mode: orderData.environment === 'production' ? 'production' : 'sandbox',
+        });
+
+        // Opens Cashfree payment popup modal right inside the page
+        await cashfree.checkout({
+          paymentSessionId: orderData.paymentSessionId,
+          redirectTarget: '_modal',
+        });
+
+        // Verify with backend
+        try {
+          setLoadingPlanId(selectedPlan.id);
+          const verifyRes = await billingApi.verifyPayment({
+            orderId: orderData.orderId,
+            planId: selectedPlan.id,
+            phone: cleanPhone,
+            gateway: 'cashfree',
+          });
+
+          if (verifyRes.success) {
+            setSuccessMessage(`🎉 Payment verified! ${selectedPlan.name} activated successfully. Receipt and alert onboarding sent to WhatsApp ${cleanPhone}.`);
+            const updatedSub = await billingApi.getStatus();
+            setSubscription(updatedSub);
+            checkAuth();
+          }
+        } catch (err) {
+          const msg = err.response?.data?.message || err.message;
+          if (msg && !msg.toLowerCase().includes('cancelled') && !msg.toLowerCase().includes('dismiss')) {
+            setErrorMessage(msg);
+          }
+        } finally {
+          setLoadingPlanId(null);
+        }
+        return;
+      }
+
+      // ==========================================
+      // FLOW B: RAZORPAY GATEWAY FALLBACK
+      // ==========================================
       const isLoaded = await loadRazorpayScript();
       if (!isLoaded) {
         throw new Error('Failed to load Razorpay payment gateway. Please check your internet connection.');
       }
 
-      // 3. Configure Razorpay modal options
+      // Configure Razorpay modal options
       const options = {
         key: orderData.keyId,
         amount: orderData.amount, // in paise
@@ -129,13 +191,13 @@ export default function Pricing() {
         handler: async (response) => {
           try {
             setLoadingPlanId(selectedPlan.id);
-            // 4. Verify payment cryptographically and activate Pro only upon verified payment
             const verifyRes = await billingApi.verifyPayment({
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
               planId: selectedPlan.id,
               phone: cleanPhone,
+              gateway: 'razorpay',
             });
 
             if (verifyRes.success) {

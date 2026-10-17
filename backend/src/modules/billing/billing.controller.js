@@ -16,7 +16,7 @@ export const getPlans = async (req, res) => {
 export const createCheckoutOrder = async (req, res) => {
   try {
     const userId = req.user?.userId;
-    const { planId } = req.body;
+    const { planId, phone } = req.body;
 
     if (!userId) {
       return res.status(401).json({ success: false, message: 'Authentication required.' });
@@ -26,7 +26,7 @@ export const createCheckoutOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: 'planId is required.' });
     }
 
-    const orderData = await billingService.createCheckoutOrder(userId, planId);
+    const orderData = await billingService.createCheckoutOrder(userId, planId, { phone });
     return res.status(200).json({ success: true, ...orderData });
   } catch (err) {
     return res.status(400).json({ success: false, message: err.message });
@@ -36,25 +36,26 @@ export const createCheckoutOrder = async (req, res) => {
 export const verifyPayment = async (req, res) => {
   try {
     const userId = req.user?.userId;
-    const { orderId, paymentId, signature, planId, phone } = req.body;
+    const { orderId, paymentId, signature, planId, phone, gateway } = req.body;
 
     if (!userId) {
       return res.status(401).json({ success: false, message: 'Authentication required.' });
     }
 
-    if (!orderId || !paymentId || !planId) {
+    if (!orderId || !planId) {
       return res.status(400).json({
         success: false,
-        message: 'Missing payment verification parameters (orderId, paymentId, planId).',
+        message: 'Missing payment verification parameters (orderId, planId).',
       });
     }
 
     const subscription = await billingService.verifyAndActivateSubscription(userId, {
       orderId,
-      paymentId,
+      paymentId: paymentId || orderId,
       signature,
       planId,
       phone,
+      gateway,
     });
 
     return res.status(200).json({

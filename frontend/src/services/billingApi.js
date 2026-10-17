@@ -15,8 +15,8 @@ export const billingApi = {
     return res.data?.subscription;
   },
 
-  createOrder: async (planId) => {
-    const res = await api.post('/billing/create-order', { planId });
+  createOrder: async (planId, extra = {}) => {
+    const res = await api.post('/billing/create-order', { planId, ...extra });
     return res.data;
   },
 
