@@ -175,7 +175,7 @@ export default function Pricing() {
       desc: 'Discover active tenders and evaluate public works across Bihar.',
       features: [
         'First 15 tender cards unlocked per day',
-        'Search across all 20 Bihar districts',
+        'Search across all 38 Bihar districts',
         'Save up to 10 bookmarked tenders',
         'Standard portal search helpers',
       ],
@@ -186,9 +186,9 @@ export default function Pricing() {
     {
       id: 'pro_monthly',
       name: 'Pro Monthly',
-      price: '₹10',
-      period: '/ month (Test Rate: ₹10)',
-      ratePerDay: 'Only ₹10 for testing',
+      price: '₹399',
+      period: '/ month',
+      ratePerDay: '~₹13 / day',
       badge: 'Most Popular',
       desc: 'Everything an active contractor needs to win tenders in their district.',
       features: [
@@ -200,7 +200,7 @@ export default function Pricing() {
         'Priority technical support desk',
       ],
       isPopular: true,
-      cta: 'Pay ₹10 & Upgrade',
+      cta: 'Upgrade to Pro Monthly',
     },
     {
       id: 'pro_quarterly',

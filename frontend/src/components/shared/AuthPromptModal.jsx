@@ -85,7 +85,7 @@ export function AuthPromptModal({
             <div className="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300">
               <ShieldCheck className="w-4 h-4 text-chinarRed shrink-0 mt-0.5" />
               <span>
-                <strong>Unlimited tender directory browsing</strong> across all 20 Bihar districts and departments.
+                <strong>Unlimited tender directory browsing</strong> across all 38 Bihar districts and departments.
               </span>
             </div>
           </div>
