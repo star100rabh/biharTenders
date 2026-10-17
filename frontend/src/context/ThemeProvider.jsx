@@ -14,19 +14,15 @@ const ThemeProviderContext = createContext({
 export function ThemeProvider({ children, defaultTheme = "light", storageKey = "bihartenders-theme" }) {
   const [theme, setThemeState] = useState(() => {
     const stored = localStorage.getItem(storageKey);
-    if (stored === "dark" || stored === "light" || stored === "split") return stored;
+    if (stored === "dark" || stored === "light") return stored;
     return defaultTheme;
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove("light", "dark", "split-mode");
-    if (theme === "split") {
-      root.classList.add("split-mode");
-    } else {
-      root.classList.add(theme);
-    }
-    localStorage.setItem(storageKey, theme);
+    root.classList.add(theme === "dark" ? "dark" : "light");
+    localStorage.setItem(storageKey, theme === "dark" ? "dark" : "light");
   }, [theme, storageKey]);
 
   const setTheme = (newTheme) => {

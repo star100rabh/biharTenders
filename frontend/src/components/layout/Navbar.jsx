@@ -14,7 +14,7 @@ import { useTheme } from '@/context/ThemeProvider';
 
 export function Navbar() {
   const location = useLocation();
-  const { theme, setTheme, isDark, isSplit } = useTheme();
+  const { theme, toggleTheme, isDark } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Subscribe to global stores
@@ -24,12 +24,6 @@ export function Navbar() {
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
-  };
-
-  const cycleTheme = () => {
-    if (theme === 'light') setTheme('dark');
-    else if (theme === 'dark') setTheme('split');
-    else setTheme('light');
   };
 
   const navLinks = [
@@ -104,19 +98,14 @@ export function Navbar() {
         {/* Right Side Action Center: Theme, Saved, Contractor Workspace & Sign In */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           
-          {/* Light / Split / Dark Theme Toggle */}
+          {/* Light / Dark Theme Toggle */}
           <button
-            onClick={cycleTheme}
+            onClick={toggleTheme}
             className="h-9 px-2.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-all cursor-pointer focus:outline-none shrink-0"
-            title={`Current: ${theme.toUpperCase()} mode (Click to toggle: Light -> Dark -> Split Compare)`}
+            title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
             aria-label="Toggle theme mode"
           >
-            {isSplit ? (
-              <>
-                <span className="w-2 h-2 rounded-full bg-[#C85A32]" />
-                <span className="text-[11px] font-mono font-bold hidden sm:inline">Split 🌗</span>
-              </>
-            ) : isDark ? (
+            {isDark ? (
               <>
                 <Sun className="w-4 h-4 text-amber-400" />
                 <span className="text-[11px] font-mono hidden sm:inline">Dark</span>

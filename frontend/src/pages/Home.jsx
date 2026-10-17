@@ -99,7 +99,7 @@ export default function Home() {
   const [selectedRegion, setSelectedRegion] = useState('');
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const { theme, isDark, isSplit } = useTheme();
+  const { theme, isDark } = useTheme();
 
   // Auth Prompt Modal State
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -214,13 +214,6 @@ export default function Home() {
           <span className="text-slate-500 dark:text-slate-400 font-medium hidden lg:inline">Patliputra Modern E-Tendering</span>
         </div>
       </div>
-
-      {/* Split Comparison Mode Indicator Banner when Split is active */}
-      {isSplit && (
-        <div className="bg-[#FAF8F5] dark:bg-[#0D1117] border-b border-[#E6E1D8] dark:border-[#283341] py-2 px-4 text-center text-xs font-semibold text-[#1D3557] dark:text-white">
-          <span className="font-bold text-[#C85A32]">Split Comparison Mode Active:</span> Side-by-Side View of Light Mode (Left: Historical Architecture) &amp; Dark Mode (Right: Modern Civil Infrastructure).
-        </div>
-      )}
 
       {/* =========================================================================
           HERO SECTION (Spacious 12-Column Grid Alignment & Patliputra Modern Aesthetic)
