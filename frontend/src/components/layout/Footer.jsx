@@ -4,7 +4,7 @@
  * regional operations desk information, and directory shortcuts.
  */
 import { Link } from 'react-router-dom';
-import { Landmark, Mail, MapPin, ExternalLink, Phone } from 'lucide-react';
+import { Landmark, Mail, MapPin, ExternalLink, Phone, Send } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -73,6 +73,17 @@ export function Footer() {
                 <Link to="/pricing" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
                   <span>Contractor Plans</span>
                 </Link>
+              </li>
+              <li>
+                <a 
+                  href="https://t.me/bihartendersofficial" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[#0284c7] dark:text-[#38bdf8] font-semibold hover:underline transition-colors"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Telegram Alerts Channel</span>
+                </a>
               </li>
             </ul>
           </div>
