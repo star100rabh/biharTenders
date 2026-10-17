@@ -1,13 +1,6 @@
 import { useState } from 'react';
-import { Landmark, Key, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, BadgeCheck, Server } from 'lucide-react';
-import { 
-  adminApi, 
-  setStoredAdminCredentials, 
-  getStoredAdminEmail, 
-  getBaseUrl, 
-  setCustomApiUrl, 
-  PRODUCTION_BACKEND_URL 
-} from '../services/api';
+import { Landmark, Key, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, BadgeCheck } from 'lucide-react';
+import { adminApi, setStoredAdminCredentials, getStoredAdminEmail } from '../services/api';
 
 export function AdminLogin({ onAuthenticated }) {
   const [emailInput, setEmailInput] = useState(getStoredAdminEmail() || '');
@@ -15,8 +8,6 @@ export function AdminLogin({ onAuthenticated }) {
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showServerConfig, setShowServerConfig] = useState(false);
-  const [customServerUrl, setCustomServerUrl] = useState(getBaseUrl());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,9 +44,9 @@ export function AdminLogin({ onAuthenticated }) {
     <div className="min-h-screen bg-paper dark:bg-slate-900 flex items-center justify-center p-4 sm:p-6 transition-colors duration-200">
       <div className="w-full max-w-lg space-y-6">
         
-        {/* Institutional Brand Header */}
+        {/* Institutional Monogram & Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-2.5 mx-auto">
+          <div className="inline-flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-dalBlue text-white flex items-center justify-center shadow-xs">
               <Landmark className="w-5 h-5 text-white" />
             </div>
@@ -86,24 +77,9 @@ export function AdminLogin({ onAuthenticated }) {
           </div>
 
           {error && (
-            <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-xs text-red-700 dark:text-red-300 space-y-2 animate-in fade-in">
-              <div className="flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-chinarRed" />
-                <span>{error}</span>
-              </div>
-              <div className="pt-1.5 border-t border-red-200/60 dark:border-red-900/40 text-[11px] font-mono text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-between gap-1">
-                <span className="truncate max-w-[200px]">Server: {getBaseUrl().replace('https://', '')}</span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCustomApiUrl(PRODUCTION_BACKEND_URL);
-                    window.location.reload();
-                  }}
-                  className="text-xs text-dalBlue dark:text-blue-400 underline font-bold cursor-pointer hover:opacity-80"
-                >
-                  Switch to Production Server
-                </button>
-              </div>
+            <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-xs text-red-700 dark:text-red-300 animate-in fade-in">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-chinarRed" />
+              <span>{error}</span>
             </div>
           )}
 
@@ -118,7 +94,7 @@ export function AdminLogin({ onAuthenticated }) {
                   type="email"
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
-                  placeholder="admin@tenderhub.in"
+                  placeholder="admin@bihartenders.in"
                   className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-sans text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-dalBlue dark:focus:border-blue-400 focus:ring-2 focus:ring-dalBlue/20 transition-all"
                   autoFocus
                 />
@@ -139,9 +115,6 @@ export function AdminLogin({ onAuthenticated }) {
                   className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-dalBlue dark:focus:border-blue-400 focus:ring-2 focus:ring-dalBlue/20 transition-all"
                 />
               </div>
-              <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1.5 font-mono">
-                Configured via ADMIN_SECRET_KEY in backend/.env
-              </p>
             </div>
 
             <div className="flex items-center gap-2 pt-1">
@@ -174,23 +147,6 @@ export function AdminLogin({ onAuthenticated }) {
                 </>
               )}
             </button>
-
-            <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-slate-400 dark:text-slate-500">
-              <span className="truncate max-w-[240px]">Server: {getBaseUrl().replace('https://', '')}</span>
-              <button
-                type="button"
-                onClick={() => {
-                  const newUrl = prompt('Enter custom Backend API URL:', getBaseUrl());
-                  if (newUrl !== null) {
-                    setCustomApiUrl(newUrl);
-                    window.location.reload();
-                  }
-                }}
-                className="text-dalBlue dark:text-blue-400 hover:underline cursor-pointer"
-              >
-                Change Server
-              </button>
-            </div>
           </form>
         </div>
 
