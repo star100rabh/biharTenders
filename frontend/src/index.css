@@ -9,8 +9,8 @@
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #F8F9FA;
-    color: #1E293B;
+    background-color: #FAF8F5;
+    color: #1D3557;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.25s ease, color 0.25s ease;
@@ -19,18 +19,34 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
     letter-spacing: -0.02em;
-    color: #0F172A;
+    color: #1D3557;
   }
 
   /* Classical Dark Mode Root Styling */
   .dark body {
-    background-color: #071325;
+    background-color: #0D1117;
     color: #F8FAFC;
   }
 
   .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
     color: #F8FAFC;
   }
+}
+
+/* Patliputra Modern Precise 1px Border & Kachni Double-Lining Utilities */
+.border-patliputra-light {
+  border: 1px solid #E6E1D8;
+}
+.border-patliputra-dark {
+  border: 1px solid #283341;
+}
+.border-kachni {
+  border: 1px solid #E6E1D8;
+  box-shadow: inset 0 0 0 1px #FAF8F5, inset 0 0 0 2px #E6E1D8;
+}
+.dark .border-kachni {
+  border: 1px solid #283341;
+  box-shadow: inset 0 0 0 1px #0D1117, inset 0 0 0 2px #283341;
 }
 
 /* Modern Tech Ambient Patterns */

@@ -27,6 +27,7 @@ import RefundPolicy from './pages/RefundPolicy';
 import { useAuthStore } from './store/useAuthStore';
 
 import { ErrorBoundary } from './components/shared/ErrorBoundary';
+import { PatliputraWatermark } from './components/layout/PatliputraWatermark';
 
 export default function App() {
   const checkAuth = useAuthStore((state) => state.checkAuth);
@@ -37,12 +38,16 @@ export default function App() {
   }, [checkAuth]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-paper dark:bg-slate-900 text-charcoal dark:text-slate-100 w-full max-w-[100vw] overflow-x-hidden">
-      <ScrollToTop />
-      <Navbar />
+    <div className="relative flex flex-col min-h-screen bg-[#FAF8F5] dark:bg-[#0D1117] text-[#1D3557] dark:text-[#E2E8F0] w-full max-w-[100vw] overflow-x-hidden transition-colors duration-200">
+      {/* Anchored static architectural watermark layer (Foreground content scrolls smoothly over it) */}
+      <PatliputraWatermark />
 
-      {/* Main content area grows to push the footer to the bottom */}
-      <main className="flex-1 flex flex-col">
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <ScrollToTop />
+        <Navbar />
+
+        {/* Main content area grows to push the footer to the bottom */}
+        <main className="flex-1 flex flex-col">
         <ErrorBoundary>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -66,6 +71,7 @@ export default function App() {
       </main>
 
       <Footer />
+      </div>
     </div>
   );
 }

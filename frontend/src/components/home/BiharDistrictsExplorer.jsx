@@ -119,15 +119,15 @@ export function BiharDistrictsExplorer() {
               onClick={() => setActiveDivisionId(division.id)}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
                 isActive
-                  ? 'bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 text-white border-transparent shadow-md shadow-orange-500/25'
-                  : 'bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-orange-500/50 hover:bg-orange-50/50 dark:hover:bg-slate-800'
+                  ? 'bg-[#C85A32] dark:bg-[#E07A5F] text-white border-transparent shadow-xs'
+                  : 'bg-white dark:bg-[#151B26] text-[#1D3557] dark:text-slate-300 border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32]/50 hover:bg-[#FAF8F5] dark:hover:bg-[#0D1117]'
               }`}
             >
               <span>{division.name}</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono tabular-nums font-bold ${
                 isActive 
                   ? 'bg-white/25 text-white' 
-                  : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
+                  : 'bg-[#FAF8F5] dark:bg-[#0D1117] text-slate-500 dark:text-slate-400 border border-[#E6E1D8] dark:border-[#283341]'
               }`}>
                 {division.districts.length}
               </span>
@@ -137,22 +137,22 @@ export function BiharDistrictsExplorer() {
       </div>
 
       {/* Active Division Card & District Grid */}
-      <div className="bg-white dark:bg-slate-850 rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-700/80 shadow-xl relative overflow-hidden">
+      <div className="bg-white dark:bg-[#151B26] rounded-2xl p-6 sm:p-8 border border-[#E6E1D8] dark:border-[#283341] relative overflow-hidden">
         {/* Subtle Top Accent Strip */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-600 via-amber-500 to-emerald-500" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C85A32] via-[#D97706] to-[#2D6A4F]" />
 
         {/* Division Header Info Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-700/80 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E6E1D8] dark:border-[#283341] mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#071527] to-[#0D264A] text-amber-400 border border-slate-700 flex items-center justify-center shadow-md shrink-0">
-              <Landmark className="w-6 h-6 text-amber-400" />
+            <div className="w-11 h-11 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center shrink-0">
+              <Landmark className="w-5 h-5" />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2.5">
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                <h3 className="text-xl sm:text-2xl font-black text-[#1D3557] dark:text-white">
                   {activeDivision.name}
                 </h3>
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-amber-400 border border-orange-200 dark:border-orange-800/80">
+                <span className="text-xs font-bold px-3 py-0.5 rounded-full bg-[#C85A32]/10 dark:bg-[#E07A5F]/15 text-[#C85A32] dark:text-[#E07A5F] border border-[#C85A32]/25">
                   Headquarters: {activeDivision.headquarters}
                 </span>
               </div>
@@ -162,8 +162,8 @@ export function BiharDistrictsExplorer() {
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse" />
             <span>e-Proc2 Bihar Active Gateway</span>
           </div>
         </div>
@@ -174,20 +174,20 @@ export function BiharDistrictsExplorer() {
             <button
               key={district}
               onClick={() => handleDistrictClick(district)}
-              className="group p-4 rounded-2xl bg-slate-50/70 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-700/80 hover:border-orange-500 dark:hover:border-amber-400 hover:bg-white dark:hover:bg-slate-850 hover:shadow-lg transition-all duration-200 text-left flex flex-col justify-between gap-4 cursor-pointer"
+              className="group p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all duration-200 text-left flex flex-col justify-between gap-3 cursor-pointer"
             >
               <div className="flex items-center justify-between">
-                <span className="w-8 h-8 rounded-xl bg-orange-500/10 text-orange-600 dark:text-amber-400 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-orange-500 group-hover:to-amber-500 group-hover:text-white transition-all shadow-xs">
-                  <MapPin className="w-4 h-4" />
+                <span className="w-7 h-7 rounded-lg bg-white dark:bg-[#151B26] text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center group-hover:bg-[#C85A32] group-hover:text-white transition-all">
+                  <MapPin className="w-3.5 h-3.5" />
                 </span>
-                <ArrowRight className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-orange-500 dark:group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] group-hover:translate-x-0.5 transition-all" />
               </div>
 
               <div>
-                <span className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-amber-400 transition-colors block truncate">
+                <span className="text-xs sm:text-sm font-bold text-[#1D3557] dark:text-white group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] transition-colors block truncate">
                   {district}
                 </span>
-                <span className="text-[11px] text-slate-400 font-medium block mt-0.5">
+                <span className="text-[10px] text-slate-400 font-medium block mt-0.5">
                   Tenders &amp; BOQs
                 </span>
               </div>

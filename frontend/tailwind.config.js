@@ -8,6 +8,19 @@ export default {
   theme: {
     extend: {
       colors: {
+        patliputra: {
+          indigo: '#1D3557',
+          terracotta: '#C85A32',
+          peepal: '#2D6A4F',
+          parchment: '#FAF8F5',
+          borderLight: '#E6E1D8',
+          iceSteel: '#7EA2D6',
+          darkTerracotta: '#E07A5F',
+          sage: '#52B788',
+          basalt: '#0D1117',
+          midnight: '#151B26',
+          borderDark: '#283341',
+        },
         biharSaffron: {
           DEFAULT: '#EA580C',
           50: '#FFF7ED',

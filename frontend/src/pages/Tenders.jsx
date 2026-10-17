@@ -364,14 +364,14 @@ export default function Tenders() {
   };
 
   return (
-    <div className="min-h-screen bg-paper dark:bg-slate-900 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+    <div className="min-h-screen bg-transparent py-6 sm:py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         
         {/* Page Title & Reset Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-5 sm:mb-6">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h1 className="text-xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-xl sm:text-3xl font-bold font-display text-patliputra-indigo dark:text-white tracking-tight">
                 Tender Notice Directory
               </h1>
               {(import.meta.env.VITE_TEST_MODE === 'true' || (typeof window !== 'undefined' && window.location.port === '5175')) ? (
@@ -452,17 +452,17 @@ export default function Tenders() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
           
           {/* ---------------- FILTER SIDEBAR ---------------- */}
-          <aside className={`lg:col-span-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
+          <aside className={`lg:col-span-1 bg-white/90 dark:bg-[#151B26]/90 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
             mobileFiltersOpen ? 'flex mb-4 lg:mb-0' : 'hidden lg:flex'
           }`}>
             {/* Pinned Header */}
-            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-slate-100 dark:border-slate-700/80 text-dalBlue dark:text-blue-400 bg-white dark:bg-slate-800 shrink-0 select-none">
+            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8] dark:border-[#283341] text-patliputra-indigo dark:text-patliputra-iceSteel bg-white/50 dark:bg-[#151B26]/50 shrink-0 select-none">
               <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4" />
-                <h2 className="text-xs font-bold uppercase tracking-wider">Search Filters</h2>
+                <Filter className="w-4 h-4 text-patliputra-terracotta dark:text-patliputra-darkTerracotta" />
+                <h2 className="text-xs font-bold uppercase tracking-wider font-display">Search Filters</h2>
               </div>
               {activeFilterCount > 0 && (
-                <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-dalBlue text-white dark:bg-blue-600 shadow-xs animate-in fade-in">
+                <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-patliputra-terracotta text-white shadow-xs animate-in fade-in">
                   {activeFilterCount} active
                 </span>
               )}

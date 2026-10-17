@@ -14,14 +14,18 @@ const ThemeProviderContext = createContext({
 export function ThemeProvider({ children, defaultTheme = "light", storageKey = "bihartenders-theme" }) {
   const [theme, setThemeState] = useState(() => {
     const stored = localStorage.getItem(storageKey);
-    if (stored === "dark" || stored === "light") return stored;
+    if (stored === "dark" || stored === "light" || stored === "split") return stored;
     return defaultTheme;
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
+    root.classList.remove("light", "dark", "split-mode");
+    if (theme === "split") {
+      root.classList.add("split-mode");
+    } else {
+      root.classList.add(theme);
+    }
     localStorage.setItem(storageKey, theme);
   }, [theme, storageKey]);
 
@@ -34,7 +38,13 @@ export function ThemeProvider({ children, defaultTheme = "light", storageKey = "
   };
 
   return (
-    <ThemeProviderContext.Provider value={{ theme, setTheme, toggleTheme, isDark: theme === "dark" }}>
+    <ThemeProviderContext.Provider value={{ 
+      theme, 
+      setTheme, 
+      toggleTheme, 
+      isDark: theme === "dark",
+      isSplit: theme === "split" 
+    }}>
       {children}
     </ThemeProviderContext.Provider>
   );

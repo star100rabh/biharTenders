@@ -137,49 +137,49 @@ export function MajorDepartmentsGrid() {
   };
 
   return (
-    <section id="departments-section" className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+    <section id="departments-section" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 dark:text-amber-400 border border-orange-500/30 mb-3">
-            <Building2 className="w-3.5 h-3.5 text-orange-500" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#C85A32]/10 text-[#C85A32] dark:text-[#E07A5F] border border-[#C85A32]/25 mb-2.5">
+            <Building2 className="w-3.5 h-3.5" />
             <span>Official Government Engineering Portfolios</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#1D3557] dark:text-white tracking-tight">
             Major Bihar Engineering &amp; Works Departments
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
             Direct notices, technical schedules, and BOQ documents synchronized with Bihar State e-Procurement (eproc2.bihar.gov.in).
           </p>
         </div>
 
         <button
           onClick={() => navigate('/tenders')}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-orange-600 dark:text-amber-400 hover:bg-orange-50 dark:hover:bg-slate-800 transition-colors border border-orange-200 dark:border-slate-700 shrink-0 cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#C85A32] dark:text-[#E07A5F] hover:bg-[#FAF8F5] dark:hover:bg-[#151B26] transition-colors border border-[#E6E1D8] dark:border-[#283341] shrink-0 cursor-pointer"
         >
           <span>View All Bihar Tenders</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 
-      {/* 8 Modern Department Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* Modern Department Cards (Strict 12-Column Grid Alignment) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {MAJOR_BIHAR_DEPARTMENTS.map((dept) => {
           const Icon = dept.icon;
           return (
             <div
               key={dept.code}
               onClick={() => handleDeptClick(dept.query)}
-              className={`group bg-white dark:bg-slate-850 p-6 rounded-2xl border border-slate-200/90 dark:border-slate-700/80 ${dept.hoverBorder} shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden`}
+              className="group bg-white dark:bg-[#151B26] p-5 sm:p-6 rounded-2xl border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden h-full"
             >
-              {/* Subtle Top Glow Stripe */}
-              <div className={`absolute top-0 left-0 right-0 h-1.5 ${dept.topGlow} opacity-80 group-hover:opacity-100 transition-opacity`} />
+              {/* Subtle 2px Top Accent Border */}
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#C85A32] dark:bg-[#E07A5F] opacity-75 group-hover:opacity-100 transition-opacity" />
 
               <div>
                 {/* Header Row: Department Code Pill + Live Pulse */}
-                <div className="flex items-center justify-between gap-2 mb-4">
+                <div className="flex items-center justify-between gap-2 mb-3.5">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-black text-xs px-2.5 py-1 rounded-lg bg-[#071527] text-amber-300 dark:bg-slate-800 dark:text-amber-300 border border-slate-700 shadow-xs tracking-wider">
+                    <span className="font-mono font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#1D3557] dark:text-[#7EA2D6] border border-[#E6E1D8] dark:border-[#283341] tracking-wider">
                       {dept.code}
                     </span>
                     <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -187,22 +187,22 @@ export function MajorDepartmentsGrid() {
                     </span>
                   </div>
 
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/80">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#2D6A4F] dark:text-[#52B788] bg-[#2D6A4F]/10 dark:bg-[#52B788]/15 px-2 py-0.5 rounded-full border border-[#2D6A4F]/20 dark:border-[#52B788]/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2D6A4F] dark:bg-[#52B788]" />
                     <span>Live</span>
                   </span>
                 </div>
 
-                {/* Icon Container with Deep Contrast + Dual Tone */}
-                <div className="flex items-start gap-3.5 mb-3">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${dept.accentGradient} text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform shrink-0`}>
-                    <Icon className="w-6 h-6" />
+                {/* Icon Container with Dual Tone & Clean Geometry */}
+                <div className="flex items-start gap-3 mb-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] text-[#1D3557] dark:text-[#7EA2D6] flex items-center justify-center shrink-0 group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] transition-colors">
+                    <Icon className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-amber-400 transition-colors leading-snug">
+                    <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] transition-colors leading-snug">
                       {dept.name}
                     </h3>
-                    <span className="text-[11px] font-semibold text-slate-400">
+                    <span className="text-[10px] font-semibold text-slate-400">
                       {dept.acronym}
                     </span>
                   </div>
@@ -215,11 +215,11 @@ export function MajorDepartmentsGrid() {
               </div>
 
               {/* Card Footer: Live Tender Count + Action CTA */}
-              <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
-                <span className="font-semibold text-slate-500 dark:text-slate-400">
+              <div className="mt-5 pt-3 border-t border-[#E6E1D8] dark:border-[#283341] flex items-center justify-between text-xs">
+                <span className="font-mono text-[11px] font-medium text-slate-500 dark:text-slate-400">
                   {dept.activeNoticeEstimate}
                 </span>
-                <span className="inline-flex items-center gap-1 font-bold text-orange-600 dark:text-amber-400 group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center gap-1 font-bold text-[#C85A32] dark:text-[#E07A5F] group-hover:translate-x-1 transition-transform">
                   <span>Browse Tenders</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </span>

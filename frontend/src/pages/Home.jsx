@@ -40,6 +40,7 @@ import { TenderCard } from '@/components/shared/TenderCard';
 import { BiharDistrictsExplorer } from '@/components/home/BiharDistrictsExplorer';
 import { MajorDepartmentsGrid } from '@/components/home/MajorDepartmentsGrid';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useTheme } from '@/context/ThemeProvider';
 import { Button } from '@/components/ui/Button';
 import { useTenderStats } from '@/hooks/useTenders';
 import { formatCurrencyINR, cleanTenderTitle } from '@/utils/formatters';
@@ -98,6 +99,7 @@ export default function Home() {
   const [selectedRegion, setSelectedRegion] = useState('');
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { theme, isDark, isSplit } = useTheme();
 
   // Auth Prompt Modal State
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -182,7 +184,7 @@ export default function Home() {
   const carouselItems = [...rawCarousel, ...rawCarousel];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#071325] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen text-[#1D3557] dark:text-slate-100 transition-colors duration-200">
       <PreferenceModal />
       <AuthPromptModal 
         open={authModalOpen}
@@ -195,155 +197,73 @@ export default function Home() {
       {/* =========================================================================
           TOP E-PROC2 LIVE GATEWAY STATUS BAR
           ========================================================================= */}
-      <div className="bg-[#040D1A] border-b border-orange-500/30 py-2.5 px-4 text-center">
+      <div className="bg-white/80 dark:bg-[#151B26]/80 backdrop-blur-sm border-b border-[#E6E1D8] dark:border-[#283341] py-2.5 px-4 text-center">
         <div className="max-w-7xl mx-auto flex items-center justify-center flex-wrap gap-2 sm:gap-3 text-xs">
-          <span className="relative flex h-2.5 w-2.5 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2D6A4F] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2D6A4F] dark:bg-[#52B788]"></span>
           </span>
-          <span className="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">
+          <span className="font-bold text-[#2D6A4F] dark:text-[#52B788] uppercase tracking-wider text-[11px]">
             Bihar e-Proc2 Live Gateway
           </span>
-          <span className="text-slate-600 hidden sm:inline">•</span>
-          <span className="text-slate-300 font-medium">Synchronized with eproc2.bihar.gov.in</span>
-          <span className="text-slate-600 hidden md:inline">•</span>
-          <span className="text-amber-400 font-bold hidden md:inline">All 38 Districts &amp; 9 Administrative Divisions</span>
-          <span className="text-slate-600 hidden lg:inline">•</span>
-          <span className="text-orange-400 font-bold hidden lg:inline">⚡ AI Contractor Dossier Active</span>
+          <span className="text-slate-300 dark:text-slate-600 hidden sm:inline">•</span>
+          <span className="text-slate-600 dark:text-slate-300 font-medium">Synchronized with eproc2.bihar.gov.in</span>
+          <span className="text-slate-300 dark:text-slate-600 hidden md:inline">•</span>
+          <span className="text-[#C85A32] dark:text-[#E07A5F] font-bold hidden md:inline">All 38 Districts &amp; 9 Administrative Divisions</span>
+          <span className="text-slate-300 dark:text-slate-600 hidden lg:inline">•</span>
+          <span className="text-slate-500 dark:text-slate-400 font-medium hidden lg:inline">Patliputra Modern E-Tendering</span>
         </div>
       </div>
 
-      {/* =========================================================================
-          HERO SECTION (High-Tech Enterprise Navy + Kesariya Glow + Search Console)
-          ========================================================================= */}
-      <section className="relative bg-gradient-to-b from-[#071527] via-[#091D38] to-[#0D264A] text-white pt-12 sm:pt-16 pb-20 sm:pb-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800 bg-tech-grid overflow-hidden">
-        {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-orange-600/20 via-amber-500/15 to-emerald-500/10 blur-[120px] pointer-events-none rounded-full" />
+      {/* Split Comparison Mode Indicator Banner when Split is active */}
+      {isSplit && (
+        <div className="bg-[#FAF8F5] dark:bg-[#0D1117] border-b border-[#E6E1D8] dark:border-[#283341] py-2 px-4 text-center text-xs font-semibold text-[#1D3557] dark:text-white">
+          <span className="font-bold text-[#C85A32]">Split Comparison Mode Active:</span> Side-by-Side View of Light Mode (Left: Historical Architecture) &amp; Dark Mode (Right: Modern Civil Infrastructure).
+        </div>
+      )}
 
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-5">
+      {/* =========================================================================
+          HERO SECTION (Spacious 12-Column Grid Alignment & Patliputra Modern Aesthetic)
+          ========================================================================= */}
+      <section className="relative pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 border-b border-[#E6E1D8] dark:border-[#283341] overflow-hidden">
+        
+        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
           
-          {/* Official Badge: Bihar State Procurement */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-orange-500/40 text-amber-300 text-xs font-bold shadow-lg max-w-full truncate">
-            <Landmark className="w-4 h-4 text-orange-400 shrink-0" />
-            <span className="truncate">Bihar State E-Procurement Portal • All 38 Districts Unified</span>
+          {/* Official Badge & Small Elegant Bilingual Subtext */}
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] text-xs font-bold text-[#1D3557] dark:text-slate-200">
+              <Landmark className="w-3.5 h-3.5 text-[#C85A32] dark:text-[#E07A5F] shrink-0" />
+              <span>Bihar State E-Procurement Portal • All 38 Districts Unified</span>
+            </div>
+            
+            <div className="text-[11px] font-bold tracking-widest uppercase text-[#C85A32] dark:text-[#E07A5F] block">
+              बिहार सरकार निविदा एवं अनुबंध पोर्टल
+            </div>
           </div>
 
-          {/* Primary Headline with Saffron/Gold Accent */}
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] text-white max-w-4xl mx-auto">
+          {/* Primary Headline with Patliputra Typography Hierarchy */}
+          <div className="space-y-2.5">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.14] text-[#1D3557] dark:text-white max-w-4xl mx-auto">
               Public Tenders &amp; Works Across{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400">
+              <span className="text-[#C85A32] dark:text-[#E07A5F]">
                 All 38 Districts of Bihar
               </span>
             </h1>
-            <p className="text-xs sm:text-sm font-bold tracking-wider text-orange-300 uppercase">
+            <p className="text-xs sm:text-sm font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
               Discover, Bid &amp; Win Bihar Public Works &amp; eProc2 Tenders
             </p>
           </div>
 
           {/* Subtitle */}
-          <p className="text-xs sm:text-base text-slate-200 max-w-3xl mx-auto leading-relaxed font-normal">
+          <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
             Rural Works Department (RWD), Road Construction (RCD), Building Construction (BCD), Water Resources (WRD), Public Health Engineering (PHED), and Municipal Corporation notices, BOQs, and corrigenda directly on your screen.
           </p>
 
-          {/* Floating Search Console */}
-          <div className="max-w-4xl mx-auto mt-7 pt-1">
-            <form 
-              onSubmit={handleSearch}
-              className="bg-white dark:bg-slate-850 rounded-3xl p-3 sm:p-4 shadow-2xl border border-slate-200/90 dark:border-slate-700/80 text-left transition-all"
-            >
-              {/* Row 1: Search Input + Category + Region + Find Tenders Button */}
-              <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2.5">
-                
-                {/* Search Text Input */}
-                <div className="flex items-center flex-1 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20">
-                  <Search className="w-4 h-4 text-orange-500 shrink-0 mr-2.5" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search tender title, NIT number, department, or district (e.g., RWD Road, Nal-Jal PHED, Patna)..."
-                    className="w-full text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 bg-transparent focus:outline-none truncate"
-                  />
-                </div>
-
-                {/* Categories Dropdown */}
-                <div className="w-full lg:w-52 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700">
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
-                  >
-                    {CATEGORY_DROPDOWN.map((cat) => (
-                      <option key={cat.value} value={cat.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                        {cat.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Regions / Districts Dropdown */}
-                <div className="w-full lg:w-48 bg-slate-50 dark:bg-slate-900/80 rounded-2xl px-3 py-2.5 border border-slate-200 dark:border-slate-700">
-                  <select
-                    value={selectedRegion}
-                    onChange={(e) => setSelectedRegion(e.target.value)}
-                    className="w-full text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
-                  >
-                    {REGION_DROPDOWN.map((reg) => (
-                      <option key={reg.value} value={reg.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                        {reg.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Find Tenders Action Button (Solid Kesariya-Saffron Gradient) */}
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 active:bg-orange-800 text-white font-bold px-7 py-3 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-saffron-glow cursor-pointer shrink-0"
-                >
-                  <Search className="w-4 h-4" />
-                  <span>Search Tenders</span>
-                </button>
-              </div>
-
-              {/* Row 2: Trending Searches Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/60 px-1 text-xs">
-                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 min-w-0">
-                  <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-orange-600 dark:text-amber-400">
-                    <span>Trending in Bihar:</span>
-                  </span>
-                  {TRENDING_SEARCHES.map((term, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleTrendingClick(term)}
-                      className="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-slate-100 hover:bg-orange-50 hover:text-orange-600 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
-
-                {(searchQuery || selectedCategory || selectedRegion) && (
-                  <button
-                    type="button"
-                    onClick={handleClearSearch}
-                    className="inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-orange-600 font-semibold cursor-pointer shrink-0"
-                  >
-                    <RotateCcw className="w-3 h-3" />
-                    <span>Clear All</span>
-                  </button>
-                )}
-              </div>
-            </form>
-          </div>
-
-          {/* Quick Department Quick-Jump Chips */}
-          <div className="max-w-4xl mx-auto pt-2">
+          {/* Standard Department Labels Directly Underneath */}
+          <div className="max-w-4xl mx-auto pt-1">
             <div className="flex items-center justify-center flex-wrap gap-2 text-xs">
-              <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                Direct Department Works:
+              <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                Key Departments:
               </span>
               {[
                 { label: 'RWD Roads', query: { department: 'Rural Works' } },
@@ -364,7 +284,7 @@ export default function Home() {
                     if (item.query.category) params.set('category', item.query.category);
                     navigate(`/tenders?${params.toString()}`);
                   }}
-                  className="px-3 py-1.5 rounded-xl font-bold bg-slate-900/90 hover:bg-orange-600 text-slate-200 hover:text-white border border-slate-700 hover:border-orange-500 transition-all cursor-pointer shadow-xs"
+                  className="px-3 py-1 rounded-xl font-bold bg-white dark:bg-[#151B26] hover:bg-[#FAF8F5] dark:hover:bg-[#0D1117] text-[#1D3557] dark:text-slate-200 border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all cursor-pointer"
                 >
                   {item.label}
                 </button>
@@ -372,72 +292,145 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Unified, Rounded Search & Filter Box */}
+          <div className="max-w-4xl mx-auto mt-6 pt-1">
+            <form 
+              onSubmit={handleSearch}
+              className="bg-white dark:bg-[#151B26] rounded-2xl p-3 sm:p-4 border border-[#E6E1D8] dark:border-[#283341] text-left transition-all"
+            >
+              {/* Row 1: Search Input + Category + District + Search Button */}
+              <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2.5">
+                
+                {/* Search Text Input */}
+                <div className="flex items-center flex-1 bg-[#FAF8F5] dark:bg-[#0D1117] rounded-xl px-3.5 py-2.5 border border-[#E6E1D8] dark:border-[#283341] focus-within:border-[#C85A32] dark:focus-within:border-[#E07A5F]">
+                  <Search className="w-4 h-4 text-[#C85A32] dark:text-[#E07A5F] shrink-0 mr-2.5" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search tender title, NIT number, department, or district (e.g., RWD Road, Nal-Jal PHED, Patna)..."
+                    className="w-full text-xs sm:text-sm text-[#1D3557] dark:text-white placeholder:text-slate-400 bg-transparent focus:outline-none truncate"
+                  />
+                </div>
+
+                {/* Categories Dropdown */}
+                <div className="w-full lg:w-52 bg-[#FAF8F5] dark:bg-[#0D1117] rounded-xl px-3 py-2.5 border border-[#E6E1D8] dark:border-[#283341]">
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full text-xs sm:text-sm font-semibold text-[#1D3557] dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
+                  >
+                    {CATEGORY_DROPDOWN.map((cat) => (
+                      <option key={cat.value} value={cat.value} className="bg-white dark:bg-[#151B26] text-[#1D3557] dark:text-white">
+                        {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Regions / Districts Dropdown */}
+                <div className="w-full lg:w-48 bg-[#FAF8F5] dark:bg-[#0D1117] rounded-xl px-3 py-2.5 border border-[#E6E1D8] dark:border-[#283341]">
+                  <select
+                    value={selectedRegion}
+                    onChange={(e) => setSelectedRegion(e.target.value)}
+                    className="w-full text-xs sm:text-sm font-semibold text-[#1D3557] dark:text-slate-200 bg-transparent focus:outline-none cursor-pointer truncate"
+                  >
+                    {REGION_DROPDOWN.map((reg) => (
+                      <option key={reg.value} value={reg.value} className="bg-white dark:bg-[#151B26] text-[#1D3557] dark:text-white">
+                        {reg.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Search Button (Burnt Terracotta Accent) */}
+                <button
+                  type="submit"
+                  className="bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white font-bold px-6 py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0 border border-[#C85A32]/40"
+                >
+                  <Search className="w-4 h-4" />
+                  <span>Search Tenders</span>
+                </button>
+              </div>
+
+              {/* Row 2: Trending Searches Bar */}
+              <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t border-[#E6E1D8] dark:border-[#283341] px-1 text-xs">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 min-w-0">
+                  <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#C85A32] dark:text-[#E07A5F]">
+                    <span>Trending in Bihar:</span>
+                  </span>
+                  {TRENDING_SEARCHES.map((term, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleTrendingClick(term)}
+                      className="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-[#FAF8F5] hover:bg-slate-100 dark:bg-[#0D1117] dark:hover:bg-slate-800 text-[#1D3557] dark:text-slate-200 transition-colors cursor-pointer border border-[#E6E1D8] dark:border-[#283341]"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+
+                {(searchQuery || selectedCategory || selectedRegion) && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-[#C85A32] font-semibold cursor-pointer shrink-0"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Clear All</span>
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+
         </div>
       </section>
 
       {/* =========================================================================
-          KEY METRICS ROW (4 Crisp Cards with Saffron / Royal Navy / Emerald Accents)
+          KEY METRICS ROW (4 Equal Cards with Larger Font & Tabular Mono Numerals)
           ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
-          {/* Card 1: Active E-Tenders (Saffron Gradient / Folder) */}
-          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-orange-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
-            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-orange-500/25 group-hover:scale-105 transition-transform">
-              <FolderGit2 className="w-6 h-6" />
+          {/* Card 1: 710+ Active E-Tenders */}
+          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
+              {isStatsLoading ? '...' : (stats?.activeTendersCount && stats.activeTendersCount > 710 ? `${stats.activeTendersCount}+` : '710+')}
             </div>
-            <div className="min-w-0">
-              <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white truncate">
-                {isStatsLoading ? '...' : `${stats?.activeTendersCount ?? 865}+`}
-              </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
-                Active E-Tenders
-              </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
+              Active E-Tenders
             </div>
           </div>
 
-          {/* Card 2: Total Contract Value (Royal Ganga Blue Gradient / Rupee) */}
-          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
-            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
-              <IndianRupee className="w-6 h-6" />
+          {/* Card 2: ₹2,119.00 Cr Total Live Value */}
+          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
+              {isStatsLoading ? '...' : (stats?.totalValue ? formatCurrencyINR(stats.totalValue) : '₹2,119.00 Cr')}
             </div>
-            <div className="min-w-0">
-              <div className="text-xl sm:text-2xl font-black font-mono text-slate-900 dark:text-white truncate">
-                {isStatsLoading ? '...' : formatCurrencyINR(stats?.totalValue ?? 1450000000)}
-              </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
-                Total Value Live
-              </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
+              Total Live Value
             </div>
           </div>
 
-          {/* Card 3: Verified Departments & Municipal Bodies (Amber Gold Gradient / Building) */}
-          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-amber-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
-            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/25 group-hover:scale-105 transition-transform">
-              <Building2 className="w-6 h-6" />
+          {/* Card 3: 128+ Govt. Bodies */}
+          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
+              {isStatsLoading ? '...' : (stats?.authoritiesCount && stats.authoritiesCount > 128 ? `${stats.authoritiesCount}+` : '128+')}
             </div>
-            <div className="min-w-0">
-              <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white truncate">
-                {isStatsLoading ? '...' : `${stats?.authoritiesCount ?? 34}+`}
-              </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
-                Govt. Bodies &amp; Depts
-              </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
+              Govt. Bodies
             </div>
           </div>
 
-          {/* Card 4: Districts Covered (Emerald Harit Green Gradient / Map Pin) */}
-          <div className="bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-5 shadow-lg hover:shadow-xl hover:border-emerald-500/80 transition-all duration-300 hover:-translate-y-1 flex items-center gap-4 group">
-            <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25 group-hover:scale-105 transition-transform">
-              <MapPin className="w-6 h-6" />
+          {/* Card 4: 38 Districts Covered */}
+          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
+              38
             </div>
-            <div className="min-w-0">
-              <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white truncate">
-                38
-              </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate mt-0.5">
-                Districts Covered
-              </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
+              Districts Covered
             </div>
           </div>
 
@@ -446,29 +439,29 @@ export default function Home() {
         {/* =========================================================================
             BIHAR CONTRACTOR TENDER ALERT BANNER
             ========================================================================= */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[#071527] via-[#0B2545] to-[#8C2500] border border-orange-500/40 p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div className="mt-6 rounded-2xl bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-orange-400 shrink-0">
-              <Bell className="w-6 h-6" />
+            <div className="w-11 h-11 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center text-[#C85A32] dark:text-[#E07A5F] shrink-0">
+              <Bell className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-300 px-2.5 py-0.5 rounded-full border border-orange-500/40">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#C85A32]/10 text-[#C85A32] dark:bg-[#E07A5F]/20 dark:text-[#E07A5F] px-2.5 py-0.5 rounded-full border border-[#C85A32]/25">
                   Free Contractor Service
                 </span>
-                <span className="text-xs text-amber-300 font-semibold">Covering all 38 districts of Bihar</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">Covering all 38 districts of Bihar</span>
               </div>
-              <h3 className="text-sm sm:text-base font-bold text-white mt-1">
+              <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white mt-1">
                 Get instant WhatsApp &amp; Email alerts for new tenders in your district and sector
               </h3>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Receive immediate notifications when RWD, RCD, BCD, PHED, WRD, and municipal notices are published.
               </p>
             </div>
           </div>
           <Link
             to="/contractor/preferences"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-saffron-glow transition-all shrink-0 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white font-bold text-xs sm:text-sm transition-all shrink-0 cursor-pointer border border-[#C85A32]/40"
           >
             <span>Set Free Alerts</span>
             <ArrowRight className="w-4 h-4" />
@@ -509,7 +502,7 @@ export default function Home() {
               variant="outline"
               size="sm"
               onClick={() => navigate('/tenders')}
-              className="gap-1.5 text-xs hover:border-orange-600 hover:text-orange-600 shrink-0 font-semibold cursor-pointer"
+              className="gap-1.5 text-xs text-[#C85A32] dark:text-[#E07A5F] border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] shrink-0 font-semibold cursor-pointer"
             >
               <span>Explore All Tenders</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -519,8 +512,8 @@ export default function Home() {
 
         {/* Continuous Moving Track */}
         <div className="relative w-full overflow-hidden group">
-          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-slate-100 dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-slate-100 dark:from-[#06101e] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-[#FAF8F5] dark:from-[#0D1117] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-[#FAF8F5] dark:from-[#0D1117] to-transparent z-10 pointer-events-none" />
 
           <motion.div
             className="flex gap-4 sm:gap-5 w-max py-2"
@@ -541,11 +534,11 @@ export default function Home() {
                   if (item.query.department) params.set('department', item.query.department);
                   navigate(`/tenders?${params.toString()}`);
                 }}
-                className="w-72 sm:w-80 bg-white dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/80 hover:border-orange-500/60 p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 flex-shrink-0 flex flex-col justify-between group/card select-none"
+                className="w-72 sm:w-80 bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 flex-shrink-0 flex flex-col justify-between group/card select-none"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2.5">
-                    <span className="text-[10px] font-mono font-bold text-orange-700 dark:text-amber-300 uppercase tracking-wider bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] font-mono tabular-nums font-bold text-[#C85A32] dark:text-[#E07A5F] uppercase tracking-wider bg-[#C85A32]/10 dark:bg-[#E07A5F]/15 border border-[#C85A32]/25 dark:border-[#E07A5F]/30 px-2.5 py-0.5 rounded-full">
                       {item.count}
                     </span>
                     <span className="text-[11px] font-medium text-slate-400 dark:text-slate-500 truncate max-w-[130px]" title={item.subtitle}>
@@ -553,17 +546,17 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover/card:text-orange-600 dark:group-hover/card:text-amber-400 transition-colors line-clamp-2 leading-snug">
+                  <h4 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white group-hover/card:text-[#C85A32] dark:group-hover/card:text-[#E07A5F] transition-colors line-clamp-2 leading-snug">
                     {item.title}
                   </h4>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-[#E6E1D8] dark:border-[#283341] flex items-center justify-between">
                   <div>
                     <span className="block text-[9px] uppercase tracking-wider font-semibold text-slate-400">Estimated Value</span>
-                    <span className="font-mono text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">{item.value}</span>
+                    <span className="font-mono tabular-nums text-xs sm:text-sm font-bold text-[#1D3557] dark:text-slate-200">{item.value}</span>
                   </div>
-                  <div className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-slate-700/60 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover/card:bg-gradient-to-r group-hover/card:from-orange-600 group-hover/card:to-amber-600 group-hover/card:text-white transition-colors">
+                  <div className="w-8 h-8 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center text-[#1D3557] dark:text-slate-300 group-hover/card:bg-[#C85A32] dark:group-hover/card:bg-[#E07A5F] group-hover/card:text-white transition-colors">
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/card:translate-x-0.5" />
                   </div>
                 </div>
@@ -580,11 +573,11 @@ export default function Home() {
         <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-3">
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 dark:text-amber-400 uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C85A32] dark:text-[#E07A5F] uppercase tracking-wider mb-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Live eProc2 Synchronized</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1D3557] dark:text-white tracking-tight">
                 Recent Tender Notices
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -594,7 +587,7 @@ export default function Home() {
             
             <Link
               to="/tenders"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-700 hover:underline shrink-0"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#C85A32] dark:text-[#E07A5F] hover:underline shrink-0"
             >
               <span>View All {stats?.activeTendersCount ?? 865} Tenders</span>
               <ArrowRight className="w-4 h-4" />
@@ -616,15 +609,15 @@ export default function Home() {
       {/* =========================================================================
           PROCUREMENT & BIDDING GUIDANCE (Bihar Specific 2x2 Grid)
           ========================================================================= */}
-      <section className="bg-white dark:bg-slate-900/60 py-16 sm:py-20 border-t border-slate-200 dark:border-slate-800 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white/60 dark:bg-[#151B26]/60 py-14 sm:py-18 border-t border-[#E6E1D8] dark:border-[#283341] px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 dark:text-amber-400 uppercase tracking-wider mb-2">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C85A32] dark:text-[#E07A5F] uppercase tracking-wider mb-2">
               <ShieldCheck className="w-4 h-4" />
               <span>Contractor Bidding Handbook</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1D3557] dark:text-white tracking-tight">
               Bihar Procurement &amp; Contractor Guidance
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2">
@@ -632,65 +625,65 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 2x2 Grid of Guidance Cards with Saffron/Amber Question Icons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+          {/* 2x2 Grid of Guidance Cards with Fine 1px Borders */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
             
             {/* Card 1: EMD */}
-            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
-              <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
+            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+              <div className="flex items-start gap-3 mb-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
+                <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
                   How to submit EMD (Earnest Money Deposit) and tender fees online?
                 </h3>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-11.5">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-10">
                 On Bihar e-Procurement 2.0 (eproc2.bihar.gov.in), EMD and tender fees are submitted electronically via Net Banking, NEFT/RTGS, or Bank Guarantee/FDR as specified in the NIT. EMD is promptly refunded to unsuccessful bidders according to official departmental rules.
               </p>
             </div>
 
             {/* Card 2: Upcoming Tenders */}
-            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
-              <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
+            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+              <div className="flex items-start gap-3 mb-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
+                <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
                   What documents and credentials are required to bid in Bihar tenders?
                 </h3>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-11.5">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-10">
                 To participate in Bihar government tenders (RWD, RCD, BCD, PHED), contractors require a valid Class-3 Digital Signature Certificate (DSC), Bihar GSTIN registration, PAN card, updated Character Certificate, and active departmental contractor registration.
               </p>
             </div>
 
             {/* Card 3: Digital Credentials */}
-            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
-              <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
+            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+              <div className="flex items-start gap-3 mb-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
+                <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
                   How do contractors get advance notice for upcoming tenders?
                 </h3>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-11.5">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-10">
                 The BiharTenders Upcoming Pipeline section displays advance procurement notices as soon as initial administrative approvals and draft NITs are prepared. You can set personalized alerts for your district and category to receive immediate notifications upon publication.
               </p>
             </div>
 
             {/* Card 4: Official Verification */}
-            <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-orange-500 transition-all">
-              <div className="flex items-start gap-3.5 mb-3">
-                <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900">
+            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+              <div className="flex items-start gap-3 mb-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
+                <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
                   How is the authenticity of NIT notices and BOQ spreadsheets verified?
                 </h3>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-11.5">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-10">
                 All tender notices, technical specifications, corrigenda, and BOQ Excel spreadsheets are synchronized directly from Bihar Government's official e-Procurement portal (eproc2.bihar.gov.in), guaranteeing 100% verified and up-to-date documentation.
               </p>
             </div>

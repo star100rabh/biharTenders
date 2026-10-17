@@ -303,16 +303,16 @@ export default function Pricing() {
   const hasActiveSub = subscription?.hasActiveSubscription;
 
   return (
-    <div className="min-h-screen bg-paper dark:bg-slate-900 py-10 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+    <div className="min-h-screen bg-transparent py-10 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-dalBlue dark:text-blue-300 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-patliputra-terracotta/10 dark:bg-patliputra-darkTerracotta/20 border border-patliputra-terracotta/30 dark:border-patliputra-darkTerracotta/40 text-patliputra-terracotta dark:text-patliputra-darkTerracotta text-xs font-semibold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" /> Transparent Contractor Pricing
           </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-black text-dalBlue dark:text-white tracking-tight">
-            Win More Bihar Tenders with <span className="text-chinarRed">Pro Intelligence</span>
+          <h1 className="text-3xl sm:text-5xl font-display font-black text-patliputra-indigo dark:text-white tracking-tight">
+            Win More Bihar Tenders with <span className="text-patliputra-terracotta dark:text-patliputra-darkTerracotta">Pro Intelligence</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
             Never miss an important contract in your district. Instant WhatsApp alerts, unblurred access across all departments, and 1-click BOQ downloads.
@@ -343,25 +343,25 @@ export default function Pricing() {
             return (
               <div 
                 key={plan.id}
-                className={`relative flex flex-col justify-between rounded-2xl p-6 transition-all duration-300 ${
+                className={`relative flex flex-col justify-between rounded-xl p-6 transition-all duration-300 ${
                   plan.isPopular 
-                    ? 'bg-white dark:bg-slate-800 ring-2 ring-dalBlue dark:ring-blue-500 shadow-xl shadow-blue-500/10 scale-102 z-10' 
-                    : 'bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md'
+                    ? 'bg-white dark:bg-[#151B26] border-2 border-patliputra-terracotta dark:border-patliputra-darkTerracotta shadow-xl shadow-patliputra-terracotta/10 scale-102 z-10' 
+                    : 'bg-white/90 dark:bg-[#151B26]/90 border border-[#E6E1D8] dark:border-[#283341] shadow-xs hover:border-patliputra-terracotta/50'
                 }`}
               >
                 {/* Popular / Best Value Badge */}
                 {plan.badge && (
-                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-xs ${
+                  <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[11px] font-bold tracking-wide shadow-xs ${
                     plan.isPopular 
-                      ? 'bg-chinarRed text-white' 
-                      : 'bg-slate-700 text-white dark:bg-slate-600'
+                      ? 'bg-patliputra-terracotta text-white' 
+                      : 'bg-patliputra-indigo text-white dark:bg-[#283341]'
                   }`}>
                     {plan.badge}
                   </div>
                 )}
 
                 <div>
-                  <div className="text-lg font-bold text-slate-900 dark:text-white mt-1">
+                  <div className="text-lg font-bold text-patliputra-indigo dark:text-white mt-1">
                     {plan.name}
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 min-h-[32px]">
@@ -370,14 +370,14 @@ export default function Pricing() {
 
                   {/* Price */}
                   <div className="mt-4 flex items-baseline gap-1">
-                    <span className="text-3xl sm:text-4xl font-black text-dalBlue dark:text-white">
+                    <span className="text-3xl sm:text-4xl font-mono tabular-nums font-black text-patliputra-indigo dark:text-white">
                       {plan.price}
                     </span>
                     <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
                       {plan.period}
                     </span>
                   </div>
-                  <div className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 mt-0.5">
+                  <div className="text-[11px] font-mono tabular-nums font-semibold text-patliputra-peepal dark:text-patliputra-sage mt-0.5">
                     {plan.ratePerDay}
                   </div>
 
