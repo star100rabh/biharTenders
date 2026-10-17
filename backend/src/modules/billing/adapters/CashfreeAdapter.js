@@ -12,9 +12,9 @@ const logger = pino();
 export class CashfreeAdapter extends IPaymentGateway {
   constructor() {
     super();
-    this.appId = env.CASHFREE_APP_ID;
-    this.secretKey = env.CASHFREE_SECRET_KEY;
-    this.cashfreeEnv = (env.CASHFREE_ENV || 'TEST').toUpperCase();
+    this.appId = env.CASHFREE_APP_ID || process.env.CASHFREE_APP_ID;
+    this.secretKey = env.CASHFREE_SECRET_KEY || process.env.CASHFREE_SECRET_KEY;
+    this.cashfreeEnv = (env.CASHFREE_ENV || process.env.CASHFREE_ENV || 'TEST').toUpperCase();
     this.isSandbox = this.cashfreeEnv === 'TEST' || this.cashfreeEnv === 'SANDBOX';
     this.baseUrl = this.isSandbox
       ? 'https://sandbox.cashfree.com/pg'
@@ -57,7 +57,10 @@ export class CashfreeAdapter extends IPaymentGateway {
         notify_url: orderMeta?.notifyUrl,
       },
       order_note: notes?.planName ? `Subscription: ${notes.planName}` : 'BiharTenders Pro Subscription',
-      order_tags: typeof notes === 'object' ? notes : {},
+      order_tags: {
+        userId: customerDetails?.id ? String(customerDetails.id).slice(0, 45) : 'user',
+        planId: notes?.planId ? String(notes.planId).slice(0, 45) : 'pro_monthly',
+      },
     };
 
     try {
