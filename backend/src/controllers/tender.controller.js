@@ -276,23 +276,29 @@ export const getTenders = async (req, res, next) => {
     let isPro = false;
     
     if (!isGuest) {
-      const activeSub = await Subscription.findOne({
-        user: req.user.userId,
-        status: { $in: ['active', 'trialing'] }
-      });
-      if (activeSub && activeSub.currentPeriodEnd > new Date()) {
+      const isPlatformAdmin = req.user.role === 'admin' || req.user.role === 'superadmin' || req.user.role === 'owner';
+      if (isPlatformAdmin) {
         isPro = true;
+      } else {
+        const activeSub = await Subscription.findOne({
+          userId: req.user.userId,
+          status: { $in: ['active', 'trialing'] },
+          currentPeriodEnd: { $gt: new Date() }
+        });
+        if (activeSub) {
+          isPro = true;
+        }
       }
     }
 
     const safePage = Math.max(1, parseInt(page, 10) || 1);
 
-    // Hard ceiling for non-pro users: max 1 page (10 tenders) to prevent automated deep scraping & enforce paywall
-    if (!isPro && safePage > 1) {
-      return res.status(403).json({
-        error: 'Free tier limit reached. Please upgrade to Pro to view more tenders.',
-        code: 'PAYWALL_REACHED',
-        requireUpgrade: true,
+    // Unauthenticated guests are restricted to previewing the first page of tenders
+    if (isGuest && safePage > 1) {
+      return res.status(401).json({
+        error: 'Guests are limited to previewing the first page of tenders. Please sign in to browse all pages.',
+        code: 'SIGNIN_REQUIRED',
+        requireLogin: true,
       });
     }
 

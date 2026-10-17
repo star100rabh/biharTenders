@@ -336,15 +336,7 @@ export default function Tenders() {
     if (!isAuthenticated && newPage > 1) {
       handleRequestAuth({
         title: 'Sign In to View More Tenders',
-        subtitle: 'Guests are limited to previewing the 10 latest tender notices. Sign in and upgrade to Pro to browse all pages.',
-        redirectUrl: '/tenders'
-      });
-      return;
-    }
-    if (isAuthenticated && !isPro && newPage > 1) {
-      handleRequestAuth({
-        title: 'Upgrade to Pro to Unlock Full Access',
-        subtitle: 'Free accounts are limited to the first 10 tenders. Upgrade to a Pro subscription to unlock unlimited browsing, deep search, and direct PDF downloads.',
+        subtitle: 'Guests are limited to previewing the 10 latest tender notices. Sign in to browse all pages across Bihar.',
         redirectUrl: '/tenders'
       });
       return;
