@@ -256,6 +256,7 @@ export default function Tenders() {
   const initialCategory = searchParams.get('category') || '';
   const initialTenderCategory = searchParams.get('tenderCategory') || '';
   const initialContractType = searchParams.get('contractType') || '';
+  const initialPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
 
   const [advancedSearch, setAdvancedSearch] = useState(initialSearch);
   const debouncedSearch = useDebounce(advancedSearch, 500);
@@ -272,8 +273,16 @@ export default function Tenders() {
   const [status, setStatus] = useState('active');
   const [sortBy, setSortBy] = useState('arrival');
   
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // Sync page state when user navigates using browser Back / Forward buttons
+  useEffect(() => {
+    const pageFromUrl = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
+    if (pageFromUrl !== currentPage) {
+      setCurrentPage(pageFromUrl);
+    }
+  }, [searchParams]);
 
   // Active filter count for badge
   const activeFilterCount = [
@@ -337,11 +346,20 @@ export default function Tenders() {
       handleRequestAuth({
         title: 'Sign In to View More Tenders',
         subtitle: 'Guests are limited to previewing the 10 latest tender notices. Sign in to browse all pages across Bihar.',
-        redirectUrl: '/tenders'
+        redirectUrl: `/tenders?page=${newPage}`
       });
       return;
     }
     setCurrentPage(newPage);
+    setSearchParams((prev) => {
+      const updated = new URLSearchParams(prev);
+      if (newPage > 1) {
+        updated.set('page', newPage.toString());
+      } else {
+        updated.delete('page');
+      }
+      return updated;
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
