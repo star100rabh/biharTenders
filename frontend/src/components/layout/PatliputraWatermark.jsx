@@ -18,17 +18,12 @@ export function PatliputraWatermark() {
     >
       {/* 
         High-fidelity architectural sketch image matching user specification
-        Fully fitted with object-cover, crisp visibility in light mode and soft luminescence in dark mode
+        Fully fitted with object-cover, crisp visibility across the entire page
       */}
       <img 
         src={biharHeritageBg} 
         alt="Bihar Civil Heritage Watermark" 
-        className="absolute inset-0 w-full h-full object-cover object-center lg:object-[center_35%] opacity-90 dark:opacity-25 dark:invert dark:mix-blend-screen transition-all duration-300"
-      />
-
-      {/* Very soft ambient tint so background watermark lines remain clearly visible everywhere */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF8F5]/20 dark:to-[#0D1117]/40 pointer-events-none" 
+        className="absolute inset-0 w-full h-full object-cover object-center lg:object-[center_35%] opacity-100 dark:opacity-40 dark:invert dark:mix-blend-screen transition-all duration-300"
       />
     </div>
   );

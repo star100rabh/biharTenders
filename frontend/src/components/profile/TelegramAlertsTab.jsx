@@ -83,7 +83,7 @@ export function TelegramAlertsTab() {
               href={telegramBotUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 font-semibold text-xs shadow-xs transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl patliputra-glass-badge hover:bg-slate-50/50 dark:hover:bg-slate-700/50 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 font-semibold text-xs shadow-xs transition-all"
             >
               <Bot className="w-4 h-4 text-[#0088cc]" />
               <span>Start Personal Alert Bot</span>
@@ -96,7 +96,7 @@ export function TelegramAlertsTab() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Channel Details Card */}
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+        <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-[#0088cc]/10 flex items-center justify-center text-[#0088cc]">
@@ -135,7 +135,7 @@ export function TelegramAlertsTab() {
         </div>
 
         {/* Bot Details Card */}
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+        <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400">
@@ -176,7 +176,7 @@ export function TelegramAlertsTab() {
       </div>
 
       {/* Feature Grid */}
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
+      <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
         <div>
           <h4 className="text-base font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-500" />
@@ -193,7 +193,7 @@ export function TelegramAlertsTab() {
             return (
               <div 
                 key={i} 
-                className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700/60 flex items-start gap-3.5"
+                className="p-4 rounded-xl patliputra-glass-subtle border border-slate-100 dark:border-slate-700/60 flex items-start gap-3.5"
               >
                 <div className="w-8 h-8 rounded-lg bg-[#0088cc]/10 text-[#0088cc] flex items-center justify-center shrink-0 mt-0.5">
                   <Icon className="w-4 h-4" />

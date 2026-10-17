@@ -7,8 +7,8 @@ export default function PrivacyPolicy() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 sm:p-12">
+    <div className="min-h-screen bg-transparent py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto patliputra-glass rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 sm:p-12">
         <div className="flex items-center gap-4 mb-8 border-b border-slate-100 dark:border-slate-700 pb-8">
           <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="w-6 h-6" />

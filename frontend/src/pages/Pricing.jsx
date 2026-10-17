@@ -343,10 +343,10 @@ export default function Pricing() {
             return (
               <div 
                 key={plan.id}
-                className={`relative flex flex-col justify-between rounded-xl p-6 transition-all duration-300 ${
+                className={`relative flex flex-col justify-between rounded-xl p-6 transition-all duration-300 patliputra-glass ${
                   plan.isPopular 
-                    ? 'bg-white dark:bg-[#151B26] border-2 border-patliputra-terracotta dark:border-patliputra-darkTerracotta shadow-xl shadow-patliputra-terracotta/10 scale-102 z-10' 
-                    : 'bg-white/90 dark:bg-[#151B26]/90 border border-[#E6E1D8] dark:border-[#283341] shadow-xs hover:border-patliputra-terracotta/50'
+                    ? 'border-2 border-patliputra-terracotta dark:border-patliputra-darkTerracotta shadow-xl shadow-patliputra-terracotta/10 scale-102 z-10' 
+                    : 'border border-[#E6E1D8] dark:border-[#283341] shadow-xs hover:border-patliputra-terracotta/50'
                 }`}
               >
                 {/* Popular / Best Value Badge */}
@@ -433,7 +433,7 @@ export default function Pricing() {
         </div>
 
         {/* Trust & Guarantee Banner */}
-        <div className="mt-16 bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="mt-16 patliputra-glass rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/40 text-dalBlue dark:text-blue-400 flex items-center justify-center shrink-0">
               <Shield className="w-6 h-6" />

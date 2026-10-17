@@ -615,7 +615,7 @@ export default function TenderDetails() {
           <div className="lg:col-span-2 space-y-6">
             
             {/* Basic Details Section */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
               <h2 className="text-base font-bold font-display text-slate-900 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2.5 flex items-center gap-2">
                 <FileText className="w-4 h-4 text-dalBlue dark:text-blue-400" /> Basic Details
               </h2>
@@ -635,7 +635,7 @@ export default function TenderDetails() {
             </section>
 
             {/* Work Execution Location Box */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-700 mb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-950/40 text-chinarRed flex items-center justify-center shrink-0 border border-red-100 dark:border-red-900">
@@ -701,7 +701,7 @@ export default function TenderDetails() {
 
             {/* Payment Instruments & Covers */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 sm:p-5 shadow-xs">
+              <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-4 sm:p-5 shadow-xs">
                 <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2 flex items-center gap-1.5">
                   <CreditCard className="w-4 h-4 text-slate-500 shrink-0" /> Payment Instruments
                 </h3>
@@ -731,7 +731,7 @@ export default function TenderDetails() {
                 )}
               </section>
 
-              <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 sm:p-5 shadow-xs">
+              <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-4 sm:p-5 shadow-xs">
                 <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2 flex items-center gap-1.5">
                   <Layers className="w-4 h-4 text-slate-500 shrink-0" /> Covers Information
                   <span className="text-[11px] text-slate-400 font-normal ml-auto">
@@ -775,7 +775,7 @@ export default function TenderDetails() {
 
             {/* Other Important Documents List (Mandatory Bidder Checklist) */}
             {tender.otherImportantDocuments && tender.otherImportantDocuments.length > 0 && (
-              <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 sm:p-5 shadow-xs">
+              <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-4 sm:p-5 shadow-xs">
                 <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <FileCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" /> Other Important Documents List
@@ -812,7 +812,7 @@ export default function TenderDetails() {
             )}
             
             {/* Work Item Details */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
               <h3 className="text-base font-bold font-display text-slate-900 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2.5">
                 Work Item Details
               </h3>
@@ -854,7 +854,7 @@ export default function TenderDetails() {
             </section>
 
             {/* Tender Inviting Authority */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 sm:p-6 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-5 sm:p-6 shadow-xs">
               <h3 className="text-base font-bold font-display text-slate-900 dark:text-white mb-3 border-b border-slate-100 dark:border-slate-700 pb-2.5 flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-dalBlue dark:text-blue-400" /> Tender Inviting Authority
               </h3>
@@ -880,7 +880,7 @@ export default function TenderDetails() {
 
             {/* Extended Details Section (Dynamic Fields) */}
             {tender.dynamicFields && Object.keys(tender.dynamicFields).length > 0 && (
-              <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
+              <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-xs">
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-700/60">
                   <div className="flex items-center gap-2">
                     <List className="w-5 h-5 text-indigo-500" />
@@ -913,7 +913,7 @@ export default function TenderDetails() {
           <div className="space-y-6">
             
             {/* Tender Fee & EMD Details */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
               <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-700 pb-2 flex items-center gap-1.5">
                 <IndianRupee className="w-4 h-4 text-dalBlue dark:text-blue-400" /> Fee &amp; EMD Details
               </h3>
@@ -935,7 +935,7 @@ export default function TenderDetails() {
             </section>
 
             {/* Critical Dates Section */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
               <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white mb-3 flex items-center gap-1.5 border-b border-slate-100 dark:border-slate-700 pb-2">
                 <Calendar className="w-4 h-4 text-chinarRed" /> Critical Dates
               </h3>
@@ -994,7 +994,7 @@ export default function TenderDetails() {
 
 
             {/* Official Documents & Attachments Section */}
-            <section className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
+            <section className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-xs">
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-2.5 mb-3.5">
                 <h3 className="text-sm font-bold font-display text-slate-900 dark:text-white flex items-center gap-1.5">
                   <Download className="w-4 h-4 text-dalBlue dark:text-blue-400" />

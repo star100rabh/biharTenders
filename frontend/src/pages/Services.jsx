@@ -314,7 +314,7 @@ export default function Services() {
 
             {/* Right 5 Columns: Symmetrically Balanced Contractor Memory Card */}
             <div className="lg:col-span-5">
-              <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col justify-between gap-5 relative overflow-hidden">
+              <div className="patliputra-glass p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col justify-between gap-5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
 
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
@@ -377,7 +377,7 @@ export default function Services() {
         {dossierData ? (
           <div className="space-y-6">
             {/* Executive Snapshot Card */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="space-y-2 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200">
@@ -432,7 +432,7 @@ export default function Services() {
                     className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer text-center ${
                       isActive
                         ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
+                        : 'patliputra-glass text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
                     }`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />
@@ -451,7 +451,7 @@ export default function Services() {
                   <div className="lg:col-span-2 space-y-6">
                     {/* Personalized Financial & Experience Evaluation */}
                     {personalizedFit && (
-                      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                      <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
                         <div className="flex items-center justify-between">
                           <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <Scale className="w-4 h-4 text-blue-600" />
@@ -554,7 +554,7 @@ export default function Services() {
                     )}
 
                     {/* Mandatory Document Submission Checklist */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                    <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
                       <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <FileText className="w-4 h-4 text-blue-600" />
                         <span>Mandatory Document &amp; Affidavit Submission Pack</span>
@@ -593,7 +593,7 @@ export default function Services() {
 
                   {/* Right Column: Contract Risk & GCC Red Flags */}
                   <div className="space-y-6">
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                    <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
                       <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <ShieldAlert className="w-4 h-4 text-red-600" />
                         <span>GCC Risk &amp; Contract Traps</span>
@@ -633,7 +633,7 @@ export default function Services() {
               {activeTab === 'boq' && (
                 <div className="space-y-6">
                   {/* Summary & Download Bar */}
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <Boxes className="w-5 h-5 text-blue-600" />
@@ -657,7 +657,7 @@ export default function Services() {
                     {dossierData.preBidAnalysis?.boqMaterialBreakdown?.materials?.map((mat, idx) => (
                       <div
                         key={idx}
-                        className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-2"
+                        className="patliputra-glass p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-2"
                       >
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
                           {mat.category || 'Material'}
@@ -679,7 +679,7 @@ export default function Services() {
                   </div>
 
                   {/* BOQ Line Items Table */}
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                  <div className="patliputra-glass rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
                     <div className="p-4 border-b border-slate-200 dark:border-slate-800">
                       <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                         Standard Schedule of Rates (SOR) Extracted Line Items
@@ -721,7 +721,7 @@ export default function Services() {
               {activeTab === 'execution' && (
                 <div className="space-y-6">
                   {/* Procurement Phasing */}
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                  <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
                     <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-blue-600" />
                       <span>Post-Award Material Procurement &amp; Staging Schedule</span>
@@ -753,7 +753,7 @@ export default function Services() {
                   </div>
 
                   {/* Milestone Delivery Tracker */}
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                  <div className="patliputra-glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
                     <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-emerald-600" />
                       <span>Departmental Physical &amp; Financial Milestones</span>
@@ -795,7 +795,7 @@ export default function Services() {
 
               {/* TAB 4: INTERACTIVE CONTRACTOR COPILOT CHAT */}
               {activeTab === 'copilot' && (
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md flex flex-col h-[600px] overflow-hidden">
+                <div className="patliputra-glass rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md flex flex-col h-[600px] overflow-hidden">
                   {/* Chat Header */}
                   <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -898,7 +898,7 @@ export default function Services() {
           </div>
         ) : (
           /* Empty State / Feature Showcase if no tender analyzed yet */
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-slate-800 text-center max-w-3xl mx-auto shadow-sm space-y-4">
+          <div className="patliputra-glass rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-slate-800 text-center max-w-3xl mx-auto shadow-sm space-y-4">
             <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto">
               <Cpu className="w-8 h-8" />
             </div>
@@ -949,8 +949,8 @@ export default function Services() {
                 key={plan.id}
                 className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all ${
                   plan.popular
-                    ? 'bg-white dark:bg-slate-900 border-2 border-blue-600 shadow-xl scale-[1.02]'
-                    : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-slate-300'
+                    ? 'patliputra-glass border-2 border-blue-600 shadow-xl scale-[1.02]'
+                    : 'patliputra-glass border border-slate-200 dark:border-slate-800 shadow-sm hover:border-slate-300'
                 }`}
               >
                 {plan.badge && (

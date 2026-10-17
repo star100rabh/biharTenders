@@ -120,14 +120,14 @@ export function BiharDistrictsExplorer() {
               className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-2 border ${
                 isActive
                   ? 'bg-[#C85A32] dark:bg-[#E07A5F] text-white border-transparent shadow-xs'
-                  : 'bg-white dark:bg-[#151B26] text-[#1D3557] dark:text-slate-300 border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32]/50 hover:bg-[#FAF8F5] dark:hover:bg-[#0D1117]'
+                  : 'patliputra-glass-badge text-[#1D3557] dark:text-slate-300 border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32]/50 hover:bg-[#FAF8F5]/50'
               }`}
             >
               <span>{division.name}</span>
               <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono tabular-nums font-bold ${
                 isActive 
                   ? 'bg-white/25 text-white' 
-                  : 'bg-[#FAF8F5] dark:bg-[#0D1117] text-slate-500 dark:text-slate-400 border border-[#E6E1D8] dark:border-[#283341]'
+                  : 'patliputra-glass-subtle text-slate-500 dark:text-slate-400 border border-[#E6E1D8] dark:border-[#283341]'
               }`}>
                 {division.districts.length}
               </span>
@@ -137,14 +137,14 @@ export function BiharDistrictsExplorer() {
       </div>
 
       {/* Active Division Card & District Grid */}
-      <div className="bg-white dark:bg-[#151B26] rounded-2xl p-6 sm:p-8 border border-[#E6E1D8] dark:border-[#283341] relative overflow-hidden">
+      <div className="patliputra-glass rounded-2xl p-6 sm:p-8 border border-[#E6E1D8] dark:border-[#283341] relative overflow-hidden">
         {/* Subtle Top Accent Strip */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C85A32] via-[#D97706] to-[#2D6A4F]" />
 
         {/* Division Header Info Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E6E1D8] dark:border-[#283341] mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-xl patliputra-glass-badge text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center shrink-0">
               <Landmark className="w-5 h-5" />
             </div>
             <div>
@@ -162,7 +162,7 @@ export function BiharDistrictsExplorer() {
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] text-xs font-semibold text-slate-600 dark:text-slate-300">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl patliputra-glass-badge border border-[#E6E1D8] dark:border-[#283341] text-xs font-semibold text-slate-600 dark:text-slate-300">
             <span className="w-2 h-2 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] animate-pulse" />
             <span>e-Proc2 Bihar Active Gateway</span>
           </div>
@@ -174,10 +174,10 @@ export function BiharDistrictsExplorer() {
             <button
               key={district}
               onClick={() => handleDistrictClick(district)}
-              className="group p-4 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all duration-200 text-left flex flex-col justify-between gap-3 cursor-pointer"
+              className="group p-4 rounded-xl patliputra-glass-subtle border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all duration-200 text-left flex flex-col justify-between gap-3 cursor-pointer"
             >
               <div className="flex items-center justify-between">
-                <span className="w-7 h-7 rounded-lg bg-white dark:bg-[#151B26] text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center group-hover:bg-[#C85A32] group-hover:text-white transition-all">
+                <span className="w-7 h-7 rounded-lg patliputra-glass-badge text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center group-hover:bg-[#C85A32] group-hover:text-white transition-all">
                   <MapPin className="w-3.5 h-3.5" />
                 </span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] group-hover:translate-x-0.5 transition-all" />

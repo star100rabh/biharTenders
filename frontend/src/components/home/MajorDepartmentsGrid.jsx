@@ -170,7 +170,7 @@ export function MajorDepartmentsGrid() {
             <div
               key={dept.code}
               onClick={() => handleDeptClick(dept.query)}
-              className="group bg-white dark:bg-[#151B26] p-5 sm:p-6 rounded-2xl border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden h-full"
+              className="group patliputra-glass p-5 sm:p-6 rounded-2xl border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden h-full shadow-xs"
             >
               {/* Subtle 2px Top Accent Border */}
               <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#C85A32] dark:bg-[#E07A5F] opacity-75 group-hover:opacity-100 transition-opacity" />
@@ -179,7 +179,7 @@ export function MajorDepartmentsGrid() {
                 {/* Header Row: Department Code Pill + Live Pulse */}
                 <div className="flex items-center justify-between gap-2 mb-3.5">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#1D3557] dark:text-[#7EA2D6] border border-[#E6E1D8] dark:border-[#283341] tracking-wider">
+                    <span className="font-mono font-bold text-xs px-2.5 py-0.5 rounded-lg patliputra-glass-badge text-[#1D3557] dark:text-[#7EA2D6] border border-[#E6E1D8] dark:border-[#283341] tracking-wider">
                       {dept.code}
                     </span>
                     <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
@@ -195,7 +195,7 @@ export function MajorDepartmentsGrid() {
 
                 {/* Icon Container with Dual Tone & Clean Geometry */}
                 <div className="flex items-start gap-3 mb-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] text-[#1D3557] dark:text-[#7EA2D6] flex items-center justify-center shrink-0 group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] transition-colors">
+                  <div className="w-10 h-10 rounded-xl patliputra-glass-badge border border-[#E6E1D8] dark:border-[#283341] text-[#1D3557] dark:text-[#7EA2D6] flex items-center justify-center shrink-0 group-hover:text-[#C85A32] dark:group-hover:text-[#E07A5F] transition-colors">
                     <Icon className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">

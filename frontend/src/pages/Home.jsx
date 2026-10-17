@@ -197,7 +197,7 @@ export default function Home() {
       {/* =========================================================================
           TOP E-PROC2 LIVE GATEWAY STATUS BAR
           ========================================================================= */}
-      <div className="bg-white/80 dark:bg-[#151B26]/80 backdrop-blur-sm border-b border-[#E6E1D8] dark:border-[#283341] py-2.5 px-4 text-center">
+      <div className="patliputra-glass border-b border-[#E6E1D8] dark:border-[#283341] py-2.5 px-4 text-center">
         <div className="max-w-7xl mx-auto flex items-center justify-center flex-wrap gap-2 sm:gap-3 text-xs">
           <span className="relative flex h-2 w-2 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2D6A4F] opacity-75"></span>
@@ -224,7 +224,7 @@ export default function Home() {
           
           {/* Official Badge & Small Elegant Bilingual Subtext */}
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] text-xs font-bold text-[#1D3557] dark:text-slate-200">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full patliputra-glass-badge border border-[#E6E1D8] dark:border-[#283341] text-xs font-bold text-[#1D3557] dark:text-slate-200">
               <Landmark className="w-3.5 h-3.5 text-[#C85A32] dark:text-[#E07A5F] shrink-0" />
               <span>Bihar State E-Procurement Portal • All 38 Districts Unified</span>
             </div>
@@ -277,7 +277,7 @@ export default function Home() {
                     if (item.query.category) params.set('category', item.query.category);
                     navigate(`/tenders?${params.toString()}`);
                   }}
-                  className="px-3 py-1 rounded-xl font-bold bg-white dark:bg-[#151B26] hover:bg-[#FAF8F5] dark:hover:bg-[#0D1117] text-[#1D3557] dark:text-slate-200 border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all cursor-pointer"
+                  className="px-3 py-1 rounded-xl font-bold patliputra-glass-badge hover:bg-[#FAF8F5]/60 text-[#1D3557] dark:text-slate-200 border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all cursor-pointer"
                 >
                   {item.label}
                 </button>
@@ -289,13 +289,13 @@ export default function Home() {
           <div className="max-w-4xl mx-auto mt-6 pt-1">
             <form 
               onSubmit={handleSearch}
-              className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-[#E6E1D8]/80 dark:border-[#283341]/80 text-left transition-all shadow-sm"
+              className="patliputra-glass rounded-2xl p-3 sm:p-4 text-left transition-all shadow-sm"
             >
               {/* Row 1: Search Input + Category + District + Search Button */}
               <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2.5">
                 
                 {/* Search Text Input */}
-                <div className="flex items-center flex-1 bg-[#FAF8F5] dark:bg-[#0D1117] rounded-xl px-3.5 py-2.5 border border-[#E6E1D8] dark:border-[#283341] focus-within:border-[#C85A32] dark:focus-within:border-[#E07A5F]">
+                <div className="flex items-center flex-1 patliputra-glass-badge rounded-xl px-3.5 py-2.5 focus-within:border-[#C85A32] dark:focus-within:border-[#E07A5F]">
                   <Search className="w-4 h-4 text-[#C85A32] dark:text-[#E07A5F] shrink-0 mr-2.5" />
                   <input
                     type="text"
@@ -307,7 +307,7 @@ export default function Home() {
                 </div>
 
                 {/* Categories Dropdown */}
-                <div className="w-full lg:w-52 bg-[#FAF8F5] dark:bg-[#0D1117] rounded-xl px-3 py-2.5 border border-[#E6E1D8] dark:border-[#283341]">
+                <div className="w-full lg:w-52 patliputra-glass-badge rounded-xl px-3 py-2.5">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -322,7 +322,7 @@ export default function Home() {
                 </div>
 
                 {/* Regions / Districts Dropdown */}
-                <div className="w-full lg:w-48 bg-[#FAF8F5] dark:bg-[#0D1117] rounded-xl px-3 py-2.5 border border-[#E6E1D8] dark:border-[#283341]">
+                <div className="w-full lg:w-48 patliputra-glass-badge rounded-xl px-3 py-2.5">
                   <select
                     value={selectedRegion}
                     onChange={(e) => setSelectedRegion(e.target.value)}
@@ -357,7 +357,7 @@ export default function Home() {
                       key={idx}
                       type="button"
                       onClick={() => handleTrendingClick(term)}
-                      className="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-[#FAF8F5] hover:bg-slate-100 dark:bg-[#0D1117] dark:hover:bg-slate-800 text-[#1D3557] dark:text-slate-200 transition-colors cursor-pointer border border-[#E6E1D8] dark:border-[#283341]"
+                      className="px-2.5 py-1 rounded-xl text-[11px] font-semibold patliputra-glass-subtle hover:bg-slate-100/50 text-[#1D3557] dark:text-slate-200 transition-colors cursor-pointer border border-[#E6E1D8] dark:border-[#283341]"
                     >
                       {term}
                     </button>
@@ -388,7 +388,7 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
           {/* Card 1: 710+ Active E-Tenders */}
-          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
+          <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               {isStatsLoading ? '...' : (stats?.activeTendersCount && stats.activeTendersCount > 710 ? `${stats.activeTendersCount}+` : '710+')}
             </div>
@@ -398,7 +398,7 @@ export default function Home() {
           </div>
 
           {/* Card 2: ₹2,119.00 Cr Total Live Value */}
-          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
+          <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-xl sm:text-2xl lg:text-3xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               {isStatsLoading ? '...' : (stats?.totalValue ? formatCurrencyINR(stats.totalValue) : '₹2,119.00 Cr')}
             </div>
@@ -408,7 +408,7 @@ export default function Home() {
           </div>
 
           {/* Card 3: 128+ Govt. Bodies */}
-          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
+          <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               {isStatsLoading ? '...' : (stats?.authoritiesCount && stats.authoritiesCount > 128 ? `${stats.authoritiesCount}+` : '128+')}
             </div>
@@ -418,7 +418,7 @@ export default function Home() {
           </div>
 
           {/* Card 4: 38 Districts Covered */}
-          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
+          <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               38
             </div>
@@ -444,7 +444,7 @@ export default function Home() {
       {/* =========================================================================
           ANIMATED LIVE PIPELINE CAROUSEL SECTION
           ========================================================================= */}
-      <section className="py-12 sm:py-16 overflow-hidden bg-slate-100/70 dark:bg-[#06101e]/60 border-y border-slate-200 dark:border-slate-800">
+      <section className="py-12 sm:py-16 overflow-hidden patliputra-glass-subtle border-y border-slate-200/60 dark:border-slate-800/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3">
             <div>
@@ -474,8 +474,8 @@ export default function Home() {
 
         {/* Continuous Moving Track */}
         <div className="relative w-full overflow-hidden group">
-          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-[#FAF8F5] dark:from-[#0D1117] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-[#FAF8F5] dark:from-[#0D1117] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-[#FAF8F5]/30 dark:from-[#0D1117]/30 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-[#FAF8F5]/30 dark:from-[#0D1117]/30 to-transparent z-10 pointer-events-none" />
 
           <motion.div
             className="flex gap-4 sm:gap-5 w-max py-2"
@@ -496,7 +496,7 @@ export default function Home() {
                   if (item.query.department) params.set('department', item.query.department);
                   navigate(`/tenders?${params.toString()}`);
                 }}
-                className="w-72 sm:w-80 bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 flex-shrink-0 flex flex-col justify-between group/card select-none"
+                className="w-72 sm:w-80 patliputra-glass border border-[#E6E1D8] dark:border-[#283341] hover:border-[#C85A32] dark:hover:border-[#E07A5F] p-4 sm:p-5 rounded-2xl cursor-pointer transition-all duration-200 flex-shrink-0 flex flex-col justify-between group/card select-none shadow-xs"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -518,7 +518,7 @@ export default function Home() {
                     <span className="block text-[9px] uppercase tracking-wider font-semibold text-slate-400">Estimated Value</span>
                     <span className="font-mono tabular-nums text-xs sm:text-sm font-bold text-[#1D3557] dark:text-slate-200">{item.value}</span>
                   </div>
-                  <div className="w-8 h-8 rounded-xl bg-[#FAF8F5] dark:bg-[#0D1117] border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center text-[#1D3557] dark:text-slate-300 group-hover/card:bg-[#C85A32] dark:group-hover/card:bg-[#E07A5F] group-hover/card:text-white transition-colors">
+                  <div className="w-8 h-8 rounded-xl patliputra-glass-badge border border-[#E6E1D8] dark:border-[#283341] flex items-center justify-center text-[#1D3557] dark:text-slate-300 group-hover/card:bg-[#C85A32] dark:group-hover/card:bg-[#E07A5F] group-hover/card:text-white transition-colors">
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/card:translate-x-0.5" />
                   </div>
                 </div>
@@ -571,7 +571,7 @@ export default function Home() {
       {/* =========================================================================
           PROCUREMENT & BIDDING GUIDANCE (Bihar Specific 2x2 Grid)
           ========================================================================= */}
-      <section className="bg-white/60 dark:bg-[#151B26]/60 py-14 sm:py-18 border-t border-[#E6E1D8] dark:border-[#283341] px-4 sm:px-6 lg:px-8">
+      <section className="patliputra-glass-subtle py-14 sm:py-18 border-t border-[#E6E1D8] dark:border-[#283341] px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           
           <div className="text-center max-w-2xl mx-auto mb-10">
@@ -591,9 +591,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
             
             {/* Card 1: EMD */}
-            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+            <div className="patliputra-glass border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all shadow-xs">
               <div className="flex items-start gap-3 mb-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
+                <div className="w-7 h-7 rounded-lg patliputra-glass-badge text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
@@ -606,9 +606,9 @@ export default function Home() {
             </div>
 
             {/* Card 2: Upcoming Tenders */}
-            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+            <div className="patliputra-glass border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all shadow-xs">
               <div className="flex items-start gap-3 mb-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
+                <div className="w-7 h-7 rounded-lg patliputra-glass-badge text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
@@ -621,9 +621,9 @@ export default function Home() {
             </div>
 
             {/* Card 3: Digital Credentials */}
-            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+            <div className="patliputra-glass border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all shadow-xs">
               <div className="flex items-start gap-3 mb-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
+                <div className="w-7 h-7 rounded-lg patliputra-glass-badge text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">
@@ -636,9 +636,9 @@ export default function Home() {
             </div>
 
             {/* Card 4: Official Verification */}
-            <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all">
+            <div className="patliputra-glass border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 hover:border-[#C85A32] dark:hover:border-[#E07A5F] transition-all shadow-xs">
               <div className="flex items-start gap-3 mb-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[#FAF8F5] dark:bg-[#0D1117] text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
+                <div className="w-7 h-7 rounded-lg patliputra-glass-badge text-[#C85A32] dark:text-[#E07A5F] flex items-center justify-center shrink-0 mt-0.5 border border-[#E6E1D8] dark:border-[#283341]">
                   <HelpCircle className="w-4 h-4" />
                 </div>
                 <h3 className="text-sm sm:text-base font-bold text-[#1D3557] dark:text-white leading-snug">

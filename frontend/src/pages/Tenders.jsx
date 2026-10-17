@@ -424,7 +424,7 @@ export default function Tenders() {
           <button
             type="button"
             onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-            className="w-full flex items-center justify-between p-3.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xs text-xs font-bold text-dalBlue dark:text-blue-300 transition-all cursor-pointer"
+            className="w-full flex items-center justify-between p-3.5 patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xs text-xs font-bold text-dalBlue dark:text-blue-300 transition-all cursor-pointer"
           >
             <div className="flex items-center gap-2">
               <Filter className="w-4 h-4 text-dalBlue dark:text-blue-400 shrink-0" />
@@ -452,11 +452,11 @@ export default function Tenders() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
           
           {/* ---------------- FILTER SIDEBAR ---------------- */}
-          <aside className={`lg:col-span-1 bg-white/45 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
+          <aside className={`lg:col-span-1 patliputra-glass rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
             mobileFiltersOpen ? 'flex mb-4 lg:mb-0' : 'hidden lg:flex'
           }`}>
             {/* Pinned Header */}
-            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8] dark:border-[#283341] text-patliputra-indigo dark:text-patliputra-iceSteel bg-white/40 dark:bg-[#151B26]/40 backdrop-blur-xs shrink-0 select-none">
+            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8]/80 dark:border-[#283341]/80 text-patliputra-indigo dark:text-patliputra-iceSteel patliputra-glass-subtle shrink-0 select-none">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-patliputra-terracotta dark:text-patliputra-darkTerracotta" />
                 <h2 className="text-xs font-bold uppercase tracking-wider font-display">Search Filters</h2>
@@ -698,7 +698,7 @@ export default function Tenders() {
           <main className="lg:col-span-3 space-y-4">
             
             {/* Top Tab Bar strictly matching Image 2 */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white/45 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] p-2 sm:p-2.5 rounded-2xl shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 patliputra-glass p-2 sm:p-2.5 rounded-2xl shadow-xs">
               {/* Menu Tabs: Active Tenders, Upcoming, Expired */}
               <div 
                 className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-hide [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-thumb]:hidden [&::-webkit-scrollbar-track]:hidden"
@@ -828,7 +828,7 @@ export default function Tenders() {
                     className={`px-3 py-1 rounded-xl text-xs font-medium transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                       isActive
                         ? 'bg-[#071325] text-white dark:bg-white dark:text-[#071325] shadow-xs font-semibold'
-                        : 'bg-white/80 dark:bg-[#151B26]/80 backdrop-blur-xs text-slate-600 dark:text-slate-300 border border-[#E6E1D8]/80 dark:border-[#283341]/80 hover:border-slate-300'
+                        : 'patliputra-glass-badge text-slate-600 dark:text-slate-300 hover:border-slate-400'
                     }`}
                   >
                     {chip.label}
@@ -839,7 +839,7 @@ export default function Tenders() {
 
             {/* Active Filter Chips Bar */}
             {activeFilterCount > 0 && (
-              <div className="flex flex-wrap items-center gap-2 p-3 bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-xl text-xs shadow-xs">
+              <div className="flex flex-wrap items-center gap-2 p-3 patliputra-glass rounded-xl text-xs shadow-xs">
                 <span className="font-semibold text-slate-400 dark:text-slate-500 uppercase text-[10px] mr-1">Active:</span>
                 
                 {advancedSearch && (
@@ -940,7 +940,7 @@ export default function Tenders() {
             )}
 
             {/* Total Results Summary with Top Navigation Arrows */}
-            <div className="flex items-center justify-between bg-white/45 dark:bg-[#151B26]/50 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-400 shadow-xs">
+            <div className="flex items-center justify-between patliputra-glass px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-400 shadow-xs">
               <span>
                 Showing <strong className="font-mono text-sm text-emerald-600 dark:text-emerald-400 font-bold">{totalCount}</strong> {status === 'upcoming' ? 'upcoming notices' : status === 'expired' ? 'expired notices' : 'active notices'}
               </span>
@@ -975,7 +975,7 @@ export default function Tenders() {
 
             {/* Loading State */}
             {isLoading && (
-              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-12 text-center space-y-3 shadow-xs">
+              <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-12 text-center space-y-3 shadow-xs">
                 <div className="w-8 h-8 rounded-full border-3 border-dalBlue border-t-transparent animate-spin mx-auto" />
                 <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">Loading tender notices...</p>
               </div>
@@ -1077,7 +1077,7 @@ export default function Tenders() {
                 })}
 
                 {/* Standard Pagination */}
-                <div className="flex flex-col sm:flex-row items-center justify-between bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-3 rounded-2xl mt-6 shadow-xs gap-3">
+                <div className="flex flex-col sm:flex-row items-center justify-between patliputra-glass border border-slate-200 dark:border-slate-700 px-4 py-3 rounded-2xl mt-6 shadow-xs gap-3">
                   <span className="text-xs text-slate-500 dark:text-slate-400">
                     Page <strong className="text-slate-800 dark:text-white font-mono">{currentPage}</strong> of <strong className="text-slate-800 dark:text-white font-mono">{totalPages}</strong>
                     {!isAuthenticated && <span className="ml-2 text-slate-400 dark:text-slate-500 font-normal">(Sign in for all pages)</span>}
@@ -1110,7 +1110,7 @@ export default function Tenders() {
 
             {/* Empty State */}
             {!isLoading && !isError && tenders.length === 0 && (
-              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-12 text-center space-y-3 shadow-xs">
+              <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-12 text-center space-y-3 shadow-xs">
                 <FileText className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto" />
                 <h4 className="text-base font-bold text-slate-800 dark:text-white">
                   {status === 'archived' ? 'No Archived Notices Found' : status === 'expired' ? 'No Expired Notices Found' : status === 'upcoming' ? 'No Upcoming Notices Found' : 'No Matching Tender Notices'}

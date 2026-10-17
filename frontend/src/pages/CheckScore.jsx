@@ -242,7 +242,7 @@ export default function CheckScore() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12 sm:py-16">
-        <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 sm:p-12 shadow-xl text-center space-y-6">
+        <div className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-8 sm:p-12 shadow-xl text-center space-y-6">
           <div className="w-16 h-16 bg-dalBlue/10 dark:bg-blue-500/20 text-dalBlue dark:text-blue-400 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
             <Lock className="w-8 h-8" />
           </div>
@@ -358,7 +358,7 @@ export default function CheckScore() {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Step 1: Select Target Contract */}
-            <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6 shadow-sm space-y-4">
+            <div className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-black uppercase tracking-wider text-dalBlue dark:text-blue-300">
                   Step 1: Select Target Tender
@@ -466,7 +466,7 @@ export default function CheckScore() {
             </div>
 
             {/* Step 2: Contractor Financial & Bidding Inputs */}
-            <form onSubmit={handleCalculateScore} className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6 shadow-sm space-y-4">
+            <form onSubmit={handleCalculateScore} className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6 shadow-sm space-y-4">
               <span className="text-[11px] font-black uppercase tracking-wider text-dalBlue dark:text-blue-300 block">
                 Step 2: Contractor Credentials &amp; Bidding Quote
               </span>
@@ -662,7 +662,7 @@ export default function CheckScore() {
           {/* RIGHT COLUMN: EVALUATION RESULTS DASHBOARD (7 cols) */}
           <div ref={resultsRef} className="lg:col-span-7">
             {isEvaluating && !evaluationResult ? (
-              <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
+              <div className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
                 <ScoreSpeedometer
                   score={50}
                   maxScore={100}
@@ -677,7 +677,7 @@ export default function CheckScore() {
                 </div>
               </div>
             ) : evaluationResult ? (
-              <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
+              <div className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
                 
                 {/* Animated Speedometer / Gauge (Credit-score style) */}
                 <div className="space-y-4">
@@ -894,7 +894,7 @@ export default function CheckScore() {
               </div>
             ) : (
               /* Empty Placeholder State */
-              <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 sm:p-12 text-center space-y-4">
+              <div className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-8 sm:p-12 text-center space-y-4">
                 <div className="w-16 h-16 bg-slate-100 dark:bg-slate-900 text-slate-400 rounded-2xl flex items-center justify-center mx-auto">
                   <Calculator className="w-8 h-8" />
                 </div>
@@ -915,7 +915,7 @@ export default function CheckScore() {
 
       {/* TAB 2: EVALUATED BIDS HISTORY */}
       {activeTab === 'history' && (
-        <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="patliputra-glass rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">

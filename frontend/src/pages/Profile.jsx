@@ -259,7 +259,7 @@ export default function Profile() {
       <div className="max-w-7xl mx-auto space-y-5 sm:space-y-6">
         
         {/* Contractor Profile Header Card - Dynamically linked to profile store */}
-        <div className="bg-white/90 dark:bg-[#151B26]/90 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-4 sm:p-7 shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 transition-all">
+        <div className="patliputra-glass border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-4 sm:p-7 shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 transition-all">
           <div className="flex flex-col xs:flex-row items-start xs:items-center gap-3 sm:gap-4 w-full lg:w-auto">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#1D3557] text-white flex items-center justify-center font-display font-bold text-lg sm:text-xl shadow-xs shrink-0 tracking-wider">
               {getInitials(safeProfile.name)}
@@ -359,7 +359,7 @@ export default function Profile() {
                 ))}
               </div>
             ) : (
-              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-12 text-center shadow-xs max-w-xl mx-auto">
+              <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-xl p-12 text-center shadow-xs max-w-xl mx-auto">
                 <FolderArchive className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
                 <h4 className="text-base font-bold text-slate-900 dark:text-white font-display mb-1">
                   No Saved Tenders
@@ -379,7 +379,7 @@ export default function Profile() {
 
         {/* Tab 2: Contractor Credentials (Editable) */}
         {activeTab === 'company' && (
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-7 space-y-5 max-w-3xl shadow-xs transition-all">
+          <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-7 space-y-5 max-w-3xl shadow-xs transition-all">
             <div className="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">
@@ -592,7 +592,7 @@ export default function Profile() {
 
         {/* Tab 3: Filter Preferences (Editable) */}
         {activeTab === 'alerts' && (
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-7 space-y-5 max-w-3xl shadow-xs transition-all">
+          <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-7 space-y-5 max-w-3xl shadow-xs transition-all">
             <div className="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-white font-display">
@@ -852,7 +852,7 @@ export default function Profile() {
 
         {/* Tab 5: Bid Scores & Capacity History */}
         {activeTab === 'bidscores' && (
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 sm:p-7 shadow-xs space-y-6">
+          <div className="patliputra-glass border border-slate-200 dark:border-slate-700 rounded-2xl p-5 sm:p-7 shadow-xs space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h3 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">

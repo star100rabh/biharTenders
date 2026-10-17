@@ -8,7 +8,7 @@ import { Landmark, Mail, MapPin, ExternalLink, Phone, Send } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="bg-[#FAF8F5] dark:bg-[#0D1117] text-[#1D3557] dark:text-slate-100 pt-12 pb-8 border-t border-[#E6E1D8] dark:border-[#283341] mt-auto relative overflow-hidden transition-colors duration-200">
+    <footer className="patliputra-glass-subtle text-[#1D3557] dark:text-slate-100 pt-12 pb-8 border-t border-[#E6E1D8] dark:border-[#283341] mt-auto relative overflow-hidden transition-colors duration-200">
       {/* Top Auspicious Bihar Ribbon */}
       <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#C85A32] via-[#D97706] to-[#2D6A4F]" />
       
