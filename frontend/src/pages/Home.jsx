@@ -34,7 +34,6 @@ import {
   Waves
 } from 'lucide-react';
 
-import { PreferenceModal } from '@/components/shared/PreferenceModal';
 import { AuthPromptModal } from '@/components/shared/AuthPromptModal';
 import { TenderCard } from '@/components/shared/TenderCard';
 import { BiharDistrictsExplorer } from '@/components/home/BiharDistrictsExplorer';
@@ -185,7 +184,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-[#1D3557] dark:text-slate-100 transition-colors duration-200">
-      <PreferenceModal />
       <AuthPromptModal 
         open={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
