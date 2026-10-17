@@ -17,7 +17,7 @@ export const PLANS = {
   pro_monthly: {
     id: 'pro_monthly',
     name: 'BiharTenders Pro Monthly',
-    price: 399, // INR
+    price: 10, // INR
     periodDays: 30,
     cycle: 'monthly',
     popular: true,

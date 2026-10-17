@@ -186,9 +186,9 @@ export default function Pricing() {
     {
       id: 'pro_monthly',
       name: 'Pro Monthly',
-      price: '₹399',
+      price: '₹10',
       period: '/ month',
-      ratePerDay: '~₹13 / day',
+      ratePerDay: 'Special Launch Offer',
       badge: 'Most Popular',
       desc: 'Everything an active contractor needs to win tenders in their district.',
       features: [
@@ -200,7 +200,7 @@ export default function Pricing() {
         'Priority technical support desk',
       ],
       isPopular: true,
-      cta: 'Upgrade to Pro Monthly',
+      cta: 'Pay ₹10 & Upgrade',
     },
     {
       id: 'pro_quarterly',
