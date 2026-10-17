@@ -37,7 +37,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/70 dark:bg-[#0D1117]/70 backdrop-blur-md border-b border-[#E6E1D8] dark:border-[#283341] text-[#1D3557] dark:text-slate-100 transition-colors duration-200">
+    <header className="sticky top-0 z-40 w-full bg-[#FAF8F5]/80 dark:bg-[#0D1117]/80 backdrop-blur-md border-b border-[#E6E1D8] dark:border-[#283341] text-[#1D3557] dark:text-slate-100 transition-colors duration-200">
       {/* Top Auspicious Cultural Double-Line Ribbon */}
       <div className="h-0.5 w-full bg-gradient-to-r from-[#C85A32] via-[#D97706] to-[#2D6A4F]" />
       

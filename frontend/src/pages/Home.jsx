@@ -474,8 +474,8 @@ export default function Home() {
 
         {/* Continuous Moving Track */}
         <div className="relative w-full overflow-hidden group">
-          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-[#FAF8F5]/30 dark:from-[#0D1117]/30 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-[#FAF8F5]/30 dark:from-[#0D1117]/30 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-r from-[#FAF8F5]/50 dark:from-[#0D1117]/50 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-8 sm:w-20 lg:w-28 h-full bg-gradient-to-l from-[#FAF8F5]/50 dark:from-[#0D1117]/50 to-transparent z-10 pointer-events-none" />
 
           <motion.div
             className="flex gap-4 sm:gap-5 w-max py-2"
