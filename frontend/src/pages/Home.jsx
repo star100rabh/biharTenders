@@ -289,7 +289,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto mt-6 pt-1">
             <form 
               onSubmit={handleSearch}
-              className="bg-white dark:bg-[#151B26] rounded-2xl p-3 sm:p-4 border border-[#E6E1D8] dark:border-[#283341] text-left transition-all"
+              className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-[#E6E1D8]/80 dark:border-[#283341]/80 text-left transition-all shadow-sm"
             >
               {/* Row 1: Search Input + Category + District + Search Button */}
               <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2.5">
@@ -388,7 +388,7 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
           {/* Card 1: 710+ Active E-Tenders */}
-          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               {isStatsLoading ? '...' : (stats?.activeTendersCount && stats.activeTendersCount > 710 ? `${stats.activeTendersCount}+` : '710+')}
             </div>
@@ -398,7 +398,7 @@ export default function Home() {
           </div>
 
           {/* Card 2: ₹2,119.00 Cr Total Live Value */}
-          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-xl sm:text-2xl lg:text-3xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               {isStatsLoading ? '...' : (stats?.totalValue ? formatCurrencyINR(stats.totalValue) : '₹2,119.00 Cr')}
             </div>
@@ -408,7 +408,7 @@ export default function Home() {
           </div>
 
           {/* Card 3: 128+ Govt. Bodies */}
-          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               {isStatsLoading ? '...' : (stats?.authoritiesCount && stats.authoritiesCount > 128 ? `${stats.authoritiesCount}+` : '128+')}
             </div>
@@ -418,7 +418,7 @@ export default function Home() {
           </div>
 
           {/* Card 4: 38 Districts Covered */}
-          <div className="bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] group">
+          <div className="bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
               38
             </div>

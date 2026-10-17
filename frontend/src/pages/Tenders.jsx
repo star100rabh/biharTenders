@@ -452,11 +452,11 @@ export default function Tenders() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
           
           {/* ---------------- FILTER SIDEBAR ---------------- */}
-          <aside className={`lg:col-span-1 bg-white/90 dark:bg-[#151B26]/90 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
+          <aside className={`lg:col-span-1 bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-xl shadow-xs lg:sticky lg:top-20 flex flex-col max-h-[520px] sm:max-h-[560px] lg:max-h-[calc(100vh-6rem)] overflow-hidden transition-all ${
             mobileFiltersOpen ? 'flex mb-4 lg:mb-0' : 'hidden lg:flex'
           }`}>
             {/* Pinned Header */}
-            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8] dark:border-[#283341] text-patliputra-indigo dark:text-patliputra-iceSteel bg-white/50 dark:bg-[#151B26]/50 shrink-0 select-none">
+            <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-[#E6E1D8]/80 dark:border-[#283341]/80 text-patliputra-indigo dark:text-patliputra-iceSteel bg-white/40 dark:bg-[#151B26]/40 backdrop-blur-xs shrink-0 select-none">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-patliputra-terracotta dark:text-patliputra-darkTerracotta" />
                 <h2 className="text-xs font-bold uppercase tracking-wider font-display">Search Filters</h2>
@@ -681,7 +681,7 @@ export default function Tenders() {
 
             {/* Pinned Quick Reset in Sidebar Footer */}
             {activeFilterCount > 0 && (
-              <div className="px-4 sm:px-5 py-3 border-t border-slate-100 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-900/60 shrink-0">
+              <div className="px-4 sm:px-5 py-3 border-t border-[#E6E1D8]/80 dark:border-[#283341]/80 bg-[#FAF8F5]/60 dark:bg-[#0D1117]/50 backdrop-blur-xs shrink-0">
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -698,7 +698,7 @@ export default function Tenders() {
           <main className="lg:col-span-3 space-y-4">
             
             {/* Top Tab Bar strictly matching Image 2 */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 sm:p-2.5 rounded-2xl shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 p-2 sm:p-2.5 rounded-2xl shadow-xs">
               {/* Menu Tabs: Active Tenders, Upcoming, Expired */}
               <div 
                 className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-hide [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-thumb]:hidden [&::-webkit-scrollbar-track]:hidden"
@@ -782,7 +782,7 @@ export default function Tenders() {
                     setSortBy(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-800 dark:text-white hover:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer shadow-xs transition-all"
+                  className="bg-[#FAF8F5]/80 dark:bg-[#0D1117]/70 backdrop-blur-xs border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-800 dark:text-white hover:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer shadow-xs transition-all"
                 >
                   <option value="arrival">Sort: Latest Published (Newest First)</option>
                   <option value="closingAsc">Sort: Closing Date (Urgent First)</option>
@@ -828,7 +828,7 @@ export default function Tenders() {
                     className={`px-3 py-1 rounded-xl text-xs font-medium transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                       isActive
                         ? 'bg-[#071325] text-white dark:bg-white dark:text-[#071325] shadow-xs font-semibold'
-                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/90 dark:border-slate-700 hover:border-slate-300'
+                        : 'bg-white/80 dark:bg-[#151B26]/80 backdrop-blur-xs text-slate-600 dark:text-slate-300 border border-[#E6E1D8]/80 dark:border-[#283341]/80 hover:border-slate-300'
                     }`}
                   >
                     {chip.label}
@@ -839,7 +839,7 @@ export default function Tenders() {
 
             {/* Active Filter Chips Bar */}
             {activeFilterCount > 0 && (
-              <div className="flex flex-wrap items-center gap-2 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs shadow-xs">
+              <div className="flex flex-wrap items-center gap-2 p-3 bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 rounded-xl text-xs shadow-xs">
                 <span className="font-semibold text-slate-400 dark:text-slate-500 uppercase text-[10px] mr-1">Active:</span>
                 
                 {advancedSearch && (
@@ -940,7 +940,7 @@ export default function Tenders() {
             )}
 
             {/* Total Results Summary with Top Navigation Arrows */}
-            <div className="flex items-center justify-between bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-400 shadow-xs">
+            <div className="flex items-center justify-between bg-white/80 dark:bg-[#151B26]/85 backdrop-blur-md border border-[#E6E1D8]/80 dark:border-[#283341]/80 px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-400 shadow-xs">
               <span>
                 Showing <strong className="font-mono text-sm text-emerald-600 dark:text-emerald-400 font-bold">{totalCount}</strong> {status === 'upcoming' ? 'upcoming notices' : status === 'expired' ? 'expired notices' : 'active notices'}
               </span>
