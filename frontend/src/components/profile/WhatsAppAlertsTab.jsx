@@ -25,24 +25,32 @@ import { billingApi } from '@/services/billingApi';
 import { Link } from 'react-router-dom';
 
 const ALL_DEPARTMENTS = [
-  'PUBLIC WORKS DEPARTMENT',
-  'JAL SHAKTI DEPARTMENT',
-  'PRADHAN MANTRI GRAM SADAK YOJANA',
-  'AGRICULTURE PRODUCTION DEPARTMENT',
-  'HEALTH AND MEDICAL EDUCATION',
-  'POWER DEVELOPMENT DEPARTMENT',
-  'HOUSING AND URBAN DEVELOPMENT',
-  'SCHOOL EDUCATION DEPARTMENT',
-  'TOURISM DEPARTMENT',
-  'FOREST ECOLOGY AND ENVIRONMENT',
-  'RURAL DEVELOPMENT AND PANCHAYATI RAJ'
+  'Rural Works Department (RWD)',
+  'Road Construction Department (RCD)',
+  'Public Health Engineering Department (PHED)',
+  'Building Construction Department (BCD)',
+  'Water Resources Department (WRD)',
+  'Bihar State Power Holding (BSPHCL)',
+  'Bihar Rajya Pul Nirman Nigam (BRPNNL)',
+  'Patna Municipal Corporation',
+  'Planning & Development Department',
+  'Minor Water Resources Department',
+  'Urban Development & Housing (UDHD)',
+  'Panchayati Raj Department',
+  'Education Department',
+  'Health Department / BMSICL',
+  'Agriculture Department'
 ];
 
 const ALL_DISTRICTS = [
-  'Gaya', 'Patna', 'Muzaffarpur', 'Darbhanga', 'Purnia',
-  'Budgam', 'Kupwara', 'Ganderbal', 'Bhagalpur', 'Kulgam',
-  'Shopian', 'Udhampur', 'Kathua', 'Rajouri', 'Poonch',
-  'Doda', 'Ramban', 'Reasi', 'Samba', 'Kishtwar'
+  'Patna', 'Gaya', 'Muzaffarpur', 'Bhagalpur', 'Darbhanga', 
+  'Purnia', 'Nalanda', 'Begusarai', 'Rohtas', 'Saran', 
+  'Samastipur', 'Madhubani', 'Siwan', 'East Champaran', 'West Champaran', 
+  'Katihar', 'Saharsa', 'Munger', 'Vaishali', 'Buxar', 
+  'Bhojpur', 'Gopalganj', 'Sitamarhi', 'Supaul', 'Araria', 
+  'Kishanganj', 'Banka', 'Jamui', 'Nawada', 'Jehanabad', 
+  'Aurangabad', 'Kaimur', 'Khagaria', 'Madhepura', 'Lakhisarai', 
+  'Sheikhpura', 'Arwal', 'Sheohar'
 ];
 
 export function WhatsAppAlertsTab() {

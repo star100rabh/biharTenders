@@ -50,10 +50,14 @@ const PREF_SECTOR_OPTIONS = [
 
 const PREF_DISTRICT_OPTIONS = [
   'All 38 districts',
-  'Muzaffarpur', 'Bhagalpur', 'Gaya', 'Patna', 'Purnia',
-  'Darbhanga', 'Kulgam', 'Budgam', 'Kupwara', 'Ganderbal',
-  'Shopian', 'Udhampur', 'Reasi', 'Kathua', 'Samba',
-  'Rajouri', 'Poonch', 'Doda', 'Ramban', 'Kishtwar'
+  'Patna', 'Gaya', 'Muzaffarpur', 'Bhagalpur', 'Darbhanga', 
+  'Purnia', 'Nalanda', 'Begusarai', 'Rohtas', 'Saran', 
+  'Samastipur', 'Madhubani', 'Siwan', 'East Champaran', 'West Champaran', 
+  'Katihar', 'Saharsa', 'Munger', 'Vaishali', 'Buxar', 
+  'Bhojpur', 'Gopalganj', 'Sitamarhi', 'Supaul', 'Araria', 
+  'Kishanganj', 'Banka', 'Jamui', 'Nawada', 'Jehanabad', 
+  'Aurangabad', 'Kaimur', 'Khagaria', 'Madhepura', 'Lakhisarai', 
+  'Sheikhpura', 'Arwal', 'Sheohar'
 ];
 
 const REGISTRATION_CLASSES = [
