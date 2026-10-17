@@ -1,290 +1,245 @@
 /**
  * @file src/components/layout/PatliputraWatermark.jsx
- * @description Fixed architectural watermark layer depicting Bihar's civil heritage:
- * - Light Mode: Ancient architectural sketches (Mahabodhi Temple spire, Nalanda stupa terraces, Ashoka column)
- *   in faint earthy-sepia (#8C6D58) at 5% opacity against warm parchment (#FAF8F5).
- * - Dark Mode: Modern civil engineering (Mahatma Gandhi Setu bridge, JP Ganga Path flyover, steel truss & cranes)
- *   in desaturated indigo-gray (#7EA2D6) at 2% opacity against deep basalt (#0D1117).
- * - Split Mode: Side-by-side rendering with Light mode on the left and Dark mode on the right.
+ * @description Authentic Bihar heritage and civil infrastructure background watermark:
+ * - Left: Historic civil architecture (Mahabodhi Temple Shikhara, Nalanda Stupa & brick terraces, Ashoka Pillar).
+ * - Right: Modern civil infrastructure (Mahatma Gandhi Setu steel trusses, JP Ganga Path flyover, construction cranes).
+ * 
+ * Stacking & Blending:
+ * - Fixed background layer: `pointer-events-none fixed inset-0 z-0 h-full w-full overflow-hidden`
+ * - Base Light background: `#FAF8F5` with `opacity-15 mix-blend-multiply`
+ * - Base Dark background: `#0D1117` with `dark:opacity-10 dark:invert dark:mix-blend-screen`
+ * - Bottom gradient fade: `from-transparent via-transparent to-[#FAF8F5]/85 dark:to-[#0D1117]/90`
  */
 import React from 'react';
-import { useTheme } from '@/context/ThemeProvider';
 
 export function PatliputraWatermark() {
-  const { theme, isDark } = useTheme();
-  const isSplit = theme === 'split';
-
   return (
     <div 
-      className="fixed inset-0 pointer-events-none z-0 select-none overflow-hidden" 
+      className="pointer-events-none fixed inset-0 z-0 h-full w-full overflow-hidden bg-[#FAF8F5] dark:bg-[#0D1117] select-none transition-colors duration-200"
       aria-hidden="true"
     >
-      {isSplit ? (
-        // Side-by-side split view watermark: Left Light, Right Dark
-        <div className="w-full h-full grid grid-cols-2">
-          {/* Left: Historic Light Canvas */}
-          <div className="relative w-full h-full bg-[#FAF8F5] border-r border-[#E6E1D8]">
-            <HistoricWatermarkSvg opacity={0.05} strokeColor="#8C6D58" />
-          </div>
-          {/* Right: Modern Dark Canvas */}
-          <div className="relative w-full h-full bg-[#0D1117]">
-            <ModernWatermarkSvg opacity={0.02} strokeColor="#7EA2D6" />
-          </div>
-        </div>
-      ) : isDark ? (
-        // Standard Dark Mode Watermark: Gandhi Setu + JP Ganga Path
-        <div className="relative w-full h-full bg-[#0D1117]">
-          <ModernWatermarkSvg opacity={0.02} strokeColor="#7EA2D6" />
-        </div>
-      ) : (
-        // Standard Light Mode Watermark: Mahabodhi + Nalanda + Ashoka Pillar
-        <div className="relative w-full h-full bg-[#FAF8F5]">
-          <HistoricWatermarkSvg opacity={0.05} strokeColor="#8C6D58" />
-        </div>
-      )}
-    </div>
-  );
-}
+      {/* 
+        Unified Architectural Line-Art Sketch 
+        Left: Heritage (Mahabodhi + Nalanda + Ashoka Pillar)
+        Right: Modern Civil Infrastructure (Gandhi Setu + JP Ganga Path + Tower Cranes)
+      */}
+      <svg 
+        className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-multiply dark:opacity-10 dark:invert dark:mix-blend-screen transition-all duration-300"
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 1920 1080" 
+        fill="none" 
+        stroke="#1F2937" 
+        strokeWidth="1.2"
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        preserveAspectRatio="xMidYMin slice"
+      >
+        <defs>
+          {/* Subtle architectural blueprint grid */}
+          <pattern id="patliputra-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M 80 0 L 0 0 0 80" stroke="#1F2937" strokeWidth="0.3" strokeOpacity="0.2" />
+            <circle cx="40" cy="40" r="1.2" fill="#1F2937" fillOpacity="0.15" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#patliputra-grid)" stroke="none" />
 
-/**
- * Historical Architectural Sketch SVG (Mahabodhi Temple, Nalanda Stupa, Ashoka Column)
- */
-function HistoricWatermarkSvg({ opacity = 0.05, strokeColor = '#8C6D58' }) {
-  return (
-    <svg 
-      className="absolute inset-0 w-full h-full object-cover"
-      style={{ opacity }}
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 1600 1200" 
-      fill="none" 
-      stroke={strokeColor} 
-      strokeWidth="1.2"
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      {/* Background Geometric Grid / Kachni Guidelines */}
-      <defs>
-        <pattern id="kachni-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-          <path d="M 80 0 L 0 80 M 0 0 L 80 80" stroke={strokeColor} strokeWidth="0.3" strokeOpacity="0.25" />
-          <circle cx="40" cy="40" r="1.5" fill={strokeColor} fillOpacity="0.2" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#kachni-grid)" stroke="none" />
+        {/* ============================================================== */}
+        {/* LEFT SECTION: HISTORIC BIHAR HERITAGE & CIVIL MONUMENTS       */}
+        {/* ============================================================== */}
 
-      {/* --- MAHABODHI TEMPLE TOWER (Center Left, Bodh Gaya) --- */}
-      <g transform="translate(180, 220)">
-        {/* Foundation & Base Plinth */}
-        <rect x="100" y="680" width="300" height="70" rx="4" />
-        <line x1="80" y1="750" x2="420" y2="750" strokeWidth="2" />
-        <line x1="120" y1="715" x2="380" y2="715" strokeDasharray="4 4" />
-        
-        {/* Niches and Sculptural Relief Rows in Lower Sanctum */}
-        <path d="M 140 680 L 140 620 Q 170 590 200 620 L 200 680" />
-        <path d="M 220 680 L 220 600 Q 250 570 280 600 L 280 680" />
-        <path d="M 300 680 L 300 620 Q 330 590 360 620 L 360 680" />
-        
-        {/* Pyramidal Main Shikhara Spire (Tapering Terraces with Chaitya Windows) */}
-        <polygon points="120,580 380,580 320,120 180,120" strokeWidth="1.5" />
-        
-        {/* Horizontal Terraced Bhumis (Layers of Stone & Ancient Bricks) */}
-        <line x1="126" y1="540" x2="374" y2="540" />
-        <line x1="133" y1="500" x2="367" y2="500" />
-        <line x1="140" y1="460" x2="360" y2="460" />
-        <line x1="148" y1="420" x2="352" y2="420" />
-        <line x1="155" y1="380" x2="345" y2="380" />
-        <line x1="162" y1="340" x2="338" y2="340" />
-        <line x1="168" y1="300" x2="332" y2="300" />
-        <line x1="174" y1="260" x2="326" y2="260" />
-        <line x1="178" y1="220" x2="322" y2="220" />
-        <line x1="180" y1="180" x2="320" y2="180" />
-        <line x1="180" y1="140" x2="320" y2="140" />
+        {/* --- ASHOKA LION PILLAR OF VAISHALI (x: 50 - 150) --- */}
+        <g transform="translate(60, 220)">
+          {/* Pillar Foundation & Plinth */}
+          <rect x="30" y="660" width="80" height="24" rx="2" />
+          <line x1="20" y1="684" x2="120" y2="684" strokeWidth="2" />
+          {/* Monolithic Shaft (Tapering Sandstone Column) */}
+          <line x1="55" y1="660" x2="63" y2="160" strokeWidth="2.5" />
+          <line x1="85" y1="660" x2="77" y2="160" strokeWidth="2.5" />
+          <line x1="70" y1="660" x2="70" y2="160" strokeWidth="0.8" strokeDasharray="6 6" />
+          {/* Inverted Lotus Bell Capital */}
+          <path d="M 50 160 C 50 125 90 125 90 160 Z" strokeWidth="1.5" />
+          <line x1="60" y1="160" x2="65" y2="132" />
+          <line x1="70" y1="160" x2="70" y2="125" />
+          <line x1="80" y1="160" x2="75" y2="132" />
+          {/* Circular Abacus with Chakra Details */}
+          <rect x="48" y="112" width="44" height="13" rx="2" strokeWidth="1.2" />
+          <circle cx="70" cy="118.5" r="3.5" />
+          {/* Lion Capital Silhouette */}
+          <path d="M 58 112 C 56 86 64 76 70 72 C 76 76 84 86 82 112" strokeWidth="1.8" />
+          <circle cx="70" cy="74" r="2.5" fill="#1F2937" />
+        </g>
 
-        {/* Central Vertical Spine Ribs */}
-        <line x1="250" y1="120" x2="250" y2="580" strokeWidth="1.5" />
-        <line x1="215" y1="120" x2="190" y2="580" strokeDasharray="3 3" />
-        <line x1="285" y1="120" x2="310" y2="580" strokeDasharray="3 3" />
+        {/* --- MAHABODHI TEMPLE GREAT SHIKHARA SPIRE (Bodh Gaya, x: 220 - 520) --- */}
+        <g transform="translate(220, 140)">
+          {/* Multi-layered Temple Plinth */}
+          <rect x="70" y="680" width="300" height="60" rx="4" />
+          <line x1="50" y1="740" x2="390" y2="740" strokeWidth="2" />
+          <line x1="90" y1="710" x2="350" y2="710" strokeDasharray="4 4" />
+          
+          {/* Sanctum Arches and Niches */}
+          <path d="M 110 680 L 110 620 Q 140 590 170 620 L 170 680" />
+          <path d="M 190 680 L 190 600 Q 220 570 250 600 L 250 680" />
+          <path d="M 270 680 L 270 620 Q 300 590 330 620 L 330 680" />
 
-        {/* Chaitya Arch Medallions on the Shikhara */}
-        {[520, 440, 360, 280, 200].map((y, idx) => (
-          <circle key={idx} cx="250" cy={y} r="14" strokeWidth="1" />
-        ))}
+          {/* Stepped Pyramidal Main Shikhara Tower */}
+          <polygon points="90,580 350,580 290,120 150,120" strokeWidth="1.6" />
 
-        {/* Crown Amalaka (Ribbed Cogged Stone Disc) & Kalasha Finial */}
-        <ellipse cx="250" cy="115" rx="42" ry="12" strokeWidth="1.5" />
-        <ellipse cx="250" cy="98" rx="26" ry="8" />
-        <path d="M 235 98 C 235 70 242 55 250 40 C 258 55 265 70 265 98" />
-        <line x1="250" y1="40" x2="250" y2="15" strokeWidth="2" />
-        <circle cx="250" cy="12" r="4" fill={strokeColor} />
+          {/* Horizontal Stone Bhumi Tiers */}
+          <line x1="96" y1="540" x2="344" y2="540" />
+          <line x1="103" y1="500" x2="337" y2="500" />
+          <line x1="110" y1="460" x2="330" y2="460" />
+          <line x1="117" y1="420" x2="323" y2="420" />
+          <line x1="124" y1="380" x2="316" y2="380" />
+          <line x1="131" y1="340" x2="309" y2="340" />
+          <line x1="138" y1="300" x2="302" y2="300" />
+          <line x1="144" y1="260" x2="296" y2="260" />
+          <line x1="148" y1="220" x2="292" y2="220" />
+          <line x1="150" y1="180" x2="290" y2="180" />
+          <line x1="150" y1="140" x2="290" y2="140" />
 
-        {/* Corner Miniature Votive Shikharas */}
-        <polygon points="100,680 140,680 130,520 110,520" />
-        <polygon points="360,680 400,680 390,520 370,520" />
-      </g>
+          {/* Shikhara Centerline & Chaitya Medallions */}
+          <line x1="220" y1="120" x2="220" y2="580" strokeWidth="1.5" />
+          <line x1="185" y1="120" x2="160" y2="580" strokeDasharray="3 3" />
+          <line x1="255" y1="120" x2="280" y2="580" strokeDasharray="3 3" />
+          {[520, 440, 360, 280, 200].map((y, idx) => (
+            <circle key={idx} cx="220" cy={y} r="13" strokeWidth="1" />
+          ))}
 
-      {/* --- NALANDA MAHAVIHARA STUPA EXCAVATIONS (Bottom Right) --- */}
-      <g transform="translate(850, 450)">
-        {/* Ancient Brick Layered Terraces */}
-        <rect x="100" y="450" width="550" height="35" rx="2" />
-        <rect x="140" y="415" width="470" height="35" rx="2" />
-        <rect x="180" y="380" width="390" height="35" rx="2" />
-        <rect x="230" y="340" width="290" height="40" rx="3" />
-        
-        {/* Stupa Semi-Spherical Dome (Anda) */}
-        <path d="M 270 340 C 270 230 430 230 430 340 Z" strokeWidth="1.5" />
-        
-        {/* Harmika (Square Balcony atop Stupa) */}
-        <rect x="325" y="200" width="50" height="25" />
-        <line x1="325" y1="212" x2="375" y2="212" strokeDasharray="3 3" />
-        
-        {/* Chhatravali (Multi-Tiered Honorific Umbrella Discs) */}
-        <line x1="350" y1="200" x2="350" y2="120" strokeWidth="2" />
-        <ellipse cx="350" cy="170" rx="36" ry="6" />
-        <ellipse cx="350" cy="150" rx="28" ry="5" />
-        <ellipse cx="350" cy="130" rx="18" ry="4" />
-        
-        {/* Corner Votive Stupas & Monastic Cell Brick Arches */}
-        <path d="M 120 450 L 120 370 Q 145 340 170 370 L 170 450" strokeWidth="1" />
-        <path d="M 530 450 L 530 370 Q 555 340 580 370 L 580 450" strokeWidth="1" />
-        
-        {/* Ancient Step-wells and Monastic Stairs */}
-        <polyline points="330,485 330,450 370,450 370,485" />
-        <line x1="330" y1="462" x2="370" y2="462" />
-        <line x1="330" y1="474" x2="370" y2="474" />
-      </g>
+          {/* Amalaka Finial & Crown Kalasha */}
+          <ellipse cx="220" cy="115" rx="38" ry="11" strokeWidth="1.5" />
+          <ellipse cx="220" cy="98" rx="24" ry="7" />
+          <path d="M 207 98 C 207 72 213 58 220 44 C 227 58 233 72 233 98" />
+          <line x1="220" y1="44" x2="220" y2="20" strokeWidth="2" />
+          <circle cx="220" cy="16" r="4" fill="#1F2937" />
 
-      {/* --- ASHOKA LION PILLAR OF VAISHALI / PATLIPUTRA (Far Left) --- */}
-      <g transform="translate(60, 300)">
-        {/* Monolithic Polished Sandstone Column Shaft */}
-        <line x1="60" y1="750" x2="72" y2="220" strokeWidth="2.5" />
-        <line x1="90" y1="750" x2="78" y2="220" strokeWidth="2.5" />
-        <line x1="75" y1="750" x2="75" y2="220" strokeWidth="0.8" strokeDasharray="6 6" />
+          {/* Corner Miniature Turrets */}
+          <polygon points="70,680 110,680 100,520 80,520" />
+          <polygon points="330,680 370,680 360,520 340,520" />
+        </g>
 
-        {/* Inverted Lotus Bell Capital */}
-        <path d="M 55 220 C 55 185 95 185 95 220 Z" strokeWidth="1.5" />
-        <line x1="65" y1="220" x2="70" y2="190" />
-        <line x1="75" y1="220" x2="75" y2="185" />
-        <line x1="85" y1="220" x2="80" y2="190" />
+        {/* --- NALANDA MAHAVIHARA STUPA EXCAVATIONS (x: 550 - 860) --- */}
+        <g transform="translate(560, 360)">
+          {/* Multi-Tier Ancient Brick Platforms */}
+          <rect x="30" y="440" width="340" height="28" rx="2" />
+          <rect x="60" y="412" width="280" height="28" rx="2" />
+          <rect x="90" y="384" width="220" height="28" rx="2" />
+          <rect x="125" y="354" width="150" height="30" rx="3" />
 
-        {/* Circular Abacus Decorated with Ashoka Chakra Spoke Lines */}
-        <rect x="52" y="172" width="46" height="15" rx="3" />
-        <circle cx="75" cy="180" r="4.5" />
-        
-        {/* Lion Capital Silhouette */}
-        <path d="M 62 172 C 60 145 68 135 75 130 C 82 135 90 145 88 172" strokeWidth="1.8" />
-        <circle cx="75" cy="132" r="3" fill={strokeColor} />
-      </g>
-    </svg>
-  );
-}
+          {/* Stupa Hemispherical Dome (Anda) */}
+          <path d="M 140 354 C 140 270 260 270 260 354 Z" strokeWidth="1.5" />
 
-/**
- * Modern Civil Engineering Watermark SVG (Mahatma Gandhi Setu, JP Ganga Path, Steel Truss Bridges, Scaffolding Cranes)
- */
-function ModernWatermarkSvg({ opacity = 0.02, strokeColor = '#7EA2D6' }) {
-  return (
-    <svg 
-      className="absolute inset-0 w-full h-full object-cover"
-      style={{ opacity }}
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 1600 1200" 
-      fill="none" 
-      stroke={strokeColor} 
-      strokeWidth="1.2"
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      {/* Background Engineering Technical Grid */}
-      <defs>
-        <pattern id="modern-tech-grid" width="60" height="60" patternUnits="userSpaceOnUse">
-          <path d="M 60 0 L 0 0 0 60" stroke={strokeColor} strokeWidth="0.4" strokeOpacity="0.3" />
-          <line x1="0" y1="30" x2="60" y2="30" stroke={strokeColor} strokeWidth="0.2" strokeDasharray="2 4" strokeOpacity="0.2" />
-          <line x1="30" y1="0" x2="30" y2="60" stroke={strokeColor} strokeWidth="0.2" strokeDasharray="2 4" strokeOpacity="0.2" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#modern-tech-grid)" stroke="none" />
+          {/* Harmika & Tiered Chhatras */}
+          <rect x="180" y="246" width="40" height="20" />
+          <line x1="200" y1="246" x2="200" y2="180" strokeWidth="2" />
+          <ellipse cx="200" cy="222" rx="28" ry="5" />
+          <ellipse cx="200" cy="204" rx="22" ry="4" />
+          <ellipse cx="200" cy="188" rx="14" ry="3.5" />
 
-      {/* --- MAHATMA GANDHI SETU & STEEL TRUSS GIRDERS (Spanning Top-to-Center) --- */}
-      <g transform="translate(50, 180)">
-        {/* Continuous Elevated Deck Slab */}
-        <line x1="0" y1="400" x2="1500" y2="400" strokeWidth="4" />
-        <line x1="0" y1="416" x2="1500" y2="416" strokeWidth="2" />
-        <line x1="0" y1="390" x2="1500" y2="390" strokeWidth="1" strokeDasharray="8 6" />
+          {/* Excavated Monastic Arched Cells */}
+          <path d="M 45 440 L 45 385 Q 65 360 85 385 L 85 440" strokeWidth="1" />
+          <path d="M 285 440 L 285 385 Q 305 360 325 385 L 325 440" strokeWidth="1" />
+          <polyline points="180,480 180,440 220,440 220,480" />
+        </g>
 
-        {/* Massive Concrete Pillars & Well Foundations into Ganga River */}
-        {[100, 360, 620, 880, 1140, 1400].map((x, idx) => (
-          <g key={idx}>
-            {/* Flared Pier Cap */}
-            <polygon points={`${x-45},416 ${x+45},416 ${x+25},450 ${x-25},450`} strokeWidth="1.5" />
-            {/* Dual Column Pier Shaft */}
-            <rect x={x-20} y="450" width="16" height="280" />
-            <rect x={x+4} y="450" width="16" height="280" />
-            {/* Well Cap / Caisson Foundation into River Bed */}
-            <rect x={x-35} y="730" width="70" height="50" rx="3" strokeWidth="2" />
-            <line x1={x-50} y1="780" x2={x+50} y2="780" strokeWidth="3" />
-          </g>
-        ))}
+        {/* ============================================================== */}
+        {/* RIGHT SECTION: MODERN CIVIL INFRASTRUCTURE & BRIDGES          */}
+        {/* ============================================================== */}
 
-        {/* Steel Warren / Pratt Triangular Truss System on Girders */}
-        <line x1="100" y1="320" x2="1400" y2="320" strokeWidth="2.5" />
-        {[100, 360, 620, 880, 1140].map((startX, idx) => (
-          <g key={idx}>
-            {/* Steel Truss Web (Diagonal Braces & Vertical Posts) */}
-            <line x1={startX} y1="400" x2={startX + 65} y2="320" strokeWidth="1.5" />
-            <line x1={startX + 65} y1="320" x2={startX + 130} y2="400" strokeWidth="1.5" />
-            <line x1={startX + 130} y1="400" x2={startX + 195} y2="320" strokeWidth="1.5" />
-            <line x1={startX + 195} y1="320" x2={startX + 260} y2="400" strokeWidth="1.5" />
+        {/* --- MAHATMA GANDHI SETU GANGA BRIDGE TRUSSES (x: 920 - 1880) --- */}
+        <g transform="translate(900, 180)">
+          {/* Continuous Highway Deck Slab across Ganga */}
+          <line x1="20" y1="360" x2="980" y2="360" strokeWidth="3.5" />
+          <line x1="20" y1="375" x2="980" y2="375" strokeWidth="1.8" />
+          <line x1="20" y1="350" x2="980" y2="350" strokeWidth="0.8" strokeDasharray="8 6" />
 
-            <line x1={startX + 65} y1="320" x2={startX + 65} y2="400" strokeWidth="1" strokeDasharray="3 3" />
-            <line x1={startX + 130} y1="320" x2={startX + 130} y2="400" strokeWidth="1" strokeDasharray="3 3" />
-            <line x1={startX + 195} y1="320" x2={startX + 195} y2="400" strokeWidth="1" strokeDasharray="3 3" />
-          </g>
-        ))}
-      </g>
-
-      {/* --- PATNA JP GANGA PATH (MARINE DRIVE) CURVED ELEVATED FLYOVER --- */}
-      <g transform="translate(100, 580)">
-        {/* Curvilinear Sweeping Highway Ramp */}
-        <path d="M 0 350 C 400 350 700 200 1400 160" strokeWidth="4" />
-        <path d="M 0 366 C 400 366 700 216 1400 176" strokeWidth="2" />
-        <path d="M 0 342 C 400 342 700 192 1400 152" strokeWidth="1" strokeDasharray="6 4" />
-
-        {/* Prestressed Concrete Box Girder Support Columns */}
-        {[180, 420, 680, 960, 1220].map((cx, idx) => {
-          const cy = 350 - (idx * 38);
-          return (
+          {/* Massive Deep-Well Concrete River Piers */}
+          {[80, 280, 480, 680, 880].map((px, idx) => (
             <g key={idx}>
-              <rect x={cx-14} y={cy+16} width="28" height="200" rx="3" strokeWidth="1.5" />
-              <line x1={cx-30} y1={cy+216} x2={cx+30} y2={cy+216} strokeWidth="3" />
+              {/* Flared Cantilever Pier Cap */}
+              <polygon points={`${px-40},375 ${px+40},375 ${px+20},405 ${px-20},405`} strokeWidth="1.3" />
+              {/* Dual Pier Shaft */}
+              <rect x={px-16} y="405" width="13" height="230" />
+              <rect x={px+3} y="405" width="13" height="230" />
+              {/* Caisson Well Cap at Ganga River Bed */}
+              <rect x={px-30} y="635" width="60" height="40" rx="3" strokeWidth="1.6" />
+              <line x1={px-45} y1="675" x2={px+45} y2="675" strokeWidth="2.5" />
             </g>
-          );
-        })}
-      </g>
+          ))}
 
-      {/* --- ACTIVE CIVIL CRANES & SCAFFOLDING TOWER SILHOUETTES (Far Right) --- */}
-      <g transform="translate(1180, 80)">
-        {/* Tower Crane Vertical Mast */}
-        <rect x="180" y="80" width="16" height="340" strokeWidth="1.5" />
-        {/* Internal Cross Bracing of Crane Mast */}
-        {[100, 140, 180, 220, 260, 300, 340, 380].map((y, idx) => (
-          <line key={idx} x1="180" y1={y} x2="196" y2={y + 40} strokeWidth="0.8" />
-        ))}
-        {/* Crane Operator Cabin */}
-        <rect x="165" y="60" width="30" height="22" rx="2" strokeWidth="1.5" />
-        {/* Crane Apex Tower */}
-        <polygon points="180,60 196,60 188,15" strokeWidth="1.5" />
-        {/* Horizontal Jib / Boom */}
-        <line x1="80" y1="50" x2="340" y2="50" strokeWidth="2.5" />
-        {/* Tie Cables */}
-        <line x1="188" y1="15" x2="310" y2="50" strokeWidth="1" />
-        <line x1="188" y1="15" x2="100" y2="50" strokeWidth="1" />
-        {/* Counterweight */}
-        <rect x="80" y="52" width="30" height="20" rx="2" fill={strokeColor} fillOpacity="0.2" />
-        {/* Hoist Trolley Cable & Hook */}
-        <line x1="280" y1="50" x2="280" y2="180" strokeWidth="1" strokeDasharray="4 2" />
-        <circle cx="280" cy="184" r="4" />
-      </g>
-    </svg>
+          {/* Steel Warren / Pratt Triangular Bridge Truss System */}
+          <line x1="80" y1="285" x2="880" y2="285" strokeWidth="2.2" />
+          {[80, 280, 480, 680].map((startX, idx) => (
+            <g key={idx}>
+              <line x1={startX} y1="360" x2={startX + 50} y2="285" strokeWidth="1.4" />
+              <line x1={startX + 50} y1="285" x2={startX + 100} y2="360" strokeWidth="1.4" />
+              <line x1={startX + 100} y1="360" x2={startX + 150} y2="285" strokeWidth="1.4" />
+              <line x1={startX + 150} y1="285" x2={startX + 200} y2="360" strokeWidth="1.4" />
+
+              {/* Vertical Stiffeners */}
+              <line x1={startX + 50} y1="285" x2={startX + 50} y2="360" strokeWidth="1" strokeDasharray="3 3" />
+              <line x1={startX + 100} y1="285" x2={startX + 100} y2="360" strokeWidth="1" strokeDasharray="3 3" />
+              <line x1={startX + 150} y1="285" x2={startX + 150} y2="360" strokeWidth="1" strokeDasharray="3 3" />
+            </g>
+          ))}
+        </g>
+
+        {/* --- PATNA JP GANGA PATH (MARINE DRIVE) CURVED ELEVATED FLYOVER --- */}
+        <g transform="translate(920, 520)">
+          {/* Sweeping Curvilinear Elevated Highway Ramp */}
+          <path d="M 0 280 C 280 280 500 160 960 120" strokeWidth="3.5" />
+          <path d="M 0 294 C 280 294 500 174 960 134" strokeWidth="1.8" />
+          <path d="M 0 272 C 280 272 500 152 960 112" strokeWidth="0.8" strokeDasharray="6 4" />
+
+          {/* Elevated Monopile Pier Columns */}
+          {[120, 310, 500, 700, 880].map((cx, idx) => {
+            const cy = 280 - (idx * 34);
+            return (
+              <g key={idx}>
+                <rect x={cx-11} y={cy+14} width="22" height="160" rx="3" strokeWidth="1.4" />
+                <line x1={cx-24} y1={cy+174} x2={cx+24} y2={cy+174} strokeWidth="2.5" />
+              </g>
+            );
+          })}
+        </g>
+
+        {/* --- ACTIVE CIVIL TOWER CRANE & CONSTRUCTION SCAFFOLDING (x: 1680 - 1880) --- */}
+        <g transform="translate(1620, 80)">
+          {/* Tower Crane Vertical Lattice Mast */}
+          <rect x="140" y="70" width="16" height="380" strokeWidth="1.4" />
+          {/* Lattice Diagonal Bracing */}
+          {[80, 120, 160, 200, 240, 280, 320, 360, 400].map((y, idx) => (
+            <line key={idx} x1="140" y1={y} x2="156" y2={y + 40} strokeWidth="0.8" />
+          ))}
+
+          {/* Crane Operator Cabin */}
+          <rect x="126" y="52" width="28" height="20" rx="2" strokeWidth="1.4" />
+
+          {/* Apex Mast Top */}
+          <polygon points="140,52 156,52 148,12" strokeWidth="1.4" />
+
+          {/* Horizontal Working Jib / Boom */}
+          <line x1="50" y1="42" x2="280" y2="42" strokeWidth="2.4" />
+
+          {/* Tension Cables */}
+          <line x1="148" y1="12" x2="250" y2="42" strokeWidth="0.9" />
+          <line x1="148" y1="12" x2="70" y2="42" strokeWidth="0.9" />
+
+          {/* Counterweight Block */}
+          <rect x="50" y="44" width="26" height="18" rx="2" fill="#1F2937" fillOpacity="0.25" />
+
+          {/* Hoist Trolley Cable & Suspension Hook */}
+          <line x1="220" y1="42" x2="220" y2="160" strokeWidth="0.9" strokeDasharray="4 2" />
+          <circle cx="220" cy="164" r="3.5" />
+        </g>
+      </svg>
+
+      {/* 
+        Subtle Bottom Fade Overlay:
+        Ensures all high-density tender cards, tables, and text remain 100% legible as users scroll down.
+      */}
+      <div 
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF8F5]/85 dark:to-[#0D1117]/90 pointer-events-none" 
+      />
+    </div>
   );
 }
