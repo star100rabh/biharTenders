@@ -218,7 +218,7 @@ export default function Home() {
       {/* =========================================================================
           HERO SECTION (Spacious 12-Column Grid Alignment & Patliputra Modern Aesthetic)
           ========================================================================= */}
-      <section className="relative pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 border-b border-[#E6E1D8] dark:border-[#283341] overflow-hidden">
+      <section className="relative pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
           
