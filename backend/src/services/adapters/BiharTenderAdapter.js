@@ -262,10 +262,13 @@ export default class BiharTenderAdapter {
           if (loading) loading.style.display = 'none';
           const overlay = document.getElementById('overlay');
           if (overlay) overlay.style.display = 'none';
-          const modal = document.getElementById('myModalprev');
-          if (modal) {
-            modal.style.display = '';
+          // CRITICAL: Reset Bootstrap's internal modal state so subsequent rows can open modal!
+          if (window.$ && window.$('#myModalprev').data('bs.modal')) {
+            window.$('#myModalprev').data('bs.modal').isShown = false;
           }
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) backdrop.remove();
+          document.body.classList.remove('modal-open');
         });
 
         await button.scrollIntoViewIfNeeded().catch(() => {});
@@ -275,10 +278,18 @@ export default class BiharTenderAdapter {
           await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 10000 });
         } catch (_) {
           // If modal didn't open via button.click, trigger click via DOM directly
-          await page.evaluate((idx) => {
-            const btns = document.querySelectorAll('#latestTenders button[ng-click^="previewTender"], #upcomingTenders button[ng-click^="previewTender"]');
-            if (btns[idx]) btns[idx].click();
-          }, item.btnIndex);
+          await page.evaluate(({ selector, idx }) => {
+            if (window.$ && window.$('#myModalprev').data('bs.modal')) {
+              window.$('#myModalprev').data('bs.modal').isShown = false;
+            }
+            const btns = document.querySelectorAll(selector);
+            if (btns[idx]) {
+              btns[idx].click();
+              if (window.angular) {
+                window.angular.element(btns[idx]).triggerHandler('click');
+              }
+            }
+          }, { selector: viewButtonsSelector, idx: item.btnIndex });
           await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 15000 });
         }
 
@@ -337,21 +348,30 @@ export default class BiharTenderAdapter {
         summary.totalSkipped++;
       } finally {
         try {
-          // Force close modal using DOM evaluation to avoid actionability timeouts
+          // Force close modal using DOM evaluation and clean up Bootstrap state
           await page.evaluate(() => {
-            const btn = document.querySelector('#myModalprev button.close');
-            if (btn) btn.click();
-            // Fallback: hide modal manually if click fails
+            if (window.$ && typeof window.$('#myModalprev').modal === 'function') {
+              window.$('#myModalprev').modal('hide');
+            } else {
+              const btn = document.querySelector('#myModalprev button.close');
+              if (btn) btn.click();
+            }
+            // CRITICAL: Reset Bootstrap modal plugin isShown flag
+            if (window.$ && window.$('#myModalprev').data('bs.modal')) {
+              window.$('#myModalprev').data('bs.modal').isShown = false;
+            }
             const modal = document.getElementById('myModalprev');
             if (modal) {
-                modal.classList.remove('in');
-                modal.style.display = '';
+              modal.classList.remove('in');
+              modal.style.display = 'none';
+              modal.setAttribute('aria-hidden', 'true');
             }
             const backdrop = document.querySelector('.modal-backdrop');
             if (backdrop) backdrop.remove();
             document.body.classList.remove('modal-open');
+            document.body.style.paddingRight = '';
           });
-          await page.waitForTimeout(200); // wait for modal animation to clear
+          await page.waitForTimeout(300); // wait for modal animation to clear
         } catch(e){}
       }
       processedCount++;
