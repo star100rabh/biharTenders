@@ -43,6 +43,12 @@ export const extractTokenFromUrl = () => {
     const url = new URL(window.location.href);
     const token = url.searchParams.get('token');
     if (token && token.split('.').length === 3) {
+      const existingToken = localStorage.getItem('token');
+      if (token !== existingToken) {
+        try {
+          localStorage.removeItem('bihartenders_user');
+        } catch {}
+      }
       localStorage.setItem('token', token);
       url.searchParams.delete('token');
       url.searchParams.delete('auth');
@@ -97,6 +103,10 @@ export const useAuthStore = create((set, get) => ({
 
     const urlToken = extractTokenFromUrl();
     const shouldForce = force || Boolean(urlToken);
+
+    if (urlToken) {
+      set({ user: null, isPro: false, isLoading: true });
+    }
 
     const now = Date.now();
     // Return cached user if checked recently and not forced
@@ -231,6 +241,11 @@ export const useAuthStore = create((set, get) => ({
    * Supports mode: 'login' | 'signup'
    */
   loginWithGoogle: (mode = 'login', redirectPath = '') => {
+    try {
+      localStorage.removeItem('bihartenders_user');
+      localStorage.removeItem('token');
+      lastCheckAuthTime = 0;
+    } catch {}
     const backendUrl = api.defaults.baseURL || 'http://localhost:8000/api/v1';
     const frontendOrigin = typeof window !== 'undefined' ? window.location.origin : '';
     const currentRedirect = redirectPath || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('redirect') : '') || '';
