@@ -74,7 +74,8 @@ const getInitials = (name) => {
 };
 
 export default function Profile() {
-  const { isPro } = useAuthStore();
+  const navigate = useNavigate();
+  const { user, isPro } = useAuthStore();
   const [activeTab, setActiveTab] = useState('saved');
   const savedTenders = useBookmarkStore((state) => state.savedTenders);
   
@@ -82,18 +83,31 @@ export default function Profile() {
   const { profile, updateProfile } = useContractorStore();
   const { preferences, updatePreferences } = usePreferenceStore();
 
+  const safeProfile = {
+    name: user?.name || profile?.name || 'Saurabh Patel',
+    contractorId: profile?.contractorId || 'NIT-S-2026',
+    jurisdiction: profile?.jurisdiction || 'Bihar / North Zone',
+    affiliation: profile?.affiliation || 'NIT Patna, Bihar',
+    divisionBadge: profile?.divisionBadge || 'Bihar Public Works Division',
+    accountAuth: user?.authProvider === 'google' ? 'Google Verified' : (profile?.accountAuth || 'Verified'),
+    registrationClass: profile?.registrationClass || 'Class A Works',
+    portalVerification: profile?.portalVerification || 'Active • L1 Compliant',
+    status: profile?.status || 'Active',
+    ...profile
+  };
+
   // Contractor Profile Edit State
   const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [profileForm, setProfileForm] = useState({ ...profile });
+  const [profileForm, setProfileForm] = useState({ ...safeProfile });
   const [profileSaveSuccess, setProfileSaveSuccess] = useState(false);
 
   // Filter Preferences Edit State
   const [isEditingPreferences, setIsEditingPreferences] = useState(false);
   const [prefForm, setPrefForm] = useState({
-    targetSectors: preferences.targetSectors || [],
-    preferredLocations: preferences.preferredLocations || [],
-    minTenderValue: preferences.minTenderValue || 0,
-    preferEmdExemption: preferences.preferEmdExemption || false,
+    targetSectors: preferences?.targetSectors || [],
+    preferredLocations: preferences?.preferredLocations || [],
+    minTenderValue: preferences?.minTenderValue || 0,
+    preferEmdExemption: preferences?.preferEmdExemption || false,
   });
   const [prefSaveSuccess, setPrefSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -234,19 +248,19 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-paper dark:bg-slate-900 py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+    <div className="min-h-screen bg-transparent py-6 sm:py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto space-y-5 sm:space-y-6">
         
         {/* Contractor Profile Header Card - Dynamically linked to profile store */}
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-7 shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 transition-all">
+        <div className="bg-white/90 dark:bg-[#151B26]/90 backdrop-blur-md border border-[#E6E1D8] dark:border-[#283341] rounded-2xl p-4 sm:p-7 shadow-xs flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 transition-all">
           <div className="flex flex-col xs:flex-row items-start xs:items-center gap-3 sm:gap-4 w-full lg:w-auto">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-dalBlue text-white flex items-center justify-center font-display font-bold text-lg sm:text-xl shadow-xs shrink-0 tracking-wider">
-              {getInitials(profile.name)}
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#1D3557] text-white flex items-center justify-center font-display font-bold text-lg sm:text-xl shadow-xs shrink-0 tracking-wider">
+              {getInitials(safeProfile.name)}
             </div>
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white">
-                  {profile.name}
+                <h1 className="text-xl sm:text-2xl font-bold font-display text-[#1D3557] dark:text-white">
+                  {safeProfile.name}
                 </h1>
                 <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
                   <Shield className="w-3 h-3 fill-current" /> Verified Contractor
@@ -256,16 +270,16 @@ export default function Profile() {
                     ⭐ Pro Member
                   </span>
                 )}
-                <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 dark:bg-blue-950/40 text-dalBlue dark:text-blue-300 px-2 py-0.5 rounded border border-dalBlue/20">
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800">
                   <Cloud className="w-3 h-3" /> Cloud Synced
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 font-medium">
-                <span className="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-                  ID: {profile.contractorId || 'NIT-S-2026'}
+                <span className="font-mono bg-slate-100 dark:bg-[#0D1117] px-2 py-0.5 rounded border border-[#E6E1D8] dark:border-[#283341]">
+                  ID: {safeProfile.contractorId || 'NIT-S-2026'}
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-chinarRed" /> {profile.divisionBadge || 'Bihar Public Works Division'}
+                  <MapPin className="w-3.5 h-3.5 text-[#C85A32] dark:text-[#E07A5F]" /> {safeProfile.divisionBadge || 'Bihar Public Works Division'}
                 </span>
               </div>
             </div>

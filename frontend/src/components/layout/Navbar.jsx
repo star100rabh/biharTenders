@@ -4,7 +4,7 @@
  * clear institutional branding, and responsive mobile navigation.
  */
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Landmark, Heart, User, Menu, X, Sun, Moon, LogIn, LogOut, Sparkles } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -14,6 +14,7 @@ import { useTheme } from '@/context/ThemeProvider';
 
 export function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme, isDark } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -133,26 +134,28 @@ export function Navbar() {
             )}
           </Link>
 
-          {/* User Auth: Contractor Workspace / Sign In */}
+          {/* User Auth: Dashboard / Sign In */}
           {isAuthenticated ? (
             <div className="flex items-center gap-2">
               <Link
                 to="/profile"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-[#1D3557] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shrink-0"
+                onClick={() => navigate('/profile')}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-[#1D3557] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shrink-0 cursor-pointer"
               >
                 <User className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
-                <span>Contractor Workspace</span>
+                <span>Dashboard</span>
               </Link>
 
               {/* Circular Avatar */}
               <Link
                 to="/profile"
+                onClick={() => navigate('/profile')}
                 className={`relative w-9 h-9 rounded-full overflow-hidden shrink-0 flex items-center justify-center transition-all cursor-pointer ${
                   isPro
                     ? 'ring-2 ring-[#2D6A4F] dark:ring-[#52B788]'
                     : 'border border-[#E6E1D8] dark:border-[#283341]'
                 }`}
-                title={user?.name ? `${user.name} (${user.email || ''})` : user?.email || 'Contractor Workspace'}
+                title={user?.name ? `${user.name} (${user.email || ''})` : user?.email || 'Dashboard / Profile'}
               >
                 {user?.picture ? (
                   <img
@@ -236,11 +239,11 @@ export function Navbar() {
             <div className="pt-2 border-t border-[#E6E1D8] dark:border-[#283341] space-y-2">
               <Link
                 to="/profile"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => { setMobileMenuOpen(false); navigate('/profile'); }}
                 className="min-h-[42px] flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#C85A32] dark:bg-[#E07A5F]"
               >
                 <User className="w-4 h-4 text-white shrink-0" />
-                <span>Contractor Workspace</span>
+                <span>Dashboard</span>
               </Link>
 
               {isAuthenticated ? (
