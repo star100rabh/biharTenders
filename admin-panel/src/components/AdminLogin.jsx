@@ -1,13 +1,22 @@
 import { useState } from 'react';
-import { Landmark, Key, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, BadgeCheck } from 'lucide-react';
-import { adminApi, setStoredAdminCredentials, getStoredAdminEmail } from '../services/api';
+import { Landmark, Key, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, BadgeCheck, Server } from 'lucide-react';
+import { 
+  adminApi, 
+  setStoredAdminCredentials, 
+  getStoredAdminEmail, 
+  getBaseUrl, 
+  setCustomApiUrl, 
+  PRODUCTION_BACKEND_URL 
+} from '../services/api';
 
 export function AdminLogin({ onAuthenticated }) {
-  const [emailInput, setEmailInput] = useState(getStoredAdminEmail() || 'bgmiwale@gmail.com');
+  const [emailInput, setEmailInput] = useState(getStoredAdminEmail() || 'rsaurabhp03@gmail.com');
   const [keyInput, setKeyInput] = useState('11112222');
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showServerConfig, setShowServerConfig] = useState(false);
+  const [customServerUrl, setCustomServerUrl] = useState(getBaseUrl());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,9 +86,24 @@ export function AdminLogin({ onAuthenticated }) {
           </div>
 
           {error && (
-            <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-xs text-red-700 dark:text-red-300 animate-in fade-in">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-chinarRed" />
-              <span>{error}</span>
+            <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-xs text-red-700 dark:text-red-300 space-y-2 animate-in fade-in">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-chinarRed" />
+                <span>{error}</span>
+              </div>
+              <div className="pt-1.5 border-t border-red-200/60 dark:border-red-900/40 text-[11px] font-mono text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-between gap-1">
+                <span className="truncate max-w-[200px]">Server: {getBaseUrl().replace('https://', '')}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCustomApiUrl(PRODUCTION_BACKEND_URL);
+                    window.location.reload();
+                  }}
+                  className="text-xs text-dalBlue dark:text-blue-400 underline font-bold cursor-pointer hover:opacity-80"
+                >
+                  Switch to Production Server
+                </button>
+              </div>
             </div>
           )}
 
@@ -150,6 +174,23 @@ export function AdminLogin({ onAuthenticated }) {
                 </>
               )}
             </button>
+
+            <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-slate-400 dark:text-slate-500">
+              <span className="truncate max-w-[240px]">Server: {getBaseUrl().replace('https://', '')}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  const newUrl = prompt('Enter custom Backend API URL:', getBaseUrl());
+                  if (newUrl !== null) {
+                    setCustomApiUrl(newUrl);
+                    window.location.reload();
+                  }
+                }}
+                className="text-dalBlue dark:text-blue-400 hover:underline cursor-pointer"
+              >
+                Change Server
+              </button>
+            </div>
           </form>
         </div>
 

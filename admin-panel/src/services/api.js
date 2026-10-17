@@ -3,22 +3,37 @@
  * @description Administrative API client communicating with backend /api/v1/admin endpoints.
  */
 
-const PRODUCTION_BACKEND_URL = 'https://bihartenders-backend.onrender.com/api/v1/admin';
-const LOCAL_BACKEND_URL = 'http://localhost:8000/api/v1/admin';
+export const PRODUCTION_BACKEND_URL = 'https://bihartenders-backend.onrender.com/api/v1/admin';
+export const LOCAL_BACKEND_URL = 'http://localhost:8000/api/v1/admin';
+
+const sanitizeUrl = (url) => {
+  if (!url) return '';
+  return url.trim().replace('bihartenders-backend-jofq.onrender.com', 'bihartenders-backend.onrender.com');
+};
 
 export const getBaseUrl = () => {
   if (typeof window !== 'undefined') {
     const custom = sessionStorage.getItem('ADMIN_CUSTOM_API_URL') || localStorage.getItem('ADMIN_CUSTOM_API_URL');
-    if (custom) return custom;
+    if (custom) return sanitizeUrl(custom);
   }
   if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+    return sanitizeUrl(import.meta.env.VITE_API_URL);
   }
-  // Default to live Production Render Backend so admin panel works immediately out-of-the-box
   return PRODUCTION_BACKEND_URL;
 };
 
-const BASE_URL = getBaseUrl();
+export const setCustomApiUrl = (url) => {
+  if (typeof window !== 'undefined') {
+    if (url) {
+      const clean = sanitizeUrl(url);
+      sessionStorage.setItem('ADMIN_CUSTOM_API_URL', clean);
+      localStorage.setItem('ADMIN_CUSTOM_API_URL', clean);
+    } else {
+      sessionStorage.removeItem('ADMIN_CUSTOM_API_URL');
+      localStorage.removeItem('ADMIN_CUSTOM_API_URL');
+    }
+  }
+};
 
 export function getStoredAdminKey() {
   return sessionStorage.getItem('TENDERHUB_ADMIN_KEY') || localStorage.getItem('TENDERHUB_ADMIN_KEY') || '11112222';
@@ -71,10 +86,32 @@ async function request(endpoint, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  const primaryUrl = getBaseUrl();
+  let response;
+
+  try {
+    response = await fetch(`${primaryUrl}${endpoint}`, {
+      ...options,
+      headers,
+    });
+  } catch (err) {
+    if (primaryUrl !== PRODUCTION_BACKEND_URL) {
+      console.warn(`Primary backend ${primaryUrl} failed (${err.message}). Retrying with production fallback ${PRODUCTION_BACKEND_URL}...`);
+      try {
+        response = await fetch(`${PRODUCTION_BACKEND_URL}${endpoint}`, {
+          ...options,
+          headers,
+        });
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('ADMIN_CUSTOM_API_URL', PRODUCTION_BACKEND_URL);
+        }
+      } catch (fallbackErr) {
+        throw new Error(`Failed to reach backend at ${primaryUrl}`);
+      }
+    } else {
+      throw err;
+    }
+  }
 
   if (response.status === 401) {
     clearStoredAdminCredentials();
