@@ -18,6 +18,7 @@ import {
   Save,
   RotateCcw,
   Database,
+  Cloud,
   MessageSquare,
   Calculator
 } from 'lucide-react';
@@ -249,7 +250,7 @@ export default function Profile() {
                   <Shield className="w-3 h-3 fill-current" /> Verified Contractor
                 </span>
                 <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-blue-50 dark:bg-blue-950/40 text-dalBlue dark:text-blue-300 px-2 py-0.5 rounded border border-dalBlue/20">
-                  <Database className="w-3 h-3" /> MongoDB Synced
+                  <Cloud className="w-3 h-3" /> Cloud Synced
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 font-medium">
