@@ -1,7 +1,7 @@
 /**
  * @file backend/src/services/bidScore.service.js
- * @description Bid Allocation Probability and Capacity Scoring Engine for Jammu & Kashmir Tenders.
- * Implements CPWD / J&K PWD Bid Capacity formula (A * N * 2 - B), Two-Cover statutory checks,
+ * @description Bid Allocation Probability and Capacity Scoring Engine for Bihar Public Works & Tenders.
+ * Implements CPWD / Bihar PWD Bid Capacity formula (A * N * 2 - B), Two-Cover statutory checks,
  * and L1 financial quoting probability distribution.
  */
 
@@ -31,7 +31,7 @@ export class BidScoreService {
     
     // N: Completion duration in years (e.g., 180 days = ~0.493 years)
     const N = Math.max(0.25, periodOfWorkDays / 365);
-    const M = 2.0; // Standard CPWD / J&K PWD multiplier
+    const M = 2.0; // Standard CPWD / Bihar PWD multiplier
 
     const A = Math.max(0, Number(inputs.maxAnnualTurnover) || 0); // Max civil turnover in 1 of last 5 years
     const B = Math.max(0, Number(inputs.ongoingCommitments) || 0); // Ongoing works to be executed during period N
@@ -45,10 +45,10 @@ export class BidScoreService {
 
     const riskFlags = [];
     const actionableInsights = [];
-    const jkSpecificGuidelines = [];
+    const biharSpecificGuidelines = [];
 
     // ==========================================
-    // 1. CPWD / J&K PWD Assessed Bid Capacity (30 Pts)
+    // 1. CPWD / Bihar PWD Assessed Bid Capacity (30 Pts)
     // Formula: Assessed Available Bid Capacity = (A * N * 2) - B
     // ==========================================
     const assessedBidCapacity = Math.round((A * N * M) - B);
@@ -58,7 +58,7 @@ export class BidScoreService {
     let bidCapacityScore = 0;
     if (!isBidCapacityEligible) {
       bidCapacityScore = 0;
-      riskFlags.push(`Bid Capacity Deficit: Available capacity (₹${(assessedBidCapacity / 100000).toFixed(2)} L) is less than tender estimated cost (₹${(estimatedValue / 100000).toFixed(2)} L). High risk of Cover 1 disqualification under J&K PWD Manual Rule 4.2.`);
+      riskFlags.push(`Bid Capacity Deficit: Available capacity (₹${(assessedBidCapacity / 100000).toFixed(2)} L) is less than tender estimated cost (₹${(estimatedValue / 100000).toFixed(2)} L). High risk of Cover 1 disqualification under Bihar PWD Manual.`);
     } else {
       const ratio = assessedBidCapacity / estimatedValue;
       if (ratio >= 2.0) {
@@ -123,7 +123,7 @@ export class BidScoreService {
     if (quotePercentage > 0) {
       // Quoting above advertised SSR
       pricingCompetitivenessScore = 5;
-      riskFlags.push(`Above Schedule Quoting (+${quotePercentage}%): Historical J&K PWD data shows <8% tender award rate for bids above advertised SSR, unless in difficult terrain (e.g. Gurez/Karnah/Ladakh).`);
+      riskFlags.push(`Above Schedule Quoting (+${quotePercentage}%): Historical Bihar PWD/RCD data shows <8% tender award rate for bids above advertised schedule of rates.`);
     } else if (quotePercentage >= -4.0) {
       // Moderate discount (0 to -4%)
       pricingCompetitivenessScore = 14;
@@ -131,27 +131,27 @@ export class BidScoreService {
     } else if (quotePercentage >= -14.9) {
       // Optimal Sweet Spot (-5% to -14.9%)
       pricingCompetitivenessScore = 25;
-      actionableInsights.push(`Optimal L1 Competitive Corridor (${quotePercentage}%): Fits historical winning band in J&K without triggering mandatory Additional Performance Security (APS).`);
+      actionableInsights.push(`Optimal L1 Competitive Corridor (${quotePercentage}%): Fits historical winning band in Bihar public works without triggering mandatory Additional Performance Security (APS).`);
     } else if (quotePercentage >= -25.0) {
-      // Highly aggressive (< -15%) -> Triggers APS rule in J&K
+      // Highly aggressive (< -15%) -> Triggers APS rule in Bihar
       pricingCompetitivenessScore = 18;
-      riskFlags.push(`Additional Performance Security (APS) Alert: Bid is ${Math.abs(quotePercentage)}% below advertised rate. Under J&K Fin Dept Order, bids below -15% require an unbalanced CDR/Bank Guarantee of 5% to 10% extra before contract signing.`);
-      jkSpecificGuidelines.push(`Keep ready extra CDR/FDR pledged to Executive Engineer for Additional Performance Security (APS).`);
+      riskFlags.push(`Additional Performance Security (APS) Alert: Bid is ${Math.abs(quotePercentage)}% below advertised rate. Under Bihar PWD/Finance Department guidelines, bids significantly below schedule require an additional bank guarantee / security before agreement.`);
+      biharSpecificGuidelines.push(`Keep ready extra Bank Guarantee/FDR pledged to Executive Engineer for Additional Performance Security (APS).`);
     } else {
       // Abnormally low (< -25%)
       pricingCompetitivenessScore = 8;
-      riskFlags.push(`Abnormally Low Rate (${quotePercentage}%): Departmental scrutiny committee may seek rate analysis justification or reject for unworkable rates.`);
+      riskFlags.push(`Abnormally Low Rate (${quotePercentage}%): Departmental scrutiny committee may seek detailed rate analysis justification or reject for unworkable rates.`);
     }
 
     // ==========================================
-    // 4. Statutory Compliance & J&K Gatekeeper (20 Pts)
+    // 4. Statutory Compliance & Bihar Gatekeeper (20 Pts)
     // ==========================================
     let statutoryComplianceScore = 0;
 
     if (hasRegCard) {
       statutoryComplianceScore += 5;
     } else {
-      riskFlags.push(`Mandatory Registration Card Renewal: Unrenewed card causes immediate Cover 1 technical disqualification on jktenders.gov.in.`);
+      riskFlags.push(`Mandatory Contractor Registration: Unrenewed registration causes immediate Cover 1 technical disqualification on eproc2.bihar.gov.in.`);
     }
 
     if (hasGst) {
@@ -163,7 +163,7 @@ export class BidScoreService {
     if (hasCdrFdr) {
       statutoryComplianceScore += 5;
     } else {
-      riskFlags.push(`EMD / CDR Instrument: Original Treasury Challan / CDR must be uploaded before the tender closing date.`);
+      riskFlags.push(`EMD / Instrument: Valid Bank Guarantee / EMD Challan must be uploaded before the tender closing date.`);
     }
 
     // Departmental & Regional adherence
@@ -192,11 +192,11 @@ export class BidScoreService {
       allocationProbability = 'Low';
     }
 
-    // J&K Specific standard checklists
-    jkSpecificGuidelines.push(`Ensure CDR / FDR is pledged specifically to "Executive Engineer, ${tender.departmentName || 'Concerned Division'}" as written in the NIT.`);
-    jkSpecificGuidelines.push(`Upload valid Treasury Challan for Tender Document Fee (MH: 0059 / PWD Revenue Head).`);
+    // Bihar Specific standard checklists
+    biharSpecificGuidelines.push(`Ensure EMD / BG is pledged specifically to "Executive Engineer, ${tender.departmentName || 'Concerned Division'}" as written in the Bihar NIT.`);
+    biharSpecificGuidelines.push(`Upload valid e-Challan / receipt for Tender Cost as per Bihar Treasury portal.`);
     if (tender.tenderCategory === 'Works') {
-      jkSpecificGuidelines.push(`Affidavit on Non-Judicial Stamp Paper stating no blacklisting and correct work history is mandatory.`);
+      biharSpecificGuidelines.push(`Affidavit on Non-Judicial Stamp Paper stating no blacklisting and correct work history is mandatory.`);
     }
 
     return {
@@ -215,7 +215,7 @@ export class BidScoreService {
       },
       riskFlags,
       actionableInsights,
-      jkSpecificGuidelines,
+      biharSpecificGuidelines,
     };
   }
 }

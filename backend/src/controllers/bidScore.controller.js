@@ -1,6 +1,6 @@
 /**
  * @file backend/src/controllers/bidScore.controller.js
- * @description Controller for calculating, storing, and reviewing J&K tender bid allocation probability scores.
+ * @description Controller for calculating, storing, and reviewing Bihar tender bid allocation probability scores.
  */
 import mongoose from 'mongoose';
 import Tender from '../models/Tender.js';

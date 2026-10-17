@@ -37,19 +37,19 @@ export class MetaWhatsAppAdapter extends IWhatsAppProvider {
     }
 
     const tenderTitle = tender.title || tender.workDescription || 'New Tender Notice';
-    const dept = tender.department || tender.organisationChain || 'Government of J&K';
+    const dept = tender.department || tender.organisationChain || 'Government of Bihar';
     const valueStr = tender.tenderValueFormatted || (tender.tenderValue ? `₹${tender.tenderValue.toLocaleString('en-IN')}` : 'Refer Document');
     const closingDate = tender.closingDateFormatted || tender.bidSubmissionEndDate || 'Refer Document';
     const portalUrl = `${env.FRONTEND_URL}/tenders/${tender._id || tender.tenderId}`;
 
     const textBody = 
-      `🚨 *NEW TENDER ALERT — BiharTenders J&K*\n\n` +
+      `🚨 *NEW TENDER ALERT — BiharTenders*\n\n` +
       `📋 *Title:* ${tenderTitle.slice(0, 140)}...\n` +
       `🏛️ *Department:* ${dept}\n` +
       `💰 *Estimated Value:* ${valueStr}\n` +
       `📅 *Bid Submission Deadline:* ${closingDate}\n\n` +
       `👉 *View Full Tender & BOQ:* ${portalUrl}\n\n` +
-      `_You are receiving this because it matches your preferred departments/districts. Update preferences anytime on bihartenders.in_`;
+      `_You are receiving this because it matches your preferred departments/districts. Update preferences anytime on BiharTenders._`;
 
     if (this.isMockMode) {
       logger.info(`\n[WHATSAPP MOCK DISPATCH to ${formattedPhone}]:\n${textBody}\n`);

@@ -37,19 +37,19 @@ export class AiSensyWhatsAppAdapter extends IWhatsAppProvider {
     if (!formattedPhone) throw new Error('Valid WhatsApp phone number required.');
 
     const tenderTitle = tender.title || tender.workDescription || 'New Tender Notice';
-    const dept = tender.department || tender.organisationChain || 'Government of J&K';
+    const dept = tender.department || tender.organisationChain || 'Government of Bihar';
     const valueStr = tender.tenderValueFormatted || (tender.tenderValue ? `₹${tender.tenderValue.toLocaleString('en-IN')}` : 'Notice');
     const closingDate = tender.closingDateFormatted || tender.bidSubmissionEndDate || 'Refer Document';
     const portalUrl = `${env.FRONTEND_URL}/tenders/${tender._id || tender.tenderId}`;
 
     const textSummary = 
-      `🚨 *NEW TENDER ALERT — BiharTenders J&K*\n\n` +
+      `🚨 *NEW TENDER ALERT — BiharTenders*\n\n` +
       `📋 *Title:* ${tenderTitle.slice(0, 140)}...\n` +
       `🏛️ *Department:* ${dept}\n` +
       `💰 *Estimated Value:* ${valueStr}\n` +
       `📅 *Bid Submission Deadline:* ${closingDate}\n\n` +
       `👉 *View Full Details & BOQ:* ${portalUrl}\n\n` +
-      `_BiharTenders J&K • Real-Time Contractor Intelligence_`;
+      `_BiharTenders • Real-Time Bihar Contractor Intelligence_`;
 
     if (this.isMockMode) {
       logger.info(`\n[AISENSY MOCK TENDER ALERT to ${formattedPhone}]:\n${textSummary}\n`);
@@ -111,7 +111,7 @@ export class AiSensyWhatsAppAdapter extends IWhatsAppProvider {
       `📅 *Subscription Active Until:* ${validUntil}\n` +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
       `✨ *Your Pro Benefits Are Now Live:*\n` +
-      `• Unlimited Tender Views & Full Pagination across J&K\n` +
+      `• Unlimited Tender Views & Full Pagination across Bihar\n` +
       `• Instant BOQ Excel & Price Schedule Downloads\n` +
       `• Automated WhatsApp alerts for your chosen departments\n` +
       `• Corrigendum & Bid Extension updates\n\n` +

@@ -120,7 +120,7 @@ export class WhatsAppNotificationService {
    */
   async sendTestMessage(phone, user) {
     const provider = getWhatsAppProvider();
-    const message = `👋 Hello ${user?.name || 'Contractor'}!\n\nThis is a verification test from *BiharTenders J&K*. Your WhatsApp tender alerts are active.\n\nYou will automatically receive instant updates whenever new tenders match your saved departments and districts!`;
+    const message = `👋 Hello ${user?.name || 'Contractor'}!\n\nThis is a verification test from *BiharTenders* (Bihar Public Procurement Portal).\n\nYour WhatsApp tender alerts are active. You will automatically receive instant updates whenever new tenders match your saved departments and districts across Bihar!`;
     return await provider.sendTextMessage({ phone, message });
   }
 

@@ -96,7 +96,7 @@ class TelegramService {
         ? '📑 <b>BiharTenders Document Recovery Started</b>'
         : '⚡ <b>BiharTenders Ingestion Cycle Started</b>';
     let msg = `${title}\n\n`;
-    msg += `📍 <b>Portal:</b> J&K Tenders (jktenders.gov.in)\n`;
+    msg += `📍 <b>Portal:</b> Bihar eProc2 (eproc2.bihar.gov.in)\n`;
     if (slotLabel) {
       msg += `⏰ <b>Schedule Slot:</b> ${slotLabel}\n`;
     }
