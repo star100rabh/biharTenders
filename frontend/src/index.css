@@ -49,49 +49,49 @@
   box-shadow: inset 0 0 0 1px #0D1117, inset 0 0 0 2px #283341;
 }
 
-/* Universal Patliputra Translucent Glass Utility Classes (Balanced Sweet Spot) */
+/* Universal Patliputra Translucent Glass Utility Classes (Frosted, More Opaque Body) */
 .patliputra-glass {
-  background-color: rgba(255, 255, 255, 0.25) !important;
-  backdrop-filter: blur(1.5px) !important;
-  -webkit-backdrop-filter: blur(1.5px) !important;
-  border-color: rgba(226, 218, 206, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.52) !important;
+  backdrop-filter: blur(2.5px) !important;
+  -webkit-backdrop-filter: blur(2.5px) !important;
+  border-color: rgba(226, 218, 206, 0.95) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04) !important;
 }
 
 .dark .patliputra-glass {
-  background-color: rgba(18, 24, 34, 0.38) !important;
-  backdrop-filter: blur(1.5px) !important;
-  -webkit-backdrop-filter: blur(1.5px) !important;
-  border-color: rgba(45, 55, 72, 0.85) !important;
+  background-color: rgba(18, 24, 34, 0.58) !important;
+  backdrop-filter: blur(2.5px) !important;
+  -webkit-backdrop-filter: blur(2.5px) !important;
+  border-color: rgba(45, 55, 72, 0.9) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25) !important;
 }
 
 .patliputra-glass-subtle {
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(1px) !important;
-  -webkit-backdrop-filter: blur(1px) !important;
-  border-color: rgba(226, 218, 206, 0.65) !important;
+  background-color: rgba(255, 255, 255, 0.32) !important;
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+  border-color: rgba(226, 218, 206, 0.75) !important;
 }
 
 .dark .patliputra-glass-subtle {
-  background-color: rgba(13, 17, 23, 0.24) !important;
-  backdrop-filter: blur(1px) !important;
-  -webkit-backdrop-filter: blur(1px) !important;
-  border-color: rgba(45, 55, 72, 0.65) !important;
+  background-color: rgba(13, 17, 23, 0.38) !important;
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+  border-color: rgba(45, 55, 72, 0.75) !important;
 }
 
 .patliputra-glass-badge {
-  background-color: rgba(255, 255, 255, 0.34) !important;
-  backdrop-filter: blur(1px) !important;
-  -webkit-backdrop-filter: blur(1px) !important;
-  border-color: rgba(226, 218, 206, 0.8) !important;
+  background-color: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+  border-color: rgba(226, 218, 206, 0.85) !important;
 }
 
 .dark .patliputra-glass-badge {
-  background-color: rgba(18, 24, 34, 0.40) !important;
-  backdrop-filter: blur(1px) !important;
-  -webkit-backdrop-filter: blur(1px) !important;
-  border-color: rgba(45, 55, 72, 0.8) !important;
+  background-color: rgba(18, 24, 34, 0.55) !important;
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+  border-color: rgba(45, 55, 72, 0.85) !important;
 }
 
 /* Modern Tech Ambient Patterns */
