@@ -20,10 +20,12 @@ import {
   Database,
   Cloud,
   MessageSquare,
-  Calculator
+  Calculator,
+  Send
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { WhatsAppAlertsTab } from '@/components/profile/WhatsAppAlertsTab';
+import { TelegramAlertsTab } from '@/components/profile/TelegramAlertsTab';
 import { bidScoreApi } from '@/services/bidScoreApi';
 
 import { useBookmarkStore } from '@/store/useBookmarkStore';
@@ -163,7 +165,8 @@ export default function Profile() {
     { id: 'company', icon: Building, label: 'Contractor Profile' },
     { id: 'bidscores', icon: Calculator, label: `Bid Scores & Capacity (${evalHistory.length})` },
     { id: 'alerts', icon: Sliders, label: 'Filter Preferences' },
-    { id: 'whatsapp', icon: MessageSquare, label: 'WhatsApp Alerts (Pro)' }
+    { id: 'whatsapp', icon: MessageSquare, label: 'WhatsApp Alerts (Pro)' },
+    { id: 'telegram', icon: Send, label: 'Telegram Alerts' }
   ];
 
   // Handlers for Contractor Profile
@@ -840,6 +843,11 @@ export default function Profile() {
         {/* Tab 4: WhatsApp Alerts (Pro) */}
         {activeTab === 'whatsapp' && (
           <WhatsAppAlertsTab />
+        )}
+
+        {/* Tab 5: Telegram Alerts */}
+        {activeTab === 'telegram' && (
+          <TelegramAlertsTab />
         )}
 
         {/* Tab 5: Bid Scores & Capacity History */}
