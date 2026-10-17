@@ -74,7 +74,10 @@ export default class BiharTenderAdapter {
   async _runScrapeSession(scrapeFn, headless) {
     console.log(`[BiharAdapter] Launching browser (headless: ${headless})...`);
     
-    const browser = await chromium.launch({ headless, args: ['--no-sandbox'] });
+    const browser = await chromium.launch({ 
+      headless, 
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'] 
+    });
     const context = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
     const page = await context.newPage();
 
