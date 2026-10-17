@@ -3,14 +3,29 @@
  * @description Administrative API client communicating with backend /api/v1/admin endpoints.
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1/admin';
+const PRODUCTION_BACKEND_URL = 'https://bihartenders-backend-jofq.onrender.com/api/v1/admin';
+
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname.includes('onrender.com') || hostname.includes('bihartenders.in')) {
+      return PRODUCTION_BACKEND_URL;
+    }
+  }
+  return 'http://localhost:8000/api/v1/admin';
+};
+
+const BASE_URL = getBaseUrl();
 
 export function getStoredAdminKey() {
   return sessionStorage.getItem('TENDERHUB_ADMIN_KEY') || localStorage.getItem('TENDERHUB_ADMIN_KEY') || '11112222';
 }
 
 export function getStoredAdminEmail() {
-  return sessionStorage.getItem('TENDERHUB_ADMIN_EMAIL') || localStorage.getItem('TENDERHUB_ADMIN_EMAIL') || 'bgmiwale@gmail.com';
+  return sessionStorage.getItem('TENDERHUB_ADMIN_EMAIL') || localStorage.getItem('TENDERHUB_ADMIN_EMAIL') || 'rsaurabhp03@gmail.com';
 }
 
 export function setStoredAdminCredentials(key, email, persist = false) {

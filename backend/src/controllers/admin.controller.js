@@ -158,8 +158,8 @@ export const triggerManualSync = async (req, res) => {
     }
 
     const scriptPath = mode === 'ALL'
-      ? path.join(process.cwd(), 'src/scripts/fetchAllActiveTenders.js')
-      : path.join(process.cwd(), 'src/scripts/fetchLatestDailyTenders.js');
+      ? path.join(process.cwd(), 'src/scripts/fetchBiharAll.js')
+      : path.join(process.cwd(), 'src/scripts/fetchBiharLatest.js');
 
     const args = [scriptPath, String(limit)];
     if (reset) args.push('--reset');

@@ -6,8 +6,9 @@ async function run() {
   await connectDB();
   const adapter = new BiharTenderAdapter();
   try {
-    console.log("🚀 Starting fetchBiharAll (Scraping ALL Active and Upcoming Tenders)");
-    const summary = await adapter.scrapeAllTenders({ limit: 50000, headless: true });
+    const limit = parseInt(process.argv[2], 10) || 50000;
+    console.log(`🚀 Starting fetchBiharAll (Scraping ALL Active and Upcoming Tenders, limit: ${limit})`);
+    const summary = await adapter.scrapeAllTenders({ limit, headless: true });
     console.log("✅ Finished scraping:", summary);
   } catch (err) {
     console.error("❌ Scraping failed:", err);

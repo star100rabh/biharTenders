@@ -51,10 +51,10 @@ export function AdminLogin({ onAuthenticated }) {
               <Landmark className="w-5 h-5 text-white" />
             </div>
             <span className="text-2xl font-display font-black tracking-tight text-dalBlue dark:text-white leading-none">
-              Tender<span className="text-chinarRed">Hub</span>
+              Bihar<span className="text-chinarRed">Tenders</span>
             </span>
             <span className="text-[10px] font-semibold tracking-wide bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-              J&amp;K
+              e-Proc2
             </span>
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-chinarRed/10 text-chinarRed border border-chinarRed/20">
               OPERATIONS
@@ -64,7 +64,7 @@ export function AdminLogin({ onAuthenticated }) {
             Operations &amp; Diagnostic Console
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-            Authorized administrative access for system telemetry, automated ingestion schedules, and JKTenders scraper monitors.
+            Authorized administrative access for system telemetry, automated ingestion schedules, and Bihar e-Proc2 scraper monitors.
           </p>
         </div>
 

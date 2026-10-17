@@ -211,7 +211,7 @@ function AdminAppContent() {
           <div className="flex items-center gap-2">
             <Landmark className="w-4 h-4 text-dalBlue dark:text-white" />
             <span className="font-semibold text-slate-700 dark:text-slate-300">
-              TenderHub Jammu &amp; Kashmir
+              BiharTenders (Government of Bihar e-Procurement Gateway)
             </span>
             <span className="text-[11px] text-slate-400">
               • Operations &amp; Diagnostic Infrastructure

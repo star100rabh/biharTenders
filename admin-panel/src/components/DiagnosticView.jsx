@@ -69,7 +69,7 @@ export function DiagnosticView({ diagnostics, onRefresh }) {
           <div className="space-y-1">
             <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white">All Platform Services Operational</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-              No critical exceptions, Redis disconnections, JKTenders captcha failures, or missing PDF binaries detected in recent system logs.
+              No critical exceptions, Redis disconnections, Bihar e-Proc2 scraper failures, or missing PDF binaries detected in recent system logs.
             </p>
           </div>
           <div className="pt-2 flex flex-wrap justify-center gap-2 sm:gap-3 text-xs text-slate-600 dark:text-slate-400 font-mono">

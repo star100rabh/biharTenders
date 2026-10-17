@@ -63,3 +63,22 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false # Points to https://bihartenders-backend.onrender.com/api/v1
+
+  # ----------------------------------------------------------------------------
+  # 3. Administrative Control Panel (Vite / React SPA)
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: bihartenders-admin
+    runtime: static
+    rootDir: admin-panel
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://bihartenders-backend-jofq.onrender.com/api/v1/admin
