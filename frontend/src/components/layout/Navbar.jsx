@@ -41,21 +41,21 @@ export function Navbar() {
       {/* Top Auspicious Cultural Double-Line Ribbon */}
       <div className="h-0.5 w-full bg-gradient-to-r from-[#C85A32] via-[#D97706] to-[#2D6A4F]" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-17 flex items-center justify-between gap-3 sm:gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-15 sm:h-17 flex items-center justify-between gap-2 sm:gap-4">
         
         {/* Left Side: Brand Identity & Desktop Navigation */}
-        <div className="flex items-center gap-5 lg:gap-7 min-w-0">
+        <div className="flex items-center gap-3 lg:gap-7 min-w-0">
           {/* Institutional Brand Identity with Bihar Monogram */}
-          <Link to="/" className="flex items-center gap-3 shrink-0 group focus:outline-none">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#C85A32] to-[#E07A5F] text-white flex items-center justify-center shadow-xs shrink-0 group-hover:scale-105 transition-all duration-200 border border-[#FAF8F5] dark:border-[#283341]">
-              <Landmark className="w-5 h-5 text-white" />
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0 group focus:outline-none">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#C85A32] to-[#E07A5F] text-white flex items-center justify-center shadow-xs shrink-0 group-hover:scale-105 transition-all duration-200 border border-[#FAF8F5] dark:border-[#283341]">
+              <Landmark className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="text-base sm:text-lg font-display font-black tracking-tight text-[#1D3557] dark:text-white leading-none">
                   Bihar<span className="text-[#C85A32] dark:text-[#E07A5F]">Tenders</span>
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#C85A32]/10 text-[#C85A32] dark:bg-[#E07A5F]/20 dark:text-[#E07A5F] border border-[#C85A32]/30 hidden xs:inline-block">
+                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#C85A32]/10 text-[#C85A32] dark:bg-[#E07A5F]/20 dark:text-[#E07A5F] border border-[#C85A32]/30 hidden sm:inline-block">
                   EP-2
                 </span>
                 {(import.meta.env.VITE_TEST_MODE === 'true' || (typeof window !== 'undefined' && window.location.port === '5175')) && (
@@ -97,24 +97,24 @@ export function Navbar() {
         </div>
 
         {/* Right Side Action Center: Theme, Saved, Contractor Workspace & Sign In */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           
           {/* Light / Dark Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="h-9 px-2.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-all cursor-pointer focus:outline-none shrink-0"
+            className="w-8 h-8 sm:w-auto sm:h-9 px-0 sm:px-2.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center sm:justify-start gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-all cursor-pointer focus:outline-none shrink-0"
             title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
             aria-label="Toggle theme mode"
           >
             {isDark ? (
               <>
-                <Sun className="w-4 h-4 text-amber-400" />
-                <span className="text-[11px] font-mono hidden sm:inline">Dark</span>
+                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+                <span className="text-[11px] font-mono hidden md:inline">Dark</span>
               </>
             ) : (
               <>
-                <Moon className="w-4 h-4 text-[#1D3557]" />
-                <span className="text-[11px] font-mono hidden sm:inline">Light</span>
+                <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1D3557]" />
+                <span className="text-[11px] font-mono hidden md:inline">Light</span>
               </>
             )}
           </button>
@@ -122,13 +122,13 @@ export function Navbar() {
           {/* Saved Tenders Bookmark Indicator */}
           <Link
             to="/profile"
-            className="relative w-9 h-9 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-all cursor-pointer focus:outline-none shrink-0"
+            className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-[#2D6A4F] dark:hover:text-[#52B788] transition-all cursor-pointer focus:outline-none shrink-0"
             title="Saved Tenders"
             aria-label="Saved Tenders"
           >
-            <Heart className="w-4 h-4" />
+            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {savedTenders.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] text-white text-[9px] font-mono font-black flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#2D6A4F] dark:bg-[#52B788] text-white text-[8px] sm:text-[9px] font-mono font-black flex items-center justify-center">
                 {savedTenders.length}
               </span>
             )}
@@ -136,11 +136,11 @@ export function Navbar() {
 
           {/* User Auth: Dashboard / Sign In */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 to="/profile"
                 onClick={() => navigate('/profile')}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-[#1D3557] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shrink-0 cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-[#1D3557] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shrink-0 cursor-pointer"
               >
                 <User className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
                 <span>Dashboard</span>
@@ -150,7 +150,7 @@ export function Navbar() {
               <Link
                 to="/profile"
                 onClick={() => navigate('/profile')}
-                className={`relative w-9 h-9 rounded-full overflow-hidden shrink-0 flex items-center justify-center transition-all cursor-pointer ${
+                className={`relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden shrink-0 flex items-center justify-center transition-all cursor-pointer ${
                   isPro
                     ? 'ring-2 ring-[#2D6A4F] dark:ring-[#52B788]'
                     : 'border border-[#E6E1D8] dark:border-[#283341]'
@@ -161,11 +161,11 @@ export function Navbar() {
                   <img
                     src={user.picture}
                     alt={user.name || 'User'}
-                    className="w-9 h-9 rounded-full object-cover shrink-0"
+                    className="w-full h-full rounded-full object-cover shrink-0"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-full text-xs font-bold bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center shrink-0">
+                  <div className="w-full h-full rounded-full text-xs font-bold bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] flex items-center justify-center shrink-0">
                     {(user?.name || user?.email || 'U')[0].toUpperCase()}
                   </div>
                 )}
@@ -176,26 +176,27 @@ export function Navbar() {
                 type="button"
                 onClick={handleLogout}
                 title="Sign Out"
-                className="w-9 h-9 rounded-xl border border-transparent hover:border-red-200 dark:hover:border-red-900/60 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer focus:outline-none shrink-0"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-transparent hover:border-red-200 dark:hover:border-red-900/60 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer focus:outline-none shrink-0"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 to="/login"
-                className="hidden sm:inline-flex items-center px-3 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:border-[#C85A32] transition-all"
+                className="hidden md:inline-flex items-center px-3 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:border-[#C85A32] transition-all shrink-0"
               >
                 <span>Sign In</span>
               </Link>
 
               <Link
                 to="/profile"
-                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white text-xs font-bold shadow-xs transition-all cursor-pointer border border-[#C85A32]/40"
+                className="w-8 h-8 sm:w-auto sm:h-9 inline-flex items-center justify-center gap-1.5 px-0 sm:px-3.5 py-1.5 rounded-xl bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white text-xs font-bold shadow-xs transition-all cursor-pointer border border-[#C85A32]/40 shrink-0"
+                title="Contractor Workspace"
               >
-                <User className="w-3.5 h-3.5" />
-                <span>Contractor Workspace</span>
+                <User className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
+                <span className="hidden sm:inline">Contractor Workspace</span>
               </Link>
             </div>
           )}
@@ -203,7 +204,7 @@ export function Navbar() {
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-9 h-9 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-[#1D3557] dark:hover:text-white transition-colors focus:outline-none shrink-0"
+            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-[#1D3557] dark:hover:text-white transition-colors focus:outline-none shrink-0"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
