@@ -194,7 +194,9 @@ export default class BiharTenderAdapter {
 
     const tabPaneId = targetStatus === 'UPCOMING' ? '#upcomingTenders' : '#latestTenders';
     const viewButtonsSelector = `${tabPaneId} button[ng-click^="previewTender"]`;
-    const moreLinkSelector = `${tabPaneId} a[ng-click="clickForMoreTender()"]`;
+    const moreLinkSelector = targetStatus === 'UPCOMING'
+      ? `${tabPaneId} a[ng-click*="clickForMoreUpcomingTenders"], ${tabPaneId} a[ng-click*="clickForMore"]`
+      : `${tabPaneId} a[ng-click*="clickForMoreTender"], ${tabPaneId} a[ng-click*="clickForMore"]`;
     
     // Wait for the Angular table to fully render
     try {
