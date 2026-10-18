@@ -339,7 +339,7 @@ async function main() {
         <li><strong><code>admin-panel/</code></strong>: Isolated administrative console running on Vite for manual scrape triggers, system telemetry, and database oversight.</li>
       </ul>
 
-      <pre>tenderHub/
+      <pre>biharTenders/
 ├── backend/            # Express 5 REST API, BullMQ crawlers, AI intelligence
 ├── frontend/           # React 19 + Vite 8 SPA (Client Workspace)
 ├── admin-panel/        # Isolated administrative dashboard (Port 5174)

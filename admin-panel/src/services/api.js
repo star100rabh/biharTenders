@@ -203,7 +203,7 @@ export const adminApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'TenderHub_Disaster_Recovery_and_Backup_Manual.pdf';
+    a.download = 'BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -221,7 +221,7 @@ export const adminApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'TenderHub_Production_Deployment_Manual.pdf';
+    a.download = 'BiharTenders_Production_Deployment_Manual.pdf';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -239,7 +239,7 @@ export const adminApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'TenderHub_Future_Configurations_Render_and_Failover.pdf';
+    a.download = 'BiharTenders_Future_Configurations_Render_and_Failover.pdf';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);

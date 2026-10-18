@@ -65,7 +65,7 @@ export class DummyTenderAdapter extends TenderSourceAdapter {
       title: rawTenderData.Title || 'Unknown Title',
       sourcePortal: this.portalName,
       sourceTenderId: rawTenderData.TenderId,
-      state: 'Jammu and Kashmir',
+      state: 'Bihar',
       category: rawTenderData.Category,
       estimatedValue: rawTenderData.EstimatedValue,
       closingDate: new Date(rawTenderData.ClosingDate)

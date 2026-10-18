@@ -89,8 +89,10 @@ export const extractDeptCode = (tenderId, orgChain = '', explicitDeptCode = '') 
       'tourism': 'TRM',
       'transport': 'TRP',
       'housing': 'HUDD',
-      'srinagar municipal': 'SMC',
-      'jammu municipal': 'JMC',
+      'patna municipal': 'PMC',
+      'gaya municipal': 'GMC',
+      'muzaffarpur municipal': 'MMC',
+      'bhagalpur municipal': 'BMC',
     };
     const lower = cleanOrg.toLowerCase();
     for (const [k, v] of Object.entries(KNOWN_MAP)) {

@@ -6,7 +6,7 @@ const contractorAgentProfileSchema = new mongoose.Schema({
   // Organization / Firm Details
   companyName: { type: String, default: 'My Contracting Enterprise' },
   registrationClass: { type: String, default: 'Class A Works' },
-  primaryJurisdiction: { type: String, default: 'Jammu & Kashmir / North Zone' },
+  primaryJurisdiction: { type: String, default: 'Bihar / East Zone' },
   gstin: { type: String, default: '' },
   panNumber: { type: String, default: '' },
   

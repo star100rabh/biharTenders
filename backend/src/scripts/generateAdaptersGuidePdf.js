@@ -271,14 +271,14 @@ async function generateAdaptersGuidePdf() {
 
     <h2>1. Executive Architecture & Ingestion Philosophy</h2>
     <p>
-      BiharTenders implements a decoupled <strong>Adapter Architecture</strong> to communicate with the Jammu & Kashmir e-Procurement Portal (<code>jktenders.gov.in</code>). Crawling state-level government infrastructure requires handling multi-department hierarchies, nested NIT work packages (sibling tenders), variable captcha formats, asynchronous document opening windows, and large tender dossiers (>5MB).
+      BiharTenders implements a decoupled <strong>Adapter Architecture</strong> to communicate with the Bihar e-Procurement Portal (<code>eproc2.bihar.gov.in</code>). Crawling state-level government infrastructure requires handling multi-department hierarchies, nested NIT work packages, variable captcha formats, asynchronous document opening windows, and large tender dossiers (>5MB).
     </p>
     <p>
       To maximize reliability, throughput, and minimize server overhead, the ingestion engine enforces a <strong>strict separation of roles</strong>:
     </p>
 
     <div class="alert alert-info">
-      <strong>Core Architectural Rule:</strong> <code>JKTenderAdapter</code> is used <em>strictly and exclusively</em> when crawling the entire catalog of active tenders across all 31 government organisations. In all other operational workflows (daily incremental syncs, scheduled cron cycles, targeted date backfills, and missing PDF document recovery), the system <em>always</em> utilizes <code>JKTenderDateAdapter</code>.
+      <strong>Core Architectural Rule:</strong> <code>BiharTenderAdapter</code> is used for crawling active tenders, targeted daily syncs, date backfills, and recovering document attachments into Cloudflare R2 with automatic PDF compression.
     </div>
 
     <h2>2. Complete Adapter Landscape & Capability Matrix</h2>

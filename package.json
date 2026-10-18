@@ -1,8 +1,8 @@
 {
-  "name": "tenderhub",
+  "name": "bihartenders",
   "version": "1.0.0",
   "private": true,
-  "description": "TenderHub - Jammu & Kashmir Tenders Intelligence Engine Monorepo",
+  "description": "BiharTenders - Bihar Government Tenders Intelligence Engine Monorepo",
   "scripts": {
     "manual:disaster": "npm --prefix backend run manual:disaster",
     "manual:deployment": "npm --prefix backend run manual:deployment",

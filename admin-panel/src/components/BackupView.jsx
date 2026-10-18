@@ -329,7 +329,7 @@ export function BackupView() {
             </span>
           </div>
           <div className="text-sm font-bold text-slate-900 dark:text-white truncate font-mono">
-            {secondaryR2.bucket || 'tenderhub-backup'}
+            {secondaryR2.bucket || 'bihartenders-backup'}
           </div>
           <div className="text-[11px] text-slate-500 dark:text-slate-400">
             Zero-egress disaster copy

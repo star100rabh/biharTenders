@@ -322,7 +322,7 @@ async function generatePdf() {
     </div>
 
     <div class="doc-footer">
-      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Bihar State Operations</span>
       <span>Page 1 of 4</span>
     </div>
   </div>
@@ -401,7 +401,7 @@ SECONDARY_MONGO_URI=mongodb+srv://backup_user:pass@cluster-secondary.mongodb.net
     </div>
 
     <div class="doc-footer">
-      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Bihar State Operations</span>
       <span>Page 2 of 4</span>
     </div>
   </div>
@@ -501,7 +501,7 @@ npm run manuals:all
     </div>
 
     <div class="doc-footer">
-      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Bihar State Operations</span>
       <span>Page 3 of 4</span>
     </div>
   </div>
@@ -623,7 +623,7 @@ npm run manuals:all
     </div>
 
     <div class="doc-footer">
-      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Bihar State Operations</span>
       <span>Page 4 of 4</span>
     </div>
   </div>

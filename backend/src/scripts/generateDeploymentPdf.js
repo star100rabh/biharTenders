@@ -308,7 +308,7 @@ npm run manuals:all
     </div>
 
     <div class="doc-footer">
-      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Bihar State Operations</span>
       <span>Page 1 of 2</span>
     </div>
   </div>
@@ -399,7 +399,7 @@ npm run manuals:all
     </div>
 
     <div class="doc-footer">
-      <span>BiharTenders Jammu &amp; Kashmir Operations</span>
+      <span>BiharTenders Bihar State Operations</span>
       <span>Page 2 of 2</span>
     </div>
   </div>
