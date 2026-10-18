@@ -7,12 +7,13 @@
 import Tender from '../models/Tender.js';
 import SystemLog from '../models/SystemLog.js';
 import { 
+  r2,
   deleteTenderFolderFromR2, 
   deleteFolderFromBackupR2, 
   getBackupR2Client 
 } from '../utils/r2Storage.js';
 import { connectDB } from '../config/db.js';
-import { ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3';
+import { ListObjectsV2Command, GetObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import mongoose from 'mongoose';
 import pino from 'pino';
 
@@ -134,7 +135,19 @@ export class RetentionService {
       }
     }
 
-    // 3. Backup Server Sweep: Clean any orphaned or expired tender data directly on the backup server
+    // 3. Primary R2 Sweep: Purge any orphaned or expired tender files no longer in active MongoDB
+    let primaryOrphanedResult = { sweptFilesCount: 0, reclaimedBytes: 0 };
+    try {
+      primaryOrphanedResult = await this.purgeOrphanedFromPrimaryR2();
+      totalPrimaryFilesDeleted += primaryOrphanedResult.sweptFilesCount;
+      if (primaryOrphanedResult.sweptFilesCount > 0) {
+        logger.info(`[RetentionService] Primary R2 sweep purged ${primaryOrphanedResult.sweptFilesCount} orphaned files (${(primaryOrphanedResult.reclaimedBytes/1024/1024).toFixed(2)} MB reclaimed).`);
+      }
+    } catch (primarySweepErr) {
+      logger.warn(`[RetentionService] Primary R2 sweep warning: ${primarySweepErr.message}`);
+    }
+
+    // 4. Backup Server Sweep: Clean any orphaned or expired tender data directly on the backup server
     let backupSweepResult = { sweptFoldersCount: 0, sweptFilesCount: 0 };
     try {
       backupSweepResult = await this.purgeExpiredFromBackupServer(now);
@@ -259,6 +272,69 @@ export class RetentionService {
     } catch (err) {
       logger.error(`[RetentionService] Backup server sweep error: ${err.message}`);
       return { sweptFoldersCount, sweptFilesCount, error: err.message };
+    }
+  }
+
+  /**
+   * Sweeps Primary Cloudflare R2 bucket for orphaned files/folders belonging
+   * to tenders that no longer exist in MongoDB or have been expired.
+   */
+  async purgeOrphanedFromPrimaryR2() {
+    const primaryBucket = process.env.R2_BUCKET_NAME;
+    if (!primaryBucket) return { sweptFilesCount: 0, reclaimedBytes: 0 };
+
+    try {
+      const activeTenders = await Tender.find({}, { sourceTenderId: 1, tenderId: 1 }).lean();
+      const activeIds = new Set();
+      for (const t of activeTenders) {
+        if (t.sourceTenderId) activeIds.add(String(t.sourceTenderId));
+        if (t.tenderId) activeIds.add(String(t.tenderId));
+      }
+
+      let isTruncated = true;
+      let token = undefined;
+      const orphanedKeys = [];
+      let reclaimedBytes = 0;
+
+      while (isTruncated) {
+        const res = await r2.send(new ListObjectsV2Command({
+          Bucket: primaryBucket,
+          ContinuationToken: token,
+          MaxKeys: 1000,
+        }));
+
+        if (res.Contents) {
+          for (const item of res.Contents) {
+            const match = item.Key.match(/tenders\/(?:[^\/]+\/)?([0-9A-Za-z_]+?)(?:_\d{4}-\d{2}-\d{2})?\//);
+            const tenderId = match ? match[1] : null;
+
+            if (!tenderId || !activeIds.has(tenderId)) {
+              orphanedKeys.push({ Key: item.Key });
+              reclaimedBytes += (item.Size || 0);
+            }
+          }
+        }
+
+        isTruncated = res.IsTruncated;
+        token = res.NextContinuationToken;
+      }
+
+      let sweptFilesCount = 0;
+      const BATCH_SIZE = 1000;
+      for (let i = 0; i < orphanedKeys.length; i += BATCH_SIZE) {
+        const batch = orphanedKeys.slice(i, i + BATCH_SIZE);
+        await r2.send(new DeleteObjectsCommand({
+          Bucket: primaryBucket,
+          Delete: { Objects: batch, Quiet: true }
+        }));
+        sweptFilesCount += batch.length;
+      }
+
+      logger.info(`[RetentionService] Primary R2 sweep purged ${sweptFilesCount} orphaned file(s) (${(reclaimedBytes/1024/1024).toFixed(2)} MB reclaimed).`);
+      return { sweptFilesCount, reclaimedBytes };
+    } catch (err) {
+      logger.error(`[RetentionService] Primary R2 sweep error: ${err.message}`);
+      return { sweptFilesCount: 0, reclaimedBytes: 0, error: err.message };
     }
   }
 }

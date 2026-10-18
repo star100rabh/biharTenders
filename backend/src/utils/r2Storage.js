@@ -13,6 +13,7 @@ import pino from 'pino';
 
 const logger = pino();
 import { parseISTDate } from './dateUtils.js';
+import { compressPdf } from './pdfCompressor.js';
 
 // HTTP Handler with strict connection and request timeouts (prevents hanging indefinitely on stalled uploads)
 const r2RequestHandler = new NodeHttpHandler({
@@ -154,6 +155,14 @@ export const uploadFileToR2 = async ({ filePath, fileName, tenderId, publishedDa
 
     if (!fs.existsSync(filePath)) {
       throw new Error(`Local file not found at path: ${filePath}`);
+    }
+
+    // Determine Content-Type and compress PDF files before uploading to conserve Cloudflare R2 storage
+    const ext = path.extname(fileName).toLowerCase();
+    if (ext === '.pdf') {
+      await compressPdf(filePath).catch((cErr) => {
+        logger.warn(`[R2 Upload] Non-fatal PDF compression warning for ${fileName}: ${cErr.message}`);
+      });
     }
 
     const fileBuffer = fs.readFileSync(filePath);
