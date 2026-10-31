@@ -53,7 +53,7 @@ export function Navbar() {
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="text-base sm:text-lg font-display font-black tracking-tight text-[#1D3557] dark:text-white leading-none">
-                  Bihar<span className="text-[#C85A32] dark:text-[#E07A5F]">Tenders</span>
+                  Contra<span className="text-[#C85A32] dark:text-[#E07A5F]">Bid</span>
                 </span>
                 <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#C85A32]/10 text-[#C85A32] dark:bg-[#E07A5F]/20 dark:text-[#E07A5F] border border-[#C85A32]/30 hidden sm:inline-block">
                   EP-2

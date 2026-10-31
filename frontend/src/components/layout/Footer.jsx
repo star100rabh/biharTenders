@@ -23,7 +23,7 @@ export function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-display font-black tracking-tight text-[#1D3557] dark:text-white leading-none">
-                  Bihar<span className="text-[#C85A32] dark:text-[#E07A5F]">Tenders</span>
+                  Contra<span className="text-[#C85A32] dark:text-[#E07A5F]">Bid</span>
                 </span>
                 <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-wider mt-0.5">
                   बिहार सरकार निविदा पोर्टल
