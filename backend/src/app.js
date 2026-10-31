@@ -63,8 +63,19 @@ const defaultDevOrigins = [
   '*.ngrok.io',
 ];
 
+const defaultProductionOrigins = [
+  'https://contrabid.in',
+  'https://www.contrabid.in',
+  '*.contrabid.in',
+  'https://bihartenders.in',
+  'https://www.bihartenders.in',
+  '*.onrender.com',
+  '*.vercel.app',
+];
+
 const allowedOrigins = [
   ...(env.NODE_ENV !== 'production' ? defaultDevOrigins : []),
+  ...defaultProductionOrigins,
   ...configuredOrigins
 ].filter(Boolean);
 
