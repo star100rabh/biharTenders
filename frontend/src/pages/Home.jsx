@@ -385,30 +385,30 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
           
-          {/* Card 1: 710+ Active E-Tenders */}
+          {/* Card 1: Active E-Tenders */}
           <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
-              {isStatsLoading ? '...' : (stats?.activeTendersCount && stats.activeTendersCount > 710 ? `${stats.activeTendersCount}+` : '710+')}
+              {isStatsLoading ? '...' : (stats?.activeTendersCount ?? 0)}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
               Active E-Tenders
             </div>
           </div>
 
-          {/* Card 2: ₹2,119.00 Cr Total Live Value */}
+          {/* Card 2: Total Live Value */}
           <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-xl sm:text-2xl lg:text-3xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
-              {isStatsLoading ? '...' : (stats?.totalValue ? formatCurrencyINR(stats.totalValue) : '₹2,119.00 Cr')}
+              {isStatsLoading ? '...' : (stats?.totalValue ? formatCurrencyINR(stats.totalValue) : '₹0.00 Cr')}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
               Total Live Value
             </div>
           </div>
 
-          {/* Card 3: 128+ Govt. Bodies */}
+          {/* Card 3: Govt. Bodies */}
           <div className="patliputra-glass rounded-2xl p-5 text-center flex flex-col items-center justify-center transition-all duration-200 hover:border-[#C85A32] dark:hover:border-[#E07A5F] shadow-xs group">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tabular-nums text-[#1D3557] dark:text-white truncate">
-              {isStatsLoading ? '...' : (stats?.authoritiesCount && stats.authoritiesCount > 128 ? `${stats.authoritiesCount}+` : '128+')}
+              {isStatsLoading ? '...' : (stats?.authoritiesCount ?? 0)}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate mt-1">
               Govt. Bodies
