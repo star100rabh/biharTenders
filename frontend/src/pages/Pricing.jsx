@@ -7,20 +7,16 @@ import {
   Check, 
   Shield, 
   ArrowRight, 
-  MessageSquare, 
   Sparkles, 
   Loader2, 
   CheckCircle2, 
   AlertCircle,
-  X,
-  PhoneCall
+  X
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import { billingApi } from '@/services/billingApi';
-import { notificationApi } from '@/services/notificationApi';
 
 export default function Pricing() {
   const { isAuthenticated, user, checkAuth } = useAuthStore();
@@ -31,25 +27,11 @@ export default function Pricing() {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // WhatsApp confirmation modal state
-  const [showPhoneModal, setShowPhoneModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [whatsappPhone, setWhatsappPhone] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-
-  // Fetch current user subscription status and saved WhatsApp preferences
+  // Fetch current user subscription status
   useEffect(() => {
     if (isAuthenticated) {
       billingApi.getStatus()
         .then((sub) => setSubscription(sub))
-        .catch(() => {});
-
-      notificationApi.getPreferences()
-        .then((pref) => {
-          if (pref?.whatsappPhone) {
-            setWhatsappPhone(pref.whatsappPhone);
-          }
-        })
         .catch(() => {});
     }
   }, [isAuthenticated]);
@@ -82,8 +64,8 @@ export default function Pricing() {
     });
   };
 
-  // Step 1: When user clicks Upgrade on a plan card
-  const handleInitiateUpgrade = (plan) => {
+  // Direct checkout handler without intermediate modals
+  const handleInitiateUpgrade = async (plan) => {
     if (!isAuthenticated) {
       navigate('/login?redirect=/pricing');
       return;
@@ -91,27 +73,12 @@ export default function Pricing() {
 
     setErrorMessage('');
     setSuccessMessage('');
-    setSelectedPlan(plan);
-    setShowPhoneModal(true);
-  };
-
-  // Step 2: User confirms WhatsApp number and proceeds to Payment Gateway
-  const handleProceedToPayment = async (e) => {
-    e?.preventDefault();
-    const cleanPhone = whatsappPhone.trim().replace(/\D/g, '');
-
-    if (!cleanPhone || cleanPhone.length < 10) {
-      setPhoneError('Please enter a valid 10-digit mobile number for WhatsApp alerts.');
-      return;
-    }
-
-    setPhoneError('');
-    setShowPhoneModal(false);
-    setLoadingPlanId(selectedPlan.id);
+    setLoadingPlanId(plan.id);
 
     try {
-      // 1. Create order on backend with user's confirmed phone
-      const orderData = await billingApi.createOrder(selectedPlan.id, { phone: cleanPhone });
+      const orderData = await billingApi.createOrder(plan.id, { 
+        phone: user?.phone || '9999999999' 
+      });
 
       // ==========================================
       // FLOW A: CASHFREE PAYMENT GATEWAY
@@ -119,31 +86,28 @@ export default function Pricing() {
       if (orderData.gateway === 'cashfree' && orderData.paymentSessionId) {
         const isLoaded = await loadCashfreeScript();
         if (!isLoaded || !window.Cashfree) {
-          throw new Error('Failed to load Cashfree payment gateway SDK. Please check your internet connection.');
+          throw new Error('Failed to load Cashfree payment gateway SDK.');
         }
 
         const cashfree = window.Cashfree({
           mode: orderData.environment === 'production' ? 'production' : 'sandbox',
         });
 
-        // Opens Cashfree payment popup modal right inside the page
         await cashfree.checkout({
           paymentSessionId: orderData.paymentSessionId,
           redirectTarget: '_modal',
         });
 
-        // Verify with backend
+        // Verify after modal closes/completes
         try {
-          setLoadingPlanId(selectedPlan.id);
           const verifyRes = await billingApi.verifyPayment({
             orderId: orderData.orderId,
-            planId: selectedPlan.id,
-            phone: cleanPhone,
+            planId: plan.id,
             gateway: 'cashfree',
           });
 
           if (verifyRes.success) {
-            setSuccessMessage(`🎉 Payment verified! ${selectedPlan.name} activated successfully. Receipt and alert onboarding sent to WhatsApp ${cleanPhone}.`);
+            setSuccessMessage(`🎉 Payment verified! ${plan.name} activated successfully.`);
             const updatedSub = await billingApi.getStatus();
             setSubscription(updatedSub);
             checkAuth();
@@ -160,28 +124,27 @@ export default function Pricing() {
       }
 
       // ==========================================
-      // FLOW B: RAZORPAY GATEWAY FALLBACK
+      // FLOW B: RAZORPAY GATEWAY
       // ==========================================
       const isLoaded = await loadRazorpayScript();
       if (!isLoaded) {
-        throw new Error('Failed to load Razorpay payment gateway. Please check your internet connection.');
+        throw new Error('Failed to load Razorpay payment gateway SDK.');
       }
 
-      // Configure Razorpay modal options
       const options = {
         key: orderData.keyId,
         amount: orderData.amount, // in paise
         currency: orderData.currency || 'INR',
         name: 'ContraBid',
-        description: `${selectedPlan.name} Subscription`,
+        description: `${plan.name} Subscription`,
         order_id: orderData.orderId,
         prefill: {
           name: orderData.prefill?.name || user?.name || '',
           email: orderData.prefill?.email || user?.email || '',
-          contact: cleanPhone,
+          contact: orderData.prefill?.phone || user?.phone || '',
         },
         theme: {
-          color: '#1E3A8A', // Dal Blue
+          color: '#1E3A8A',
         },
         modal: {
           ondismiss: () => {
@@ -190,18 +153,17 @@ export default function Pricing() {
         },
         handler: async (response) => {
           try {
-            setLoadingPlanId(selectedPlan.id);
+            setLoadingPlanId(plan.id);
             const verifyRes = await billingApi.verifyPayment({
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
-              planId: selectedPlan.id,
-              phone: cleanPhone,
+              planId: plan.id,
               gateway: 'razorpay',
             });
 
             if (verifyRes.success) {
-              setSuccessMessage(`🎉 Payment verified! ${selectedPlan.name} activated successfully. Receipt and alert onboarding sent to WhatsApp ${cleanPhone}.`);
+              setSuccessMessage(`🎉 Payment verified! ${plan.name} activated successfully. All Pro features unlocked.`);
               const updatedSub = await billingApi.getStatus();
               setSubscription(updatedSub);
               checkAuth();
@@ -255,7 +217,7 @@ export default function Pricing() {
       desc: 'Everything an active contractor needs to win tenders in their district.',
       features: [
         'Full access to ALL tenders & pagination (no view limits)',
-        'Personalized WhatsApp alerts for your Depts & Districts',
+        'Instant Telegram & Email alerts for your Depts & Districts',
         'Instant BOQ Excel & Price Schedule 1-click downloads',
         'Save UNLIMITED tenders & document bookmarks',
         'Corrigendum & bid extension notifications',
@@ -275,7 +237,7 @@ export default function Pricing() {
       features: [
         'All Pro Monthly features included',
         'Save 17% compared to monthly renewal',
-        'High-priority WhatsApp notification queue',
+        'Real-time Telegram & Email notification queue',
         'Dedicated contractor relationship liaison',
       ],
       isPopular: false,
@@ -292,7 +254,7 @@ export default function Pricing() {
       features: [
         'All Pro features for a full 365 days',
         'Effective rate of only ₹249/month',
-        'Direct phone & WhatsApp priority engineering hotline',
+        'Priority desk & email hotline support',
         'Early access to newly automated department scrapers',
       ],
       isPopular: false,
@@ -315,7 +277,7 @@ export default function Pricing() {
             Win More Bihar Tenders with <span className="text-patliputra-terracotta dark:text-patliputra-darkTerracotta">Pro Intelligence</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-            Never miss an important contract in your district. Instant WhatsApp alerts, unblurred access across all departments, and 1-click BOQ downloads.
+            Never miss an important contract in your district. Instant Telegram &amp; Email alerts, unblurred access across all departments, and 1-click BOQ downloads.
           </p>
         </div>
 
@@ -459,84 +421,6 @@ export default function Pricing() {
         </div>
 
       </div>
-
-      {/* Explicit WhatsApp Confirmation Modal */}
-      {showPhoneModal && selectedPlan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-5">
-            <div className="flex justify-between items-start">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 flex items-center justify-center shrink-0">
-                  <MessageSquare className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                    Confirm WhatsApp Alerts Number
-                  </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Plan: <span className="font-semibold text-dalBlue dark:text-blue-400">{selectedPlan.name} ({selectedPlan.price})</span>
-                  </p>
-                </div>
-              </div>
-              <button 
-                type="button" 
-                onClick={() => setShowPhoneModal(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleProceedToPayment} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-1.5">
-                  <PhoneCall className="w-3.5 h-3.5 text-emerald-600" /> Enter WhatsApp Mobile Number
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                    +91
-                  </span>
-                  <Input
-                    type="tel"
-                    placeholder="9876543210"
-                    value={whatsappPhone}
-                    onChange={(e) => {
-                      setWhatsappPhone(e.target.value);
-                      if (phoneError) setPhoneError('');
-                    }}
-                    className="pl-11 text-xs font-mono font-bold"
-                    autoFocus
-                  />
-                </div>
-                {phoneError && (
-                  <p className="text-[11px] text-rose-500 mt-1 font-medium">{phoneError}</p>
-                )}
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
-                  We will send your payment receipt and instant tender alerts matching your departments to this WhatsApp number.
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-2.5">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={() => setShowPhoneModal(false)}
-                  className="text-xs"
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  type="submit" 
-                  variant="primary"
-                  className="text-xs font-bold bg-dalBlue hover:bg-dalBlue-700 text-white shadow-xs"
-                >
-                  Proceed to Pay {selectedPlan.price}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

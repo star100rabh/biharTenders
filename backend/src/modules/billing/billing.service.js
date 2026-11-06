@@ -26,7 +26,7 @@ export const PLANS = {
     features: [
       'Unlimited tender views & full pagination',
       'Instant BOQ Excel & Price Schedule downloads',
-      'Custom WhatsApp alerts (Department, District, Value filters)',
+      'Instant Telegram & Email alerts (Department, District, Value filters)',
       'Unlimited saved tenders & contractor bookmarks',
       'Corrigendum & deadline extension notifications',
     ],
@@ -42,7 +42,7 @@ export const PLANS = {
     features: [
       'All Pro Monthly features included',
       'Save 17% compared to monthly renewal',
-      'Priority WhatsApp alert delivery',
+      'Priority Telegram & Email alert delivery',
       'Dedicated contractor support',
     ],
   },
@@ -57,8 +57,8 @@ export const PLANS = {
     features: [
       'All Pro features for a full year',
       'Save 37% (~₹249/month effective rate)',
-      'Direct WhatsApp priority support from engineering desk',
-      'Early access to new department adapters',
+      'Direct priority support from engineering desk',
+      'Early access to newly automated department scrapers',
     ],
   },
   ai_pay_per_tender: {
