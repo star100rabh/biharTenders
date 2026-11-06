@@ -316,17 +316,18 @@ const resolveGoogleCallbackUrl = (req) => {
   const host = req.get('host') || '';
   const configured = (env.GOOGLE_CALLBACK_URL || '').trim();
 
-  // If comma-separated list of URLs is provided in env
-  if (configured.includes(',')) {
-    const urls = configured.split(',').map((u) => u.trim());
-    const matched = urls.find((u) => u.includes(host));
-    if (matched) return matched;
-    return env.NODE_ENV === 'production' 
-      ? (urls.find(u => !u.includes('localhost')) || urls[0]) 
-      : urls[0];
+  // If explicitly configured with production URL, use it directly
+  if (configured && !configured.includes('localhost')) {
+    if (configured.includes(',')) {
+      const urls = configured.split(',').map((u) => u.trim());
+      const matched = urls.find((u) => u.includes(host));
+      if (matched) return matched;
+      return urls.find(u => u.includes('api.contrabid.in')) || urls.find(u => !u.includes('localhost')) || urls[0];
+    }
+    return configured;
   }
 
-  // If a single URL was configured, only use it if its host matches the current request
+  // If a single URL was configured for local dev
   if (configured) {
     try {
       const parsed = new URL(configured);
