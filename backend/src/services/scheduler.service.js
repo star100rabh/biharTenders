@@ -10,6 +10,8 @@
  * And performs automated 30-day archive deletion at 02:00 AM daily.
  */
 import cron from 'node-cron';
+import path from 'path';
+import { spawn } from 'child_process';
 import pino from 'pino';
 import CronConfig from '../models/CronConfig.js';
 import Tender from '../models/Tender.js';
@@ -154,14 +156,25 @@ export class SchedulerService {
       });
       const activeLabel = `${slotLabel} @ ${nowIST} IST`;
 
-      logger.info(`[Scheduler] Admin permission verified. Dispatching sync job to TenderQueue for ${activeLabel}...`);
+      logger.info(`[Scheduler] Admin permission verified. Dispatching sync job for ${activeLabel}...`);
       
-      await tenderQueue.add('sync-latest-tenders', {
-        triggeredBy: 'CRON_SCHEDULE',
-        slotLabel: activeLabel,
-        limit: Infinity,
-        initiatedAt: new Date().toISOString(),
-      });
+      try {
+        await tenderQueue.add('sync-latest-tenders', {
+          triggeredBy: 'CRON_SCHEDULE',
+          slotLabel: activeLabel,
+          limit: Infinity,
+          initiatedAt: new Date().toISOString(),
+        });
+      } catch (queueErr) {
+        logger.warn(`[Scheduler] TenderQueue dispatch failed (${queueErr.message}). Spawning direct scraper fallback...`);
+        const scriptPath = path.join(process.cwd(), 'src/scripts/fetchBiharLatest.js');
+        const child = spawn(process.execPath, [scriptPath, '50'], {
+          cwd: process.cwd(),
+          env: { ...process.env, SCRAPER_HEADLESS: 'true' },
+          stdio: 'ignore'
+        });
+        child.unref();
+      }
 
       if (config) {
         config.lastRunAt = new Date();
@@ -197,12 +210,23 @@ export class SchedulerService {
         return;
       }
 
-      logger.info('[Scheduler] Dispatching scheduled retry-missing-pdfs job to TenderQueue...');
-      await tenderQueue.add('retry-missing-pdfs', {
-        triggeredBy: 'CRON_SCHEDULE_08PM',
-        slotLabel: '08:00 PM Document Recovery Sweep',
-        initiatedAt: new Date().toISOString(),
-      });
+      logger.info('[Scheduler] Dispatching scheduled retry-missing-pdfs job...');
+      try {
+        await tenderQueue.add('retry-missing-pdfs', {
+          triggeredBy: 'CRON_SCHEDULE_08PM',
+          slotLabel: '08:00 PM Document Recovery Sweep',
+          initiatedAt: new Date().toISOString(),
+        });
+      } catch (queueErr) {
+        logger.warn(`[Scheduler] TenderQueue dispatch failed (${queueErr.message}). Spawning direct doc recovery fallback...`);
+        const scriptPath = path.join(process.cwd(), 'src/scripts/fetchPendingDocTenders.js');
+        const child = spawn(process.execPath, [scriptPath, '50'], {
+          cwd: process.cwd(),
+          env: { ...process.env, SCRAPER_HEADLESS: 'true' },
+          stdio: 'ignore'
+        });
+        child.unref();
+      }
     } catch (err) {
       logger.error(`[Scheduler] Failed to trigger document recovery: ${err.message}`);
     }
