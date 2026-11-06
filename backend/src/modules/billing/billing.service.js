@@ -17,7 +17,7 @@ const logger = pino();
 export const PLANS = {
   pro_monthly: {
     id: 'pro_monthly',
-    name: 'BiharTenders Pro Monthly',
+    name: 'ContraBid Pro Monthly',
     price: 10, // INR
     periodDays: 30,
     cycle: 'monthly',
@@ -33,7 +33,7 @@ export const PLANS = {
   },
   pro_quarterly: {
     id: 'pro_quarterly',
-    name: 'BiharTenders Pro Quarterly',
+    name: 'ContraBid Pro Quarterly',
     price: 999, // INR
     periodDays: 90,
     cycle: 'quarterly',
@@ -48,7 +48,7 @@ export const PLANS = {
   },
   pro_annual: {
     id: 'pro_annual',
-    name: 'BiharTenders Pro Annual',
+    name: 'ContraBid Pro Annual',
     price: 2999, // INR
     periodDays: 365,
     cycle: 'annual',

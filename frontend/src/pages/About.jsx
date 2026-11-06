@@ -19,15 +19,18 @@ export default function About() {
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-display font-bold text-slate-900 dark:text-white tracking-tight">
-            Supporting Public Procurement Transparency in Bihar
+            ContraBid — B2B Contractor Intelligence &amp; Estimations SaaS
           </h1>
 
           <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            Public works contracts published across Bihar represent thousands of critical infrastructure, rural water supply, road macadamization, and power grid projects. Historically, navigating these tenders required traversing fragmented portals with short-lived session timeouts and unindexed attachments.
+            Public works contracts represent critical infrastructure, rural water supply, road macadamization, and power grid projects. Historically, navigating these tenders and estimating raw material requirements required traversing fragmented portals with short-lived session timeouts and unindexed attachments.
           </p>
           <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            BiharTenders was established to provide contractors, civil engineers, and suppliers with a reliable, structured repository of official public tenders. We systematically index gazettes, verify document links, and provide clear work site clarity so local bidders can make informed decisions.
+            ContraBid was established as an independent B2B SaaS software platform to provide contractors, civil engineers, and suppliers with a reliable, structured repository of public tender notices, AI-powered BOQ quantity surveying tools, and empirical bid capacity calculators.
           </p>
+          <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400">
+            <strong>Legal Disclaimer:</strong> ContraBid is a private, independent B2B software application. ContraBid is NOT a government agency, government portal, or Common Service Centre (CSC), and does not provide government document submission services. All public procurement data is indexed for analytical and informational purposes.
+          </div>
         </div>
 
         {/* 3 Core Operating Standards */}

@@ -172,7 +172,7 @@ export default function Pricing() {
         key: orderData.keyId,
         amount: orderData.amount, // in paise
         currency: orderData.currency || 'INR',
-        name: 'BiharTenders Bihar',
+        name: 'ContraBid',
         description: `${selectedPlan.name} Subscription`,
         order_id: orderData.orderId,
         prefill: {

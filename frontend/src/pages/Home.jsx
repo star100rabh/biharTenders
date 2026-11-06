@@ -224,30 +224,30 @@ export default function Home() {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full patliputra-glass-badge border border-[#E6E1D8] dark:border-[#283341] text-xs font-bold text-[#1D3557] dark:text-slate-200">
               <Landmark className="w-3.5 h-3.5 text-[#C85A32] dark:text-[#E07A5F] shrink-0" />
-              <span>Bihar State E-Procurement Portal • All 38 Districts Unified</span>
+              <span>ContraBid B2B Platform • Contractor Intelligence &amp; Estimations</span>
             </div>
             
             <div className="text-[11px] font-bold tracking-widest uppercase text-[#C85A32] dark:text-[#E07A5F] block">
-              बिहार सरकार निविदा एवं अनुबंध पोर्टल
+              Contractor Intelligence &amp; Bid Estimation Software
             </div>
           </div>
 
           {/* Primary Headline with Patliputra Typography Hierarchy */}
           <div className="space-y-2.5">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.14] text-[#1D3557] dark:text-white max-w-4xl mx-auto">
-              Public Tenders &amp; Works Across{' '}
+              Procurement Intelligence &amp; Estimations for{' '}
               <span className="text-[#C85A32] dark:text-[#E07A5F]">
-                All 38 Districts of Bihar
+                Civil &amp; Works Contractors
               </span>
             </h1>
             <p className="text-xs sm:text-sm font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
-              Discover, Bid &amp; Win Bihar Public Works &amp; eProc2 Tenders
+              Analyze BOQ Schedules, Check Bid Capacity &amp; Track Public Tenders
             </p>
           </div>
 
           {/* Subtitle */}
           <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
-            Rural Works Department (RWD), Road Construction (RCD), Building Construction (BCD), Water Resources (WRD), Public Health Engineering (PHED), and Municipal Corporation notices, BOQs, and corrigenda directly on your screen.
+            Independent B2B software for civil, road, and electrical contractors. Analyze BOQ materials, verify turnover and solvency eligibility, and track tender notices, documents, and corrigenda.
           </p>
 
           {/* Standard Department Labels Directly Underneath */}

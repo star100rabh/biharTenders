@@ -26,12 +26,12 @@ export function Footer() {
                   Contra<span className="text-[#C85A32] dark:text-[#E07A5F]">Bid</span>
                 </span>
                 <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-wider mt-0.5">
-                  बिहार सरकार निविदा पोर्टल
+                  Contractor Intelligence & Bidding SaaS
                 </span>
               </div>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              Unified platform for transparent, digital, and real-time public tender notices across all 38 districts of Bihar. Covering Rural Works (RWD), Road Construction (RCD), Building Construction (BCD), and Water Resources (WRD) tenders.
+              B2B civil engineering software and bid analytics platform helping contractors calculate BOQ materials, verify bid capacity thresholds, and discover public procurement opportunities.
             </p>
             <div className="pt-1 flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[#FAF8F5] dark:bg-[#151B26] text-[#C85A32] dark:text-[#E07A5F] border border-[#E6E1D8] dark:border-[#283341]">
@@ -157,14 +157,19 @@ export function Footer() {
         </div>
 
         {/* Bottom Legal Bar */}
-        <div className="mt-10 pt-6 border-t border-[#E6E1D8] dark:border-[#283341] flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 gap-3 text-center sm:text-left">
-          <p>© {new Date().getFullYear()} BiharTenders. Unified e-procurement data intelligence for Bihar public works.</p>
-          <div className="flex flex-wrap justify-center gap-4 text-slate-500 dark:text-slate-400">
-            <Link to="/privacy-policy" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Privacy</Link>
-            <Link to="/terms" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Terms</Link>
-            <Link to="/refund-policy" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Refunds</Link>
-            <Link to="/contact" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Contact</Link>
+        <div className="mt-10 pt-6 border-t border-[#E6E1D8] dark:border-[#283341] flex flex-col items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 gap-3 text-center">
+          <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <p>© {new Date().getFullYear()} ContraBid. All rights reserved. B2B Software for Civil Contractors.</p>
+            <div className="flex flex-wrap justify-center gap-4 text-slate-500 dark:text-slate-400">
+              <Link to="/privacy-policy" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Privacy</Link>
+              <Link to="/terms" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Terms</Link>
+              <Link to="/refund-policy" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Refunds</Link>
+              <Link to="/contact" className="hover:text-[#C85A32] dark:hover:text-white transition-colors">Contact</Link>
+            </div>
           </div>
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 max-w-4xl leading-relaxed mt-2 text-center">
+            Disclaimer: ContraBid (contrabid.in) is an independent, commercial B2B SaaS software and analytics platform. ContraBid is NOT a government agency, government portal, or Common Service Centre (CSC), and is not affiliated with, endorsed by, or acting on behalf of any government department.
+          </p>
         </div>
       </div>
     </footer>

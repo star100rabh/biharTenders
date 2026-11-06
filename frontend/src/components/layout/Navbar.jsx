@@ -65,7 +65,7 @@ export function Navbar() {
                 )}
               </div>
               <span className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-wider mt-0.5 hidden sm:block">
-                बिहार सरकार निविदा एवं अनुबंध पोर्टल
+                Contractor Intelligence & Bid Estimator
               </span>
             </div>
           </Link>

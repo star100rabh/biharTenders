@@ -21,10 +21,10 @@ export default function RefundPolicy() {
 
         <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h2:text-xl prose-h2:mt-8">
           <h2>1. Subscription Cancellations</h2>
-          <p>You can cancel your BiharTenders Pro subscription at any time through your account dashboard. Upon cancellation, your automatic renewals will be stopped. You will continue to have access to Pro features until the end of your current paid billing cycle.</p>
+          <p>You can cancel your ContraBid Pro subscription at any time through your account dashboard. Upon cancellation, your automatic renewals will be stopped. You will continue to have access to Pro features until the end of your current paid billing cycle.</p>
 
           <h2>2. Refund Eligibility</h2>
-          <p>As BiharTenders is a digital SaaS platform providing instant access to proprietary data and automated services, all subscription payments are generally non-refundable.</p>
+          <p>As ContraBid is a digital B2B SaaS software platform providing instant access to proprietary analytical tools, BOQ software, and automated data services, subscription payments are generally non-refundable once consumed.</p>
           <p>Exceptions to this rule may be considered solely at our discretion under the following circumstances:</p>
           <ul>
             <li>Duplicate charges due to technical errors on our platform or payment gateway.</li>

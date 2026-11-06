@@ -21,7 +21,7 @@ export default function PrivacyPolicy() {
 
         <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h2:text-xl prose-h2:mt-8">
           <h2>1. Information We Collect</h2>
-          <p>When you register for a BiharTenders account or subscribe to our services, we collect personal information such as your name, email address, phone number (for WhatsApp alerts), and company details.</p>
+          <p>When you register for a ContraBid account or subscribe to our software services, we collect personal and business information such as your name, email address, phone number (for WhatsApp alerts), and company details.</p>
 
           <h2>2. How We Use Your Information</h2>
           <p>We use the collected information for the following purposes:</p>

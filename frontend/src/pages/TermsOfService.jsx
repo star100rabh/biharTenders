@@ -20,21 +20,21 @@ export default function TermsOfService() {
         </div>
 
         <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-h2:text-xl prose-h2:mt-8">
-          <h2>1. Introduction</h2>
-          <p>Welcome to BiharTenders. By accessing our website and using our services, you agree to comply with and be bound by the following terms and conditions. If you disagree with any part of these terms, please do not use our service.</p>
+          <h2>1. Introduction &amp; Nature of Service</h2>
+          <p>Welcome to ContraBid (contrabid.in). ContraBid is an independent, commercial B2B SaaS software and civil engineering analytics platform developed for contractors, engineers, and suppliers. ContraBid is NOT a government agency, government portal, or Common Service Centre (CSC), and does not represent or provide government filing services on behalf of any government department. Our subscriptions grant software access to our proprietary estimation algorithms, BOQ tools, and indexing technology.</p>
 
           <h2>2. Use of Service</h2>
-          <p>BiharTenders provides aggregated public procurement data, tender alerts, and related insights. You agree to use the service only for lawful purposes and in a way that does not infringe the rights of, restrict, or inhibit anyone else's use of the website.</p>
+          <p>ContraBid provides proprietary contractor tools, BOQ analysis software, and aggregated public procurement data. You agree to use the service only for lawful business purposes and in a way that does not infringe the rights of, restrict, or inhibit anyone else's use of the website.</p>
 
           <h2>3. Subscriptions and Payments</h2>
           <p>Certain features are offered on a paid subscription basis. By subscribing, you agree to pay the fees indicated for the service. Payments are securely processed through authorized, RBI-compliant payment gateways (Cashfree / Razorpay). All fees are exclusive of applicable taxes unless stated otherwise.</p>
 
           <h2>4. Data Accuracy and Liability</h2>
-          <p>While we strive to provide accurate and timely tender information gathered from public portals, BiharTenders does not guarantee the absolute accuracy, completeness, or timeliness of the data. Users are advised to cross-verify critical information from official government sources.</p>
-          <p>We shall not be held liable for any financial losses, missed deadlines, or damages resulting from the use of our data.</p>
+          <p>While we strive to provide accurate and timely tender information gathered from public portals, ContraBid does not guarantee the absolute accuracy, completeness, or timeliness of third-party public data. Users are advised to cross-verify critical information from official government sources.</p>
+          <p>We shall not be held liable for any financial losses, missed deadlines, or damages resulting from the use of our software or data.</p>
 
           <h2>5. Intellectual Property</h2>
-          <p>The layout, design, graphics, and proprietary software of BiharTenders are protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without explicit permission.</p>
+          <p>The layout, design, graphics, and proprietary software of ContraBid are protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without explicit permission.</p>
 
           <h2>6. Termination</h2>
           <p>We reserve the right to suspend or terminate your account at our sole discretion, without notice, for conduct that we believe violates these Terms of Service or is harmful to other users or our business interests.</p>
