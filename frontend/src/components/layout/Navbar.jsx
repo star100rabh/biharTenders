@@ -134,16 +134,16 @@ export function Navbar() {
             )}
           </Link>
 
-          {/* User Auth: Dashboard / Sign In */}
+          {/* User Auth: Profile Avatar / Login */}
           {isAuthenticated ? (
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 to="/profile"
                 onClick={() => navigate('/profile')}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-[#1D3557] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shrink-0 cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-[#1D3557] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shrink-0 cursor-pointer h-8 sm:h-9"
               >
                 <User className="w-3.5 h-3.5 text-[#2D6A4F] dark:text-[#52B788]" />
-                <span>Dashboard</span>
+                <span>My Profile</span>
               </Link>
 
               {/* Circular Avatar */}
@@ -155,7 +155,7 @@ export function Navbar() {
                     ? 'ring-2 ring-[#2D6A4F] dark:ring-[#52B788]'
                     : 'border border-[#E6E1D8] dark:border-[#283341]'
                 }`}
-                title={user?.name ? `${user.name} (${user.email || ''})` : user?.email || 'Dashboard / Profile'}
+                title={user?.name ? `${user.name} (${user.email || ''})` : user?.email || 'My Profile'}
               >
                 {user?.picture ? (
                   <img
@@ -182,23 +182,14 @@ export function Navbar() {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <Link
-                to="/login"
-                className="hidden md:inline-flex items-center px-3 py-1.5 rounded-xl border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:border-[#C85A32] transition-all shrink-0"
-              >
-                <span>Sign In</span>
-              </Link>
-
-              <Link
-                to="/profile"
-                className="w-8 h-8 sm:w-auto sm:h-9 inline-flex items-center justify-center gap-1.5 px-0 sm:px-3.5 py-1.5 rounded-xl bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white text-xs font-bold shadow-xs transition-all cursor-pointer border border-[#C85A32]/40 shrink-0"
-                title="Contractor Workspace"
-              >
-                <User className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
-                <span className="hidden sm:inline">Contractor Workspace</span>
-              </Link>
-            </div>
+            <Link
+              to="/login"
+              className="h-8 sm:h-9 inline-flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-[#C85A32] hover:bg-[#b04b27] dark:bg-[#E07A5F] dark:hover:bg-[#d46a4e] text-white text-xs font-bold shadow-xs transition-all cursor-pointer border border-[#C85A32]/40 shrink-0"
+              title="Login / Sign Up"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Login / Sign Up</span>
+            </Link>
           )}
 
           {/* Mobile Menu Toggle Button */}
@@ -238,52 +229,54 @@ export function Navbar() {
             ))}
 
             <div className="pt-2 border-t border-[#E6E1D8] dark:border-[#283341] space-y-2">
-              <Link
-                to="/profile"
-                onClick={() => { setMobileMenuOpen(false); navigate('/profile'); }}
-                className="min-h-[42px] flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#C85A32] dark:bg-[#E07A5F]"
-              >
-                <User className="w-4 h-4 text-white shrink-0" />
-                <span>Dashboard</span>
-              </Link>
-
               {isAuthenticated ? (
-                <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] min-h-[44px]">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    {user?.picture ? (
-                      <img
-                        src={user.picture}
-                        alt="Profile"
-                        className="w-7 h-7 rounded-xl object-cover shrink-0 ring-1 ring-[#2D6A4F]"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-7 h-7 rounded-xl bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-bold flex items-center justify-center shrink-0">
-                        {(user?.name || user?.email || 'U')[0].toUpperCase()}
-                      </div>
-                    )}
-                    <div className="flex flex-col min-w-0">
-                      {user?.name && (
-                        <span className="text-xs font-semibold text-[#1D3557] dark:text-white truncate">
-                          {user.name}
-                        </span>
-                      )}
-                      <span className="text-[11px] font-medium text-slate-400 truncate">
-                        {user?.email}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="text-xs font-bold text-red-500 hover:underline flex items-center gap-1 cursor-pointer py-1 px-2 rounded-lg"
+                <>
+                  <Link
+                    to="/profile"
+                    onClick={() => { setMobileMenuOpen(false); navigate('/profile'); }}
+                    className="min-h-[42px] flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#C85A32] dark:bg-[#E07A5F]"
                   >
-                    <LogOut className="w-3.5 h-3.5 shrink-0" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
+                    <User className="w-4 h-4 text-white shrink-0" />
+                    <span>My Profile</span>
+                  </Link>
+
+                  <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#151B26] border border-[#E6E1D8] dark:border-[#283341] min-h-[44px]">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      {user?.picture ? (
+                        <img
+                          src={user.picture}
+                          alt="Profile"
+                          className="w-7 h-7 rounded-xl object-cover shrink-0 ring-1 ring-[#2D6A4F]"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-7 h-7 rounded-xl bg-[#2D6A4F]/20 text-[#2D6A4F] dark:text-[#52B788] text-xs font-bold flex items-center justify-center shrink-0">
+                          {(user?.name || user?.email || 'U')[0].toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex flex-col min-w-0">
+                        {user?.name && (
+                          <span className="text-xs font-semibold text-[#1D3557] dark:text-white truncate">
+                            {user.name}
+                          </span>
+                        )}
+                        <span className="text-[11px] font-medium text-slate-400 truncate">
+                          {user?.email}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="text-xs font-bold text-red-500 hover:underline flex items-center gap-1 cursor-pointer py-1 px-2 rounded-lg"
+                    >
+                      <LogOut className="w-3.5 h-3.5 shrink-0" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </>
               ) : (
                 <div className="grid grid-cols-2 gap-2 pt-1">
                   <Link
@@ -291,7 +284,8 @@ export function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="min-h-[42px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-[#1D3557] dark:text-slate-200 border border-[#E6E1D8] dark:border-[#283341] bg-white dark:bg-[#151B26]"
                   >
-                    <span>Sign In</span>
+                    <LogIn className="w-3.5 h-3.5 shrink-0" />
+                    <span>Login</span>
                   </Link>
                   <Link
                     to="/signup"
