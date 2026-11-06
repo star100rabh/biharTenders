@@ -351,7 +351,7 @@ const resolveFrontendUrl = (req) => {
   // If explicit frontendUrl was passed in query or request origin/referer
   const incomingOrigin = (req?.query?.frontendUrl || req?.headers?.origin || '').trim().replace(/\/+$/, '');
   if (incomingOrigin) {
-    if (incomingOrigin.includes('render.com') || (incomingOrigin.includes('localhost') && !isProduction)) {
+    if (incomingOrigin.includes('contrabid.in') || incomingOrigin.includes('render.com') || (incomingOrigin.includes('localhost') && !isProduction)) {
       return incomingOrigin;
     }
   }
@@ -359,7 +359,7 @@ const resolveFrontendUrl = (req) => {
   if (configured.includes(',')) {
     const urls = configured.split(',').map((u) => u.trim());
     if (isProduction) {
-      return urls.find((u) => u.includes('render.com')) || urls.find(u => !u.includes('localhost')) || urls[0];
+      return urls.find((u) => u.includes('contrabid.in')) || urls.find((u) => u.includes('render.com')) || urls.find(u => !u.includes('localhost')) || urls[0];
     }
     return urls.find((u) => u.includes('localhost') || u.includes('127.0.0.1')) || urls[0];
   }
@@ -367,12 +367,12 @@ const resolveFrontendUrl = (req) => {
   if (configured) {
     // If backend is on production, never redirect to localhost even if configured is localhost
     if (isProduction && (configured.includes('localhost') || configured.includes('127.0.0.1'))) {
-      return 'https://bihartenders-frontend-ur7t.onrender.com';
+      return 'https://contrabid.in';
     }
     return configured;
   }
 
-  return isProduction ? 'https://bihartenders-frontend-ur7t.onrender.com' : 'http://localhost:5173';
+  return isProduction ? 'https://contrabid.in' : 'http://localhost:5173';
 };
 
 /**
