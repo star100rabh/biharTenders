@@ -43,7 +43,7 @@ const envVarsSchema = Joi.object({
   CASHFREE_APP_ID: Joi.string().allow('').optional().description('Cashfree App ID'),
   CASHFREE_SECRET_KEY: Joi.string().allow('').optional().description('Cashfree Secret Key'),
   CASHFREE_ENV: Joi.string().valid('TEST', 'PRODUCTION', 'SANDBOX').default('TEST'),
-  ACTIVE_PAYMENT_GATEWAY: Joi.string().valid('cashfree', 'razorpay').default('cashfree'),
+  ACTIVE_PAYMENT_GATEWAY: Joi.string().valid('cashfree', 'razorpay').default('razorpay'),
   WHATSAPP_API_TOKEN: Joi.string().allow('').optional(),
   WHATSAPP_PHONE_NUMBER_ID: Joi.string().allow('').optional(),
   WHATSAPP_BUSINESS_ACCOUNT_ID: Joi.string().allow('').optional(),

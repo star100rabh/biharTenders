@@ -136,7 +136,7 @@ export class BillingService {
       throw new Error('User not found.');
     }
 
-    const activeGateway = env.ACTIVE_PAYMENT_GATEWAY || (cashfreeAdapter.isConfigured ? 'cashfree' : 'razorpay');
+    const activeGateway = env.ACTIVE_PAYMENT_GATEWAY || 'razorpay';
 
     // 1. CASHFREE FLOW
     if (activeGateway === 'cashfree' && cashfreeAdapter.isConfigured) {
