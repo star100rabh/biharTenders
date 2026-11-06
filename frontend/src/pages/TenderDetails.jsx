@@ -293,15 +293,23 @@ export default function TenderDetails() {
 
           <div className="space-y-2.5 pt-2">
             <Button
+              onClick={() => navigate('/pricing')}
+              className="w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm shadow-md flex items-center justify-center gap-1.5"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Upgrade to Pro — Unlock Unlimited Tenders (₹10)</span>
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => navigate('/tenders')}
-              className="w-full bg-dalBlue hover:bg-dalBlue-700 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm shadow-md"
+              className="w-full border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold py-2.5 rounded-xl text-xs sm:text-sm hover:border-dalBlue"
             >
               Browse Directory Listings
             </Button>
             <Button
-              variant="outline"
+              variant="ghost"
               onClick={() => navigate('/profile')}
-              className="w-full border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold py-2.5 rounded-xl text-xs sm:text-sm hover:border-dalBlue"
+              className="w-full text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 font-medium py-2 rounded-xl text-xs"
             >
               Go to Saved Tenders
             </Button>
