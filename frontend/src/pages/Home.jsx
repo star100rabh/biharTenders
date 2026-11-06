@@ -451,10 +451,10 @@ export default function Home() {
                 <span>Live Procurement Pipeline</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-                Key Bihar Government Departments &amp; Sectors
+                Key Public Works Departments &amp; Sectors
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                Active tenders, divisions, and estimated contract values indexed directly from Bihar e-Procurement (eproc2.bihar.gov.in).
+                Active tenders, divisions, and estimated contract values indexed from public procurement sources.
               </p>
             </div>
             
@@ -644,7 +644,7 @@ export default function Home() {
                 </h3>
               </div>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-10">
-                All tender notices, technical specifications, corrigenda, and BOQ Excel spreadsheets are synchronized directly from Bihar Government's official e-Procurement portal (eproc2.bihar.gov.in), guaranteeing 100% verified and up-to-date documentation.
+                All tender notices, technical specifications, corrigenda, and BOQ Excel spreadsheets are indexed from public procurement publications and official gazettes, guaranteeing verified and structured documentation.
               </p>
             </div>
 
