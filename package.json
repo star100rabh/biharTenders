@@ -13,6 +13,8 @@
     "backup:full": "npm --prefix backend run backup:full",
     "restore:db": "npm --prefix backend run restore:db",
     "restore:full": "npm --prefix backend run restore:full",
+    "scrape:all": "npm --prefix backend run scrape:all",
+    "scrape:latest": "npm --prefix backend run scrape:latest",
     "scrape:tenders": "npm --prefix backend run scrape:tenders",
     "scrape:complete": "npm --prefix backend run scrape:complete"
   }
