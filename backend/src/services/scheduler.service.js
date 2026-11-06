@@ -58,8 +58,8 @@ export class SchedulerService {
 
     // 5. Automated Expired Tenders Purge, Portal Reconciliation & Daily DB Backup (Runs daily at 03:00 AM IST)
     cron.schedule('0 3 * * *', async () => {
-      logger.info('[Scheduler] ⏰ Running scheduled 03:00 AM expired tenders purge from MongoDB & Cloudflare R2...');
-      await retentionService.purgeExpiredTenders('CRON_SCHEDULE_03AM').catch(err => {
+      logger.info('[Scheduler] ⏰ Running scheduled 03:00 AM expired tenders purge (tenders expired > 20 days ago)...');
+      await retentionService.purgeExpiredTenders('CRON_SCHEDULE_03AM', 20).catch(err => {
         logger.error(`[Scheduler] Purge failed: ${err.message}`);
       });
       await this.purgeExpiredArchivedTenders('CRON_SCHEDULE_03AM');
@@ -251,11 +251,11 @@ export class SchedulerService {
   }
 
   /**
-   * Automatically deletes tenders in ARCHIVE status where closingDate was > 30 days ago
+   * Automatically deletes tenders in ARCHIVE status where closingDate was > 20 days ago
    */
   async purgeExpiredArchivedTenders(invokedBy = 'ADMIN_MANUAL') {
-    const cutoffDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    logger.info(`[Scheduler] Purging archived tenders expired prior to ${cutoffDate.toISOString()}...`);
+    const cutoffDate = new Date(Date.now() - 20 * 24 * 60 * 60 * 1000);
+    logger.info(`[Scheduler] Purging archived tenders expired prior to ${cutoffDate.toISOString()} (20-day retention)...`);
 
     try {
       // Find tenders that are ARCHIVED and have closingDate older than 30 days

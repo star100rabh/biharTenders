@@ -144,10 +144,13 @@ export const getTenders = async (req, res, next) => {
     }
 
     const now = new Date();
+    const EXPIRED_RETENTION_DAYS = 20;
+    const expiredCutoffDate = new Date(now.getTime() - EXPIRED_RETENTION_DAYS * 24 * 60 * 60 * 1000);
 
+    // Active tenders: closingDate has NOT passed (open for bidding)
     const activeFilter = {
-      status: 'ACTIVE',
       isDelisted: { $ne: true },
+      status: { $nin: ['CANCELLED', 'EXPIRED'] },
       closingDate: { $gte: now },
       $or: [
         { bidSubmissionEndDate: { $exists: false } },
@@ -176,19 +179,16 @@ export const getTenders = async (req, res, next) => {
       isDelisted: { $ne: true }
     };
 
+    // Expired tenders: closed within the last 20 days (20-day retention window)
     const expiredFilterConditions = [
       {
-        $or: [
-          { status: 'EXPIRED' },
-          {
-            closingDate: { $lt: now },
-            $or: [
-              { bidOpeningDate: { $exists: false } },
-              { bidOpeningDate: null },
-              { bidOpeningDate: { $lt: now } }
-            ]
-          }
-        ]
+        isDelisted: { $ne: true },
+        closingDate: { $lt: now, $gte: expiredCutoffDate }
+      },
+      {
+        status: 'EXPIRED',
+        isDelisted: { $ne: true },
+        closingDate: { $gte: expiredCutoffDate }
       }
     ];
 
@@ -254,7 +254,7 @@ export const getTenders = async (req, res, next) => {
 
     const query = queryConditions.length > 0 ? { $and: queryConditions } : {};
 
-    // 6. Sort Configuration: Default to Most Recent Published Date First
+    // 6. Sort Configuration: Default to Most Recent Published Date First (or Most Recent Closing Date for Expired)
     let sortConfig = { publishedDate: -1, createdAt: -1, _id: -1 };
     if (sortBy === 'closingAsc') {
       sortConfig = { closingDate: 1, publishedDate: -1 };
@@ -267,8 +267,13 @@ export const getTenders = async (req, res, next) => {
     } else if (sortBy === 'publishedAsc') {
       sortConfig = { publishedDate: 1, createdAt: 1, _id: 1 };
     } else {
-      // Default: 'arrival', 'publishedDesc', 'latest', or undefined -> Newest Published First
-      sortConfig = { publishedDate: -1, createdAt: -1, _id: -1 };
+      // Default: 'arrival', 'publishedDesc', 'latest', or undefined
+      // For expired tab, show newly expired first
+      if (status === 'expired') {
+        sortConfig = { closingDate: -1, publishedDate: -1, _id: -1 };
+      } else {
+        sortConfig = { publishedDate: -1, createdAt: -1, _id: -1 };
+      }
     }
 
     // 7. Enforce Authentication & Subscription-Aware Limits
@@ -557,8 +562,8 @@ export const getTenderStats = async (req, res, next) => {
   try {
     const now = new Date();
     const activeMatch = {
-      status: 'ACTIVE',
       isDelisted: { $ne: true },
+      status: { $nin: ['CANCELLED', 'EXPIRED'] },
       closingDate: { $gte: now },
       $or: [
         { bidSubmissionEndDate: { $exists: false } },

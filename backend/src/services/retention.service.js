@@ -22,11 +22,7 @@ const logger = pino();
 export class RetentionService {
   /**
    * Evaluates all tenders against current Indian Standard Time.
-   * Marks status as 'EXPIRED' if current time is greater than closing date and time.
-   * 
-   * Safety guard: A tender is NEVER marked expired if its bidOpeningDate is still
-   * in the future. This prevents incorrect closingDate scrapes (e.g. Sep vs Oct month
-   * confusion) from archiving live tenders.
+   * Marks status as 'EXPIRED' once closing date/time (or bidSubmissionEndDate) has passed.
    */
   async markExpiredTenders() {
     const now = new Date();
@@ -38,32 +34,25 @@ export class RetentionService {
       {
         closingDate: { $lt: now },
         status: { $ne: 'EXPIRED' },
-        // Strict guard: only mark expired if BOTH bid submission deadline has ended
-        // AND bid opening date has passed (or not set).
-        // If bid submission is still open OR bid opening is pending, tender belongs in ARCHIVED.
-        $and: [
-          { $or: [{ bidSubmissionEndDate: { $exists: false } }, { bidSubmissionEndDate: null }, { bidSubmissionEndDate: { $lte: now } }] },
-          { $or: [{ bidOpeningDate: { $exists: false } }, { bidOpeningDate: null }, { bidOpeningDate: { $lte: now } }] }
-        ]
       },
       { $set: { status: 'EXPIRED' } }
     );
 
     if (result.modifiedCount > 0) {
-      logger.info(`[RetentionService] 🏷️ Marked ${result.modifiedCount} tender(s) as EXPIRED (Current time > BID END & opening date).`);
+      logger.info(`[RetentionService] 🏷️ Marked ${result.modifiedCount} tender(s) as EXPIRED (Current time > closing date).`);
     }
     return result.modifiedCount;
   }
 
   /**
-   * Purges all expired tenders (bid submission deadline and opening both concluded)
+   * Purges expired tenders older than retentionDays (default 20 days)
    * from MongoDB, Primary Cloudflare R2, and Secondary Backup Cloudflare R2.
-   * Ensures that expired tender data is deleted on a daily basis while keeping
-   * archived tenders safe.
+   * Tenders remain accessible for 20 days after expiration for contractor intelligence.
    */
-  async purgeExpiredTenders(triggeredBy = 'MANUAL') {
+  async purgeExpiredTenders(triggeredBy = 'MANUAL', retentionDays = 20) {
     const now = new Date();
-    logger.info(`[RetentionService] 🧹 Starting daily purge of expired tenders partition...`);
+    const cutoffDate = new Date(now.getTime() - retentionDays * 24 * 60 * 60 * 1000);
+    logger.info(`[RetentionService] 🧹 Starting purge of tenders expired prior to ${cutoffDate.toISOString()} (${retentionDays}-day retention policy)...`);
 
     if (mongoose.connection.readyState !== 1) {
       await connectDB();
@@ -72,26 +61,12 @@ export class RetentionService {
     // Mark any newly expired tenders first
     await this.markExpiredTenders().catch(() => {});
 
+    // Only select tenders that expired MORE than retentionDays (20 days) ago
     const filter = {
       $or: [
-        { 
-          status: 'EXPIRED',
-          $or: [
-            { bidOpeningDate: { $exists: false } },
-            { bidOpeningDate: null },
-            { bidOpeningDate: { $lte: now } }
-          ]
-        },
-        { 
-          $or: [
-            { bidSubmissionEndDate: { $lt: now } },
-            { closingDate: { $lt: now } }
-          ],
-          $and: [
-            { $or: [{ bidSubmissionEndDate: { $exists: false } }, { bidSubmissionEndDate: null }, { bidSubmissionEndDate: { $lte: now } }] },
-            { $or: [{ bidOpeningDate: { $exists: false } }, { bidOpeningDate: null }, { bidOpeningDate: { $lte: now } }] }
-          ]
-        }
+        { status: 'EXPIRED', closingDate: { $lt: cutoffDate } },
+        { closingDate: { $lt: cutoffDate } },
+        { bidSubmissionEndDate: { $lt: cutoffDate } }
       ]
     };
 
@@ -107,7 +82,7 @@ export class RetentionService {
     });
 
     const totalFound = expiredTenders.length;
-    logger.info(`[RetentionService] Identified ${totalFound} expired tender(s) in MongoDB to purge.`);
+    logger.info(`[RetentionService] Identified ${totalFound} tender(s) expired > ${retentionDays} days to purge.`);
 
     let purgedMongoCount = 0;
     let totalPrimaryFilesDeleted = 0;
@@ -194,7 +169,7 @@ export class RetentionService {
    * where tender data has expired (closingDate < now or marked EXPIRED / removed from MongoDB).
    * Ensures that expired JSON and documents never linger in backup storage for 14 days.
    */
-  async purgeExpiredFromBackupServer(cutoffDate = new Date()) {
+  async purgeExpiredFromBackupServer(cutoffDate = new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)) {
     const backupClient = getBackupR2Client();
     const backupBucket = process.env.BACKUP_R2_BUCKET_NAME;
 

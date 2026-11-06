@@ -28,14 +28,14 @@ const cronConfigSchema = new mongoose.Schema({
     type: [String],
     default: ['Every 30m (09:05-19:05 IST Mon-Sat)', '19:15 Evening Catchup', '20:00 Doc Recovery'],
   },
-  // Enable automated 30-day archive deletion
+  // Enable automated 20-day archive & expired tenders retention cleanup
   isArchivePurgeEnabled: {
     type: Boolean,
     default: true,
   },
   archiveRetentionDays: {
     type: Number,
-    default: 30,
+    default: 20,
   },
   lastRunAt: {
     type: Date,
