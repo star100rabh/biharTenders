@@ -7,7 +7,7 @@ const ThemeContext = createContext({
 
 export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('tenderhub_admin_theme');
+    const saved = localStorage.getItem('contrabid_admin_theme') || localStorage.getItem('tenderhub_admin_theme');
     if (saved) return saved === 'dark';
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
@@ -16,10 +16,10 @@ export function ThemeProvider({ children }) {
     const root = document.documentElement;
     if (isDark) {
       root.classList.add('dark');
-      localStorage.setItem('tenderhub_admin_theme', 'dark');
+      localStorage.setItem('contrabid_admin_theme', 'dark');
     } else {
       root.classList.remove('dark');
-      localStorage.setItem('tenderhub_admin_theme', 'light');
+      localStorage.setItem('contrabid_admin_theme', 'light');
     }
   }, [isDark]);
 

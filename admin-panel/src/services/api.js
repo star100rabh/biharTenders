@@ -3,7 +3,9 @@
  * @description Administrative API client communicating with backend /api/v1/admin endpoints.
  */
 
-export const PRODUCTION_BACKEND_URL = 'https://bihartenders-backend.onrender.com/api/v1/admin';
+export const PRODUCTION_CUSTOM_URL = 'https://api.contrabid.in/api/v1/admin';
+export const PRODUCTION_RENDER_URL = 'https://bihartenders-backend.onrender.com/api/v1/admin';
+export const PRODUCTION_BACKEND_URL = PRODUCTION_CUSTOM_URL;
 export const LOCAL_BACKEND_URL = 'http://localhost:8000/api/v1/admin';
 
 const sanitizeUrl = (url) => {
@@ -37,36 +39,57 @@ export const setCustomApiUrl = (url) => {
 
 export function getStoredAdminKey() {
   if (typeof window === 'undefined') return '';
-  return sessionStorage.getItem('TENDERHUB_ADMIN_KEY') || localStorage.getItem('TENDERHUB_ADMIN_KEY') || '';
+  return (
+    sessionStorage.getItem('CONTRABID_ADMIN_KEY') ||
+    localStorage.getItem('CONTRABID_ADMIN_KEY') ||
+    sessionStorage.getItem('TENDERHUB_ADMIN_KEY') ||
+    localStorage.getItem('TENDERHUB_ADMIN_KEY') ||
+    ''
+  );
 }
 
 export function getStoredAdminEmail() {
   if (typeof window === 'undefined') return '';
-  return sessionStorage.getItem('TENDERHUB_ADMIN_EMAIL') || localStorage.getItem('TENDERHUB_ADMIN_EMAIL') || '';
+  return (
+    sessionStorage.getItem('CONTRABID_ADMIN_EMAIL') ||
+    localStorage.getItem('CONTRABID_ADMIN_EMAIL') ||
+    sessionStorage.getItem('TENDERHUB_ADMIN_EMAIL') ||
+    localStorage.getItem('TENDERHUB_ADMIN_EMAIL') ||
+    ''
+  );
 }
 
 export function setStoredAdminCredentials(key, email, persist = false) {
-  sessionStorage.setItem('TENDERHUB_ADMIN_KEY', key);
-  sessionStorage.setItem('TENDERHUB_ADMIN_EMAIL', email);
+  sessionStorage.setItem('CONTRABID_ADMIN_KEY', key);
+  sessionStorage.setItem('CONTRABID_ADMIN_EMAIL', email);
   if (persist) {
-    localStorage.setItem('TENDERHUB_ADMIN_KEY', key);
-    localStorage.setItem('TENDERHUB_ADMIN_EMAIL', email);
+    localStorage.setItem('CONTRABID_ADMIN_KEY', key);
+    localStorage.setItem('CONTRABID_ADMIN_EMAIL', email);
   } else {
-    localStorage.removeItem('TENDERHUB_ADMIN_KEY');
-    localStorage.removeItem('TENDERHUB_ADMIN_EMAIL');
+    localStorage.removeItem('CONTRABID_ADMIN_KEY');
+    localStorage.removeItem('CONTRABID_ADMIN_EMAIL');
   }
+  // Clear any legacy keys to prevent drift
+  sessionStorage.removeItem('TENDERHUB_ADMIN_KEY');
+  sessionStorage.removeItem('TENDERHUB_ADMIN_EMAIL');
+  localStorage.removeItem('TENDERHUB_ADMIN_KEY');
+  localStorage.removeItem('TENDERHUB_ADMIN_EMAIL');
 }
 
 export function setStoredAdminKey(key, persist = false) {
-  sessionStorage.setItem('TENDERHUB_ADMIN_KEY', key);
+  sessionStorage.setItem('CONTRABID_ADMIN_KEY', key);
   if (persist) {
-    localStorage.setItem('TENDERHUB_ADMIN_KEY', key);
+    localStorage.setItem('CONTRABID_ADMIN_KEY', key);
   } else {
-    localStorage.removeItem('TENDERHUB_ADMIN_KEY');
+    localStorage.removeItem('CONTRABID_ADMIN_KEY');
   }
 }
 
 export function clearStoredAdminCredentials() {
+  sessionStorage.removeItem('CONTRABID_ADMIN_KEY');
+  sessionStorage.removeItem('CONTRABID_ADMIN_EMAIL');
+  localStorage.removeItem('CONTRABID_ADMIN_KEY');
+  localStorage.removeItem('CONTRABID_ADMIN_EMAIL');
   sessionStorage.removeItem('TENDERHUB_ADMIN_KEY');
   sessionStorage.removeItem('TENDERHUB_ADMIN_EMAIL');
   localStorage.removeItem('TENDERHUB_ADMIN_KEY');
@@ -175,8 +198,13 @@ export const adminApi = {
   syncMirror: () => request('/backup/sync-mirror', { method: 'POST' }),
   downloadBackupFile: async (fileName) => {
     const adminKey = getStoredAdminKey();
-    const response = await fetch(`${BASE_URL}/backup/download/${encodeURIComponent(fileName)}`, {
-      headers: { 'x-admin-key': adminKey },
+    const adminEmail = getStoredAdminEmail();
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/backup/download/${encodeURIComponent(fileName)}`, {
+      headers: { 
+        'x-admin-key': adminKey,
+        'x-admin-email': adminEmail
+      },
     });
     if (!response.ok) {
       throw new Error(`Failed to download backup archive: HTTP ${response.status}`);
@@ -193,8 +221,13 @@ export const adminApi = {
   },
   downloadDisasterRecoveryGuide: async () => {
     const adminKey = getStoredAdminKey();
-    const response = await fetch(`${BASE_URL}/backup/disaster-recovery-guide`, {
-      headers: { 'x-admin-key': adminKey },
+    const adminEmail = getStoredAdminEmail();
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/backup/disaster-recovery-guide`, {
+      headers: { 
+        'x-admin-key': adminKey,
+        'x-admin-email': adminEmail
+      },
     });
     if (!response.ok) {
       throw new Error(`Failed to download disaster recovery manual: HTTP ${response.status}`);
@@ -203,7 +236,7 @@ export const adminApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'BiharTenders_Disaster_Recovery_and_Backup_Manual.pdf';
+    a.download = 'ContraBid_Disaster_Recovery_and_Backup_Manual.pdf';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -211,8 +244,13 @@ export const adminApi = {
   },
   downloadDeploymentGuide: async () => {
     const adminKey = getStoredAdminKey();
-    const response = await fetch(`${BASE_URL}/backup/deployment-guide`, {
-      headers: { 'x-admin-key': adminKey },
+    const adminEmail = getStoredAdminEmail();
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/backup/deployment-guide`, {
+      headers: { 
+        'x-admin-key': adminKey,
+        'x-admin-email': adminEmail
+      },
     });
     if (!response.ok) {
       throw new Error(`Failed to download deployment manual: HTTP ${response.status}`);
@@ -221,7 +259,7 @@ export const adminApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'BiharTenders_Production_Deployment_Manual.pdf';
+    a.download = 'ContraBid_Production_Deployment_Manual.pdf';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -229,8 +267,13 @@ export const adminApi = {
   },
   downloadFutureConfigGuide: async () => {
     const adminKey = getStoredAdminKey();
-    const response = await fetch(`${BASE_URL}/backup/future-config-guide`, {
-      headers: { 'x-admin-key': adminKey },
+    const adminEmail = getStoredAdminEmail();
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/backup/future-config-guide`, {
+      headers: { 
+        'x-admin-key': adminKey,
+        'x-admin-email': adminEmail
+      },
     });
     if (!response.ok) {
       throw new Error(`Failed to download future configuration manual: HTTP ${response.status}`);
@@ -239,7 +282,7 @@ export const adminApi = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'BiharTenders_Future_Configurations_Render_and_Failover.pdf';
+    a.download = 'ContraBid_Future_Configurations_Render_and_Failover.pdf';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);

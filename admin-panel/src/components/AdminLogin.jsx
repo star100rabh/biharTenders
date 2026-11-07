@@ -51,12 +51,12 @@ export function AdminLogin({ onAuthenticated }) {
               <Landmark className="w-5 h-5 text-white" />
             </div>
             <span className="text-2xl font-display font-black tracking-tight text-dalBlue dark:text-white leading-none">
-              Bihar<span className="text-chinarRed">Tenders</span>
+              Contra<span className="text-[#C85A32]">Bid</span>
             </span>
             <span className="text-[10px] font-semibold tracking-wide bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
               e-Proc2
             </span>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-chinarRed/10 text-chinarRed border border-chinarRed/20">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#C85A32]/10 text-[#C85A32] border border-[#C85A32]/20">
               OPERATIONS
             </span>
           </div>
@@ -94,7 +94,7 @@ export function AdminLogin({ onAuthenticated }) {
                   type="email"
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
-                  placeholder="admin@bihartenders.in"
+                  placeholder="admin@contrabid.in"
                   className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-sans text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-dalBlue dark:focus:border-blue-400 focus:ring-2 focus:ring-dalBlue/20 transition-all"
                   autoFocus
                 />

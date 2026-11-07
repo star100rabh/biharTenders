@@ -17,12 +17,12 @@ export function Navbar({ isOperational, lastUpdated, onRefresh, isRefreshing, on
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span className="text-base sm:text-lg font-display font-black tracking-tight text-dalBlue dark:text-white leading-none">
-                Bihar<span className="text-chinarRed">Tenders</span>
+                Contra<span className="text-[#C85A32]">Bid</span>
               </span>
               <span className="text-[9px] sm:text-[10px] font-semibold tracking-wide bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.2 rounded border border-slate-200 dark:border-slate-700">
                 e-Proc2
               </span>
-              <span className="text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.2 rounded-full bg-chinarRed/10 text-chinarRed dark:bg-chinarRed/20 dark:text-orange-400 border border-chinarRed/20">
+              <span className="text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.2 rounded-full bg-[#C85A32]/10 text-[#C85A32] dark:bg-[#C85A32]/20 dark:text-orange-400 border border-[#C85A32]/20">
                 ADMIN OPS
               </span>
             </div>

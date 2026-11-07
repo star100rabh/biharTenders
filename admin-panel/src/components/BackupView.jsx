@@ -1,6 +1,6 @@
 /**
  * @file admin-panel/src/components/BackupView.jsx
- * @description Mission-critical disaster recovery dashboard for TenderHub.
+ * @description Mission-critical disaster recovery dashboard for ContraBid (Bihar Tenders).
  * Enables on-demand database snapshots, full-system archive generation,
  * backup download, cloud mirroring monitoring, and PDF manual retrieval.
  */
@@ -288,7 +288,7 @@ export function BackupView() {
             {schedule.displaySchedule || 'Daily at 02:00 AM IST'}
           </div>
           <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
-            <span>Expired: 0-day stay • Snapshots: 14-day rolling</span>
+            <span>Expired: 20-day intelligence • Snapshots: 14-day rolling</span>
             <span>•</span>
             <span className="text-emerald-600 dark:text-emerald-400 font-medium">Cron Active</span>
           </div>
@@ -351,7 +351,7 @@ export function BackupView() {
             {statusData?.totalSizeMB || '0.00'} MB
           </div>
           <div className="text-[11px] text-slate-500 dark:text-slate-400">
-            Snapshots pruned after 14 days (Expired: 0 days)
+            Snapshots pruned after 14 days (Expired: 20-day retention)
           </div>
         </div>
 

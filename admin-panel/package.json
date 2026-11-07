@@ -1,8 +1,9 @@
 {
-  "name": "tenderhub-admin-panel",
+  "name": "contrabid-admin",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "ContraBid - Bihar Government Tenders Operations & Diagnostic Console",
   "scripts": {
     "dev": "vite --port 5174",
     "build": "vite build",

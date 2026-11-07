@@ -62,7 +62,7 @@ export function ArchiveView({ overview, onRefresh }) {
           <span>Archive &amp; Expired Data Retention Cleaner</span>
         </h2>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-          Lifecycle management: Enforces 0-day retention on expired tenders across Primary and Backup servers, plus 30-day archive pruning.
+          Lifecycle management: Retains expired notices for 20 days for contractor intelligence, then executes synchronized purge from MongoDB and Cloudflare R2.
         </p>
       </div>
 
@@ -107,13 +107,13 @@ export function ArchiveView({ overview, onRefresh }) {
               Every night at 03:00 AM, the scheduler triggers a synchronized flush:
             </p>
             <ul className="text-[11px] text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
-              <li><strong>Expired Tenders:</strong> Purged immediately from MongoDB, Primary R2 &amp; Secondary Backup R2 (both JSON and documents, 0-day retention).</li>
+              <li><strong>Expired Tenders:</strong> Retained in Expired directory for 20 days, then purged permanently from MongoDB and Cloudflare R2.</li>
               <li><strong>30-Day Archive:</strong> Purges records with status <code className="text-purple-600 dark:text-purple-400 font-mono font-bold">ARCHIVED</code> older than 30 days.</li>
             </ul>
           </div>
 
           <div className="pt-3 border-t border-slate-100 dark:border-slate-700/80 text-xs font-mono text-slate-500 dark:text-slate-400 space-y-1.5">
-            <div>Expired Tender Retention: <strong className="text-emerald-600 dark:text-emerald-400">0 Days (Immediate Primary &amp; Backup Deletion)</strong></div>
+            <div>Expired Tender Retention: <strong className="text-emerald-600 dark:text-emerald-400">20 Days (Strict MongoDB + Cloudflare R2 Cleanup)</strong></div>
             <div>Archive Retention Policy: <strong className="text-slate-800 dark:text-slate-200">30 Calendar Days</strong></div>
             <div>Last Automated Flush: <strong className="text-slate-800 dark:text-slate-200">{cronConfig.lastPurgedAt ? new Date(cronConfig.lastPurgedAt).toLocaleString() : 'Pending Next Cycle'}</strong></div>
           </div>
