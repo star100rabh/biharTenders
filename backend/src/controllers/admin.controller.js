@@ -146,7 +146,7 @@ let activeCrawlerProcess = null;
  */
 export const triggerManualSync = async (req, res) => {
   try {
-    const { mode = 'LATEST', limit = 100, reset = false } = req.body || {};
+    const { mode = 'LATEST', limit = 100, reset = false, targetCategory = 'ACTIVE' } = req.body || {};
 
     // Check if a sync job is already actively running
     const existingRunning = await SyncJob.findOne({ status: 'running' }).lean();
@@ -161,12 +161,16 @@ export const triggerManualSync = async (req, res) => {
       ? path.join(process.cwd(), 'src/scripts/fetchBiharAll.js')
       : path.join(process.cwd(), 'src/scripts/fetchBiharLatest.js');
 
-    const args = [scriptPath, String(limit)];
+    const args = [scriptPath, String(limit), targetCategory];
     if (reset) args.push('--reset');
 
     const child = spawn(process.execPath, args, {
       cwd: process.cwd(),
-      env: { ...process.env, SCRAPER_HEADLESS: process.env.SCRAPER_HEADLESS || 'true' },
+      env: { 
+        ...process.env, 
+        PLAYWRIGHT_BROWSERS_PATH: process.env.PLAYWRIGHT_BROWSERS_PATH || '0',
+        SCRAPER_HEADLESS: process.env.SCRAPER_HEADLESS || 'true' 
+      },
       stdio: ['ignore', 'pipe', 'pipe']
     });
 

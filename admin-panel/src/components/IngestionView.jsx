@@ -42,8 +42,9 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
   const [actionSuccess, setActionSuccess] = useState('');
   const [actionError, setActionError] = useState('');
 
-  // Limit selections
+  // Limit & Category selections
   const [allLimit, setAllLimit] = useState(50000);
+  const [latestCategory, setLatestCategory] = useState('ACTIVE'); // 'ACTIVE' | 'UPCOMING' | 'BOTH'
   const [latestLimit, setLatestLimit] = useState(600);
 
   // Live telemetry & logs state
@@ -134,13 +135,15 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
     try {
       const res = await adminApi.triggerManualSync({
         mode: 'LATEST',
-        limit: latestLimit
+        limit: latestLimit,
+        targetCategory: latestCategory
       });
-      setActionSuccess(res.message || 'Daily latest tenders crawl started in background.');
+      const catLabel = latestCategory === 'UPCOMING' ? 'Upcoming' : latestCategory === 'ACTIVE' ? 'Latest Active' : 'Active & Upcoming';
+      setActionSuccess(res.message || `${catLabel} tenders crawl started in background.`);
       await fetchLiveStatus();
       setTimeout(onRefresh, 2000);
     } catch (err) {
-      setActionError(`Failed to start latest crawl: ${err.message}`);
+      setActionError(`Failed to start crawl: ${err.message}`);
     } finally {
       setIsTriggeringLatest(false);
     }
@@ -367,25 +370,43 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
             </div>
 
             <h3 className="text-base font-bold font-display text-slate-900 dark:text-white">
-              Daily Latest Tenders
+              Targeted Tender Scraper
             </h3>
             
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Fetches newly published notices across departments. Halts automatically upon finding 5 consecutive already-scraped tenders.
+              Fetch newly published active tenders, upcoming pipelines, or both. Halts automatically on duplicate tenders.
             </p>
 
-            <div className="flex items-center gap-2 pt-1">
-              <label className="text-[11px] font-mono text-slate-500">Max Limit:</label>
-              <select 
-                value={latestLimit} 
-                onChange={(e) => setLatestLimit(Number(e.target.value))}
-                className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-mono rounded-lg px-2 py-1 text-slate-800 dark:text-slate-200"
-              >
-                <option value={100}>100 tenders</option>
-                <option value={300}>300 tenders</option>
-                <option value={600}>600 tenders (Daily)</option>
-                <option value={1000}>1,000 tenders</option>
-              </select>
+            <div className="space-y-2 pt-1">
+              {/* Category Dropdown */}
+              <div className="flex items-center justify-between gap-2">
+                <label className="text-[11px] font-mono text-slate-500">Category:</label>
+                <select 
+                  value={latestCategory} 
+                  onChange={(e) => setLatestCategory(e.target.value)}
+                  className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-lg px-2.5 py-1 text-slate-800 dark:text-slate-200 cursor-pointer"
+                >
+                  <option value="ACTIVE">⚡ Active Tenders (Live Bidding)</option>
+                  <option value="UPCOMING">📅 Upcoming Tenders (Pipeline)</option>
+                  <option value="BOTH">🌐 Both (Active + Upcoming)</option>
+                </select>
+              </div>
+
+              {/* Max Limit Dropdown */}
+              <div className="flex items-center justify-between gap-2">
+                <label className="text-[11px] font-mono text-slate-500">Max Limit:</label>
+                <select 
+                  value={latestLimit} 
+                  onChange={(e) => setLatestLimit(Number(e.target.value))}
+                  className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-mono rounded-lg px-2.5 py-1 text-slate-800 dark:text-slate-200 cursor-pointer"
+                >
+                  <option value={50}>50 tenders (Quick Test)</option>
+                  <option value={100}>100 tenders</option>
+                  <option value={300}>300 tenders</option>
+                  <option value={600}>600 tenders (Recommended)</option>
+                  <option value={1000}>1,000 tenders</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -397,12 +418,18 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
             {isTriggeringLatest ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Checking Latest...</span>
+                <span>Launching Scraper...</span>
               </>
             ) : (
               <>
                 <Play className="w-4 h-4 fill-white" />
-                <span>Fetch Latest Tenders</span>
+                <span>
+                  {latestCategory === 'UPCOMING'
+                    ? 'Fetch Upcoming Tenders'
+                    : latestCategory === 'ACTIVE'
+                    ? 'Fetch Active Tenders'
+                    : 'Fetch Active & Upcoming Tenders'}
+                </span>
               </>
             )}
           </button>

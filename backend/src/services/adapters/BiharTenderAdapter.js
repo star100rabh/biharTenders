@@ -36,19 +36,26 @@ export default class BiharTenderAdapter {
    * Scrapes only a few latest tenders (e.g. for a daily fast sync)
    */
   async scrapeLatestTenders(options = {}) {
-    const { limit = 50, headless = true } = options;
-    console.log(`[BiharAdapter] Launching browser for LATEST tenders (headless: ${headless})...`);
+    const { limit = 50, headless = true, targetCategory = 'ACTIVE' } = options;
+    console.log(`[BiharAdapter] Launching browser for ${targetCategory} tenders (limit: ${limit}, headless: ${headless})...`);
     
     return await this._runScrapeSession(async (page, crawlSummary) => {
-      console.log(`--- Fetching LATEST ${limit} Tenders ---`);
-      const latestSummary = await this.scrapeTenders(page, limit, this.tenderListingUrl, 'ACTIVE');
-      
-      console.log(`--- Fetching UPCOMING ${limit} Tenders ---`);
-      const upcomingSummary = await this.scrapeTenders(page, limit, 'https://eproc2.bihar.gov.in/EPSV2Web/openarea/tenderListingPage.action#upcomingTenders', 'UPCOMING');
+      let latestSummary = { totalIngested: 0, totalSkipped: 0, totalPdfsSecured: 0 };
+      let upcomingSummary = { totalIngested: 0, totalSkipped: 0, totalPdfsSecured: 0 };
 
-      crawlSummary.totalIngested += latestSummary.totalIngested + upcomingSummary.totalIngested;
-      crawlSummary.totalSkipped += latestSummary.totalSkipped + upcomingSummary.totalSkipped;
-      crawlSummary.totalPdfsSecured += latestSummary.totalPdfsSecured + upcomingSummary.totalPdfsSecured;
+      if (targetCategory === 'ACTIVE' || targetCategory === 'LATEST' || targetCategory === 'BOTH') {
+        console.log(`--- Fetching LATEST Active ${limit} Tenders ---`);
+        latestSummary = await this.scrapeTenders(page, limit, this.tenderListingUrl, 'ACTIVE');
+      }
+      
+      if (targetCategory === 'UPCOMING' || targetCategory === 'BOTH') {
+        console.log(`--- Fetching UPCOMING ${limit} Tenders ---`);
+        upcomingSummary = await this.scrapeTenders(page, limit, 'https://eproc2.bihar.gov.in/EPSV2Web/openarea/tenderListingPage.action#upcomingTenders', 'UPCOMING');
+      }
+
+      crawlSummary.totalIngested += (latestSummary?.totalIngested || 0) + (upcomingSummary?.totalIngested || 0);
+      crawlSummary.totalSkipped += (latestSummary?.totalSkipped || 0) + (upcomingSummary?.totalSkipped || 0);
+      crawlSummary.totalPdfsSecured += (latestSummary?.totalPdfsSecured || 0) + (upcomingSummary?.totalPdfsSecured || 0);
     }, headless);
   }
 
@@ -73,24 +80,38 @@ export default class BiharTenderAdapter {
   }
 
   async _runScrapeSession(scrapeFn, headless) {
-    console.log(`[BiharAdapter] Launching browser (headless: ${headless})...`);
+    if (!process.env.PLAYWRIGHT_BROWSERS_PATH) {
+      process.env.PLAYWRIGHT_BROWSERS_PATH = '0';
+    }
+    console.log(`[BiharAdapter] Launching browser (headless: ${headless}, browsersPath: ${process.env.PLAYWRIGHT_BROWSERS_PATH})...`);
     
     let browser;
     const launchOptions = { 
       headless, 
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'] 
+      args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox', 
+        '--disable-dev-shm-usage', 
+        '--disable-gpu',
+        '--single-process',
+        '--no-zygote',
+        '--disable-extensions'
+      ] 
     };
 
     try {
       browser = await chromium.launch(launchOptions);
     } catch (launchErr) {
-      if (launchErr.message && (launchErr.message.includes("Executable doesn't exist") || launchErr.message.includes('playwright install'))) {
-        console.log("⚠️ Playwright Chromium binary missing! Running dynamic install: 'npx playwright install chromium'...");
+      if (launchErr.message && (launchErr.message.includes("Executable doesn't exist") || launchErr.message.includes('playwright install') || launchErr.message.includes('browserType.launch'))) {
+        console.log("⚠️ Playwright Chromium binary missing! Running dynamic local install with PLAYWRIGHT_BROWSERS_PATH=0...");
         try {
-          execSync('npx playwright install chromium', { stdio: 'inherit' });
+          execSync('PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium', { 
+            stdio: 'inherit',
+            env: { ...process.env, PLAYWRIGHT_BROWSERS_PATH: '0' }
+          });
           browser = await chromium.launch(launchOptions);
         } catch (installErr) {
-          console.error("❌ Failed to dynamic-install Playwright Chromium:", installErr);
+          console.error("❌ Failed to dynamic-install Playwright Chromium:", installErr.message);
           throw launchErr;
         }
       } else {

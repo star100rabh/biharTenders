@@ -7,8 +7,9 @@ async function run() {
   const adapter = new BiharTenderAdapter();
   try {
     const limit = parseInt(process.argv[2], 10) || 50;
-    console.log(`🚀 Starting fetchBiharLatest (Scraping Latest ${limit} Active and Upcoming Tenders)`);
-    const summary = await adapter.scrapeLatestTenders({ limit, headless: true });
+    const targetCategory = (process.argv[3] || 'ACTIVE').toUpperCase();
+    console.log(`🚀 Starting fetchBiharLatest (Scraping ${targetCategory} Tenders, Limit: ${limit})`);
+    const summary = await adapter.scrapeLatestTenders({ limit, headless: true, targetCategory });
     console.log("✅ Finished scraping:", summary);
   } catch (err) {
     console.error("❌ Scraping failed:", err);
