@@ -664,18 +664,25 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
           {liveStatus.logs && liveStatus.logs.length > 0 ? (
             liveStatus.logs.map((log, index) => {
               const msg = log.message || '';
-              const isSuccess = msg.includes('✅') || msg.includes('🎉');
-              const isSkip = msg.includes('⏩');
-              const isOrg = msg.includes('🏛️') || msg.includes('📋');
+              const isSuccess = msg.includes('✅') || msg.includes('🎉') || msg.includes('Finished scraping:');
+              const isFastForward = msg.includes('⚡') || msg.includes('Fast-forward') || msg.includes('⏩');
+              const isDownload = msg.includes('📥') || msg.includes('Downloaded') || msg.includes('☁️ Uploading');
+              const isCompress = msg.includes('[PDF Compressor]') || msg.includes('📉');
+              const isProgress = msg.includes('🚀') || msg.includes('PROGRESS');
+              const isTargetOrSection = msg.includes('--- Fetching') || msg.includes('🏛️') || msg.includes('📋') || msg.includes('Expanded');
               const isWarn = log.level === 'WARN' || msg.includes('⚠️');
-              const isError = log.level === 'ERROR' || msg.includes('❌');
+              const isError = log.level === 'ERROR' || msg.includes('❌') || msg.toLowerCase().includes('failed:');
 
               let colorClass = 'text-slate-300';
-              if (isSuccess) colorClass = 'text-emerald-400';
-              else if (isSkip) colorClass = 'text-amber-300';
-              else if (isOrg) colorClass = 'text-purple-300 font-bold';
+              if (isError) colorClass = 'text-rose-400 font-semibold';
               else if (isWarn) colorClass = 'text-amber-400';
-              else if (isError) colorClass = 'text-rose-400 font-bold';
+              else if (isSuccess) colorClass = 'text-emerald-400 font-medium';
+              else if (isFastForward) colorClass = 'text-yellow-300 font-medium';
+              else if (isCompress) colorClass = 'text-emerald-300';
+              else if (isDownload) colorClass = 'text-sky-300';
+              else if (isProgress) colorClass = 'text-blue-400 font-bold';
+              else if (isTargetOrSection) colorClass = 'text-purple-300 font-semibold';
+              else if (msg.includes('[BiharAdapter]')) colorClass = 'text-slate-200';
 
               return (
                 <div key={log._id || index} className={`flex items-start gap-2 leading-relaxed ${colorClass}`}>

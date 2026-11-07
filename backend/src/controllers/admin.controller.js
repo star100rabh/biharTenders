@@ -142,6 +142,141 @@ export const getSyncHistory = async (req, res) => {
 let activeCrawlerProcess = null;
 
 /**
+ * Attaches real-time stdout/stderr log stream listener to a crawler child process
+ * Streams rich logs to SystemLog (for live terminal in admin panel) and updates SyncJob progress metrics.
+ */
+function attachCrawlerLogStream(child, syncJobId, startTime = Date.now()) {
+  let stdoutBuffer = '';
+  let stderrBuffer = '';
+
+  const cleanAnsi = (str) =>
+    str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '').trim();
+
+  const handleLine = async (rawLine, isStderr = false) => {
+    let line = cleanAnsi(rawLine);
+    if (!line) return;
+
+    // Check if Pino JSON log (e.g. {"level":30,"time":...,"msg":"[PDF Compressor] ..."})
+    if (line.startsWith('{') && line.endsWith('}')) {
+      try {
+        const parsed = JSON.parse(line);
+        if (parsed.msg) line = parsed.msg;
+      } catch (e) {}
+    }
+
+    // Ignore noisy low-level Chromium sandbox / GPU logs that add zero value
+    if (
+      line.includes('gpu_init.cc') ||
+      line.includes('gl_surface') ||
+      line.includes('font_service') ||
+      line.includes('ozone_platform') ||
+      line.includes('vaapi_wrapper') ||
+      line.includes('dbus') ||
+      line.includes('DevTools listening on') ||
+      line.includes('Created TensorFlow Lite XNNPACK delegate')
+    ) {
+      return;
+    }
+
+    // Determine log level
+    let level = isStderr ? 'WARN' : 'INFO';
+    if (
+      line.includes('❌') ||
+      line.includes('Error:') ||
+      line.toLowerCase().includes('scraping failed') ||
+      line.toLowerCase().includes('failed to dynamic-install')
+    ) {
+      level = 'ERROR';
+    } else if (line.includes('⚠️') || line.includes('WARN')) {
+      level = 'WARN';
+    }
+
+    // Update real-time sync job counters if syncJobId exists
+    if (syncJobId) {
+      // 1. Saved tender to database
+      const savedMatch = line.match(/Saved Tender to MongoDB:\s*([^\s]+)\s*\((\d+)\s*files attached\)/i);
+      if (savedMatch) {
+        const fileCount = parseInt(savedMatch[2], 10) || 0;
+        await SyncJob.findByIdAndUpdate(syncJobId, {
+          $inc: { itemsProcessed: 1, newTendersFound: 1, pdfsDownloaded: fileCount }
+        }).catch(() => {});
+      }
+
+      // 2. Fast-forward skipped tenders
+      const skipMatch = line.match(/Fast-forward:\s*Skipped\s+(\d+)\s+already fetched/i);
+      if (skipMatch) {
+        const skippedCount = parseInt(skipMatch[1], 10) || 0;
+        await SyncJob.findByIdAndUpdate(syncJobId, {
+          $inc: { itemsProcessed: skippedCount }
+        }).catch(() => {});
+      }
+
+      // 3. Finished scraping summary
+      if (line.includes('Finished scraping:')) {
+        try {
+          const jsonPart = line.substring(line.indexOf('{'));
+          const summary = JSON.parse(jsonPart.replace(/'/g, '"'));
+          if (summary) {
+            await SyncJob.findByIdAndUpdate(syncJobId, {
+              $set: {
+                newTendersFound: summary.totalIngested || 0,
+                pdfsDownloaded: summary.totalPdfsSecured || 0,
+                missingPdfCount: summary.totalWithoutDocuments || 0,
+              }
+            }).catch(() => {});
+          }
+        } catch (e) {}
+      }
+    }
+
+    // Save to SystemLog for live stream in admin panel
+    await SystemLog.create({
+      level,
+      source: 'WORKER_SCRAPER',
+      message: line.substring(0, 500)
+    }).catch(() => {});
+  };
+
+  child.stdout.on('data', async (chunk) => {
+    stdoutBuffer += chunk.toString();
+    const lines = stdoutBuffer.split('\n');
+    stdoutBuffer = lines.pop() || '';
+    for (const l of lines) {
+      await handleLine(l, false);
+    }
+  });
+
+  child.stderr.on('data', async (chunk) => {
+    stderrBuffer += chunk.toString();
+    const lines = stderrBuffer.split('\n');
+    stderrBuffer = lines.pop() || '';
+    for (const l of lines) {
+      await handleLine(l, true);
+    }
+  });
+
+  child.on('close', async (code) => {
+    activeCrawlerProcess = null;
+    if (stdoutBuffer.trim()) {
+      await handleLine(stdoutBuffer.trim(), false);
+    }
+    if (stderrBuffer.trim()) {
+      await handleLine(stderrBuffer.trim(), true);
+    }
+
+    if (syncJobId) {
+      const durationMs = Date.now() - startTime;
+      const finalStatus = code === 0 ? 'completed' : 'failed';
+      await SyncJob.findByIdAndUpdate(syncJobId, {
+        status: finalStatus,
+        durationMs,
+        ...(code !== 0 ? { errorMessage: `Crawler process exited with code ${code}` } : {})
+      }).catch(() => {});
+    }
+  });
+}
+
+/**
  * Trigger immediate manual ingestion (supports mode: 'ALL' | 'LATEST', limit, reset)
  */
 export const triggerManualSync = async (req, res) => {
@@ -164,6 +299,12 @@ export const triggerManualSync = async (req, res) => {
     const args = [scriptPath, String(limit), targetCategory];
     if (reset) args.push('--reset');
 
+    const syncJob = await SyncJob.create({
+      sourcePortal: 'BIHAR_TENDERS',
+      triggeredBy: 'ADMIN_MANUAL',
+      status: 'running'
+    });
+
     const child = spawn(process.execPath, args, {
       cwd: process.cwd(),
       env: { 
@@ -175,42 +316,16 @@ export const triggerManualSync = async (req, res) => {
     });
 
     activeCrawlerProcess = child;
+    const startTime = Date.now();
 
-    child.stdout.on('data', async (data) => {
-      const text = data.toString().trim();
-      if (!text) return;
-      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-      for (const line of lines) {
-        if (line.includes('✅') || line.includes('🏛️') || line.includes('⏩') || line.includes('👉') || line.includes('🎉') || line.includes('🚀') || line.includes('🛑') || line.includes('📊')) {
-          await SystemLog.create({
-            level: 'INFO',
-            source: 'WORKER_SCRAPER',
-            message: line
-          }).catch(() => {});
-        }
-      }
-    });
-
-    child.stderr.on('data', async (data) => {
-      const text = data.toString().trim();
-      if (text) {
-        await SystemLog.create({
-          level: 'WARN',
-          source: 'WORKER_SCRAPER',
-          message: text.substring(0, 300)
-        }).catch(() => {});
-      }
-    });
-
-    child.on('close', (code) => {
-      activeCrawlerProcess = null;
-    });
+    attachCrawlerLogStream(child, syncJob._id, startTime);
 
     return res.status(200).json({
       success: true,
       message: `${mode === 'ALL' ? 'Full Active Tenders' : 'Daily Latest Tenders'} crawl started in background.`,
       mode,
       limit,
+      jobId: syncJob._id,
       pid: child.pid
     });
   } catch (err) {
@@ -259,7 +374,7 @@ export const getLiveSyncStatus = async (req, res) => {
       source: 'WORKER_SCRAPER'
     })
     .sort({ createdAt: -1 })
-    .limit(35)
+    .limit(150)
     .lean();
 
     const isRunning = !!runningJob || !!activeCrawlerProcess;
@@ -612,47 +727,31 @@ export const triggerPendingDocsFetch = async (req, res) => {
     const args = [scriptPath, '--limit', String(limit)];
     if (all) args.push('--all');
 
+    const syncJob = await SyncJob.create({
+      sourcePortal: 'BIHAR_TENDERS',
+      triggeredBy: 'ADMIN_MANUAL',
+      status: 'running'
+    });
+
     const child = spawn(process.execPath, args, {
       cwd: process.cwd(),
-      env: { ...process.env, SCRAPER_HEADLESS: process.env.SCRAPER_HEADLESS || 'true' },
+      env: { 
+        ...process.env, 
+        PLAYWRIGHT_BROWSERS_PATH: process.env.PLAYWRIGHT_BROWSERS_PATH || '0',
+        SCRAPER_HEADLESS: process.env.SCRAPER_HEADLESS || 'true' 
+      },
       stdio: ['ignore', 'pipe', 'pipe']
     });
 
     activeCrawlerProcess = child;
+    const startTime = Date.now();
 
-    child.stdout.on('data', async (data) => {
-      const text = data.toString().trim();
-      if (!text) return;
-      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-      for (const line of lines) {
-        if (line.includes('✅') || line.includes('🎉') || line.includes('🏛️') || line.includes('👉') || line.includes('⏳') || line.includes('🚀') || line.includes('🏁') || line.includes('📋') || line.includes('🔐')) {
-          await SystemLog.create({
-            level: 'INFO',
-            source: 'WORKER_SCRAPER',
-            message: line
-          }).catch(() => {});
-        }
-      }
-    });
-
-    child.stderr.on('data', async (data) => {
-      const text = data.toString().trim();
-      if (text) {
-        await SystemLog.create({
-          level: 'WARN',
-          source: 'WORKER_SCRAPER',
-          message: text.substring(0, 300)
-        }).catch(() => {});
-      }
-    });
-
-    child.on('close', () => {
-      activeCrawlerProcess = null;
-    });
+    attachCrawlerLogStream(child, syncJob._id, startTime);
 
     return res.status(200).json({
       success: true,
       message: 'Pending documents recovery crawl started in background.',
+      jobId: syncJob._id,
       pid: child.pid
     });
   } catch (err) {
