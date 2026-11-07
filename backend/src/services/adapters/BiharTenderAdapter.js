@@ -93,7 +93,6 @@ export default class BiharTenderAdapter {
         '--disable-setuid-sandbox', 
         '--disable-dev-shm-usage', 
         '--disable-gpu',
-        '--single-process',
         '--no-zygote',
         '--disable-extensions'
       ] 
@@ -296,10 +295,10 @@ export default class BiharTenderAdapter {
 
     for (const item of pendingRows) {
       if (processedCount >= limit) break;
-      const button = viewButtons[item.btnIndex];
-      if (!button) continue;
-
       const { sourceTenderId, rowEndDate, timeLeftStr } = item;
+      
+      console.log(`[BiharAdapter] 📋 [${processedCount + 1}/${pendingRows.length}] Processing Tender ID: ${sourceTenderId || 'Row ' + item.btnIndex}...`);
+
       try {
         // Clear any stuck spinner/overlay or display styles before opening modal
         await page.evaluate(() => {
@@ -307,7 +306,7 @@ export default class BiharTenderAdapter {
           if (loading) loading.style.display = 'none';
           const overlay = document.getElementById('overlay');
           if (overlay) overlay.style.display = 'none';
-          // CRITICAL: Reset Bootstrap's internal modal state so subsequent rows can open modal!
+          // Reset Bootstrap's internal modal state so subsequent rows can open modal
           if (window.$ && window.$('#myModalprev').data('bs.modal')) {
             window.$('#myModalprev').data('bs.modal').isShown = false;
           }
@@ -316,26 +315,35 @@ export default class BiharTenderAdapter {
           document.body.classList.remove('modal-open');
         });
 
-        await button.scrollIntoViewIfNeeded().catch(() => {});
-        await button.click({ force: true });
+        // Trigger view button click directly via DOM for 100% responsiveness on large 500+ row tables
+        const clicked = await page.evaluate(({ selector, idx }) => {
+          const btns = document.querySelectorAll(selector);
+          const btn = btns[idx];
+          if (!btn) return false;
+          btn.scrollIntoView({ block: 'center', inline: 'center' });
+          btn.click();
+          if (window.angular) {
+            window.angular.element(btn).triggerHandler('click');
+          }
+          return true;
+        }, { selector: viewButtonsSelector, idx: item.btnIndex });
+
+        if (!clicked) {
+          console.warn(`[BiharAdapter] ⚠️ Could not locate button for tender ${sourceTenderId}, skipping.`);
+          summary.totalSkipped++;
+          continue;
+        }
 
         try {
-          await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 10000 });
+          await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 8000 });
         } catch (_) {
-          // If modal didn't open via button.click, trigger click via DOM directly
-          await page.evaluate(({ selector, idx }) => {
-            if (window.$ && window.$('#myModalprev').data('bs.modal')) {
-              window.$('#myModalprev').data('bs.modal').isShown = false;
+          // If modal didn't transition in time, ensure modal is shown
+          await page.evaluate(() => {
+            if (window.$ && typeof window.$('#myModalprev').modal === 'function') {
+              window.$('#myModalprev').modal('show');
             }
-            const btns = document.querySelectorAll(selector);
-            if (btns[idx]) {
-              btns[idx].click();
-              if (window.angular) {
-                window.angular.element(btns[idx]).triggerHandler('click');
-              }
-            }
-          }, { selector: viewButtonsSelector, idx: item.btnIndex });
-          await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 15000 });
+          });
+          await page.waitForSelector('#myModalprev', { state: 'visible', timeout: 7000 }).catch(() => {});
         }
 
         const tenderData = await this.extractTextFromModal(page, rowEndDate);

@@ -273,6 +273,15 @@ function attachCrawlerLogStream(child, syncJobId, startTime = Date.now()) {
         ...(code !== 0 ? { errorMessage: `Crawler process exited with code ${code}` } : {})
       }).catch(() => {});
     }
+
+    const isSuccess = code === 0;
+    await SystemLog.create({
+      level: isSuccess ? 'INFO' : 'WARN',
+      source: 'WORKER_SCRAPER',
+      message: isSuccess
+        ? '🎉 Crawl cycle completed successfully.'
+        : `🛑 Crawl process ended (Exit code: ${code}).`
+    }).catch(() => {});
   });
 }
 
