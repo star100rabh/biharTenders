@@ -377,14 +377,16 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
               Fetch newly published active tenders, upcoming pipelines, or both. Halts automatically on duplicate tenders.
             </p>
 
-            <div className="space-y-2 pt-1">
+            <div className="space-y-2.5 pt-1">
               {/* Category Dropdown */}
-              <div className="flex items-center justify-between gap-2">
-                <label className="text-[11px] font-mono text-slate-500">Category:</label>
+              <div>
+                <label className="block text-[11px] font-mono text-slate-500 dark:text-slate-400 mb-1">
+                  Target Category:
+                </label>
                 <select 
                   value={latestCategory} 
                   onChange={(e) => setLatestCategory(e.target.value)}
-                  className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-lg px-2.5 py-1 text-slate-800 dark:text-slate-200 cursor-pointer"
+                  className="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200 cursor-pointer truncate focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 >
                   <option value="ACTIVE">⚡ Active Tenders (Live Bidding)</option>
                   <option value="UPCOMING">📅 Upcoming Tenders (Pipeline)</option>
@@ -393,12 +395,14 @@ export function IngestionView({ overview, syncHistory, onRefresh }) {
               </div>
 
               {/* Max Limit Dropdown */}
-              <div className="flex items-center justify-between gap-2">
-                <label className="text-[11px] font-mono text-slate-500">Max Limit:</label>
+              <div>
+                <label className="block text-[11px] font-mono text-slate-500 dark:text-slate-400 mb-1">
+                  Max Limit:
+                </label>
                 <select 
                   value={latestLimit} 
                   onChange={(e) => setLatestLimit(Number(e.target.value))}
-                  className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-mono rounded-lg px-2.5 py-1 text-slate-800 dark:text-slate-200 cursor-pointer"
+                  className="w-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-mono rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200 cursor-pointer focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 >
                   <option value={50}>50 tenders (Quick Test)</option>
                   <option value={100}>100 tenders</option>
