@@ -147,10 +147,10 @@ export const getTenders = async (req, res, next) => {
     const EXPIRED_RETENTION_DAYS = 20;
     const expiredCutoffDate = new Date(now.getTime() - EXPIRED_RETENTION_DAYS * 24 * 60 * 60 * 1000);
 
-    // Active tenders: closingDate has NOT passed (open for bidding)
+    // Active tenders: closingDate has NOT passed (open for bidding) AND not UPCOMING/EXPIRED/CANCELLED
     const activeFilter = {
       isDelisted: { $ne: true },
-      status: { $nin: ['CANCELLED', 'EXPIRED'] },
+      status: { $nin: ['CANCELLED', 'EXPIRED', 'UPCOMING', 'ARCHIVED'] },
       closingDate: { $gte: now },
       $or: [
         { bidSubmissionEndDate: { $exists: false } },
@@ -176,7 +176,8 @@ export const getTenders = async (req, res, next) => {
 
     const upcomingFilter = {
       status: 'UPCOMING',
-      isDelisted: { $ne: true }
+      isDelisted: { $ne: true },
+      closingDate: { $gte: now }
     };
 
     // Expired tenders: closed within the last 20 days (20-day retention window)
@@ -563,7 +564,7 @@ export const getTenderStats = async (req, res, next) => {
     const now = new Date();
     const activeMatch = {
       isDelisted: { $ne: true },
-      status: { $nin: ['CANCELLED', 'EXPIRED'] },
+      status: { $nin: ['CANCELLED', 'EXPIRED', 'UPCOMING', 'ARCHIVED'] },
       closingDate: { $gte: now },
       $or: [
         { bidSubmissionEndDate: { $exists: false } },
