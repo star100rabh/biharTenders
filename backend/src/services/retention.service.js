@@ -21,6 +21,30 @@ const logger = pino();
 
 export class RetentionService {
   /**
+   * Promotes UPCOMING tenders to ACTIVE if their bid submission start date has arrived.
+   */
+  async promoteUpcomingToActive() {
+    const now = new Date();
+    if (mongoose.connection.readyState !== 1) {
+      await connectDB();
+    }
+
+    const result = await Tender.updateMany(
+      {
+        status: 'UPCOMING',
+        bidSubmissionStartDate: { $lte: now },
+        closingDate: { $gte: now }
+      },
+      { $set: { status: 'ACTIVE' } }
+    );
+
+    if (result.modifiedCount > 0) {
+      logger.info(`[RetentionService] 🚀 Promoted ${result.modifiedCount} tender(s) from UPCOMING to ACTIVE (Bidding has officially started).`);
+    }
+    return result.modifiedCount;
+  }
+
+  /**
    * Evaluates all tenders against current Indian Standard Time.
    * Marks status as 'EXPIRED' once closing date/time (or bidSubmissionEndDate) has passed.
    */

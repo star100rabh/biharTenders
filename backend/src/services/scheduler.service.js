@@ -85,10 +85,13 @@ export class SchedulerService {
       timezone: 'Asia/Kolkata'
     });
 
-    // 6. Real-time Status Sync: Mark tenders whose closing date + time has passed as EXPIRED (Every 15 mins)
+    // 6. Real-time Status Sync: Mark tenders whose closing date + time has passed as EXPIRED, and promote UPCOMING to ACTIVE (Every 15 mins)
     cron.schedule('*/15 * * * *', async () => {
-      await retentionService.markExpiredTenders().catch(err => {
-        logger.error(`[Scheduler] Real-time expiry check failed: ${err.message}`);
+      await Promise.allSettled([
+        retentionService.markExpiredTenders(),
+        retentionService.promoteUpcomingToActive()
+      ]).catch(err => {
+        logger.error(`[Scheduler] Real-time status sync check failed: ${err.message}`);
       });
     }, {
       timezone: 'Asia/Kolkata'
