@@ -79,6 +79,20 @@ export default class BiharTenderAdapter {
     }, headless);
   }
 
+  /**
+   * Worker compatibility alias for scheduled cron ingestion
+   */
+  async fetchTendersByDate(options = {}) {
+    return await this.scrapeTendersByDate(options);
+  }
+
+  /**
+   * Worker compatibility alias for pending document recovery pass
+   */
+  async fetchPendingDocuments(options = {}) {
+    return await this.scrapeLatestTenders(options);
+  }
+
   async _runScrapeSession(scrapeFn, headless) {
     if (!process.env.PLAYWRIGHT_BROWSERS_PATH) {
       process.env.PLAYWRIGHT_BROWSERS_PATH = '0';
