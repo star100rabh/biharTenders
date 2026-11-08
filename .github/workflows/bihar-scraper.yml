@@ -1,0 +1,79 @@
+name: Bihar Tenders Automated Scraper
+
+on:
+  schedule:
+    # 1. Morning Run: 09:30 AM IST (04:00 UTC), Mon-Sat
+    - cron: '0 4 * * 1-6'
+    # 2. Midday Run: 01:30 PM IST (08:00 UTC), Mon-Sat
+    - cron: '0 8 * * 1-6'
+    # 3. Afternoon Run: 05:30 PM IST (12:00 UTC), Mon-Sat
+    - cron: '0 12 * * 1-6'
+    # 4. Evening Wrap-Up Sweep: 07:30 PM IST (14:00 UTC), Mon-Sat
+    - cron: '0 14 * * 1-6'
+
+  # Allows manual 1-click trigger directly from GitHub Web / Mobile App
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Tenders Limit (e.g. 50, 100, 600)'
+        required: false
+        default: '100'
+      category:
+        description: 'Target Category'
+        required: false
+        default: 'ACTIVE'
+        type: choice
+        options:
+          - ACTIVE
+          - UPCOMING
+          - BOTH
+
+jobs:
+  scrape-bihar:
+    name: Scrape & Ingest Bihar Tenders
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js (v20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 📦 Install Ghostscript (for PDF Compression)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ghostscript
+
+      - name: 📦 Install Backend NPM Dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: 🌐 Install Playwright Chromium with Linux Dependencies
+        working-directory: backend
+        run: npx playwright install --with-deps chromium
+
+      - name: 🚀 Run Bihar Scraper Pipeline
+        working-directory: backend
+        env:
+          NODE_ENV: production
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
+          SCRAPER_HEADLESS: 'true'
+          PLAYWRIGHT_BROWSERS_PATH: '0'
+        run: |
+          LIMIT="${{ github.event.inputs.limit || '100' }}"
+          CATEGORY="${{ github.event.inputs.category || 'ACTIVE' }}"
+          echo "=========================================================="
+          echo "Starting Bihar Tender Crawl: Category=$CATEGORY, Limit=$LIMIT"
+          echo "=========================================================="
+          node src/scripts/fetchBiharLatest.js "$LIMIT" "$CATEGORY"
